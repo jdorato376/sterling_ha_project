@@ -85,3 +85,18 @@ Clears in-memory context and resets stored memory.
 ```bash
 curl -X POST http://localhost:5000/sterling/failsafe/reset
 ```
+
+## Local Model Fallback
+
+Sterling can optionally use [Ollama](https://ollama.com) as a free fallback LLM.
+Run the installer and start the service on your machine:
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+ollama serve &
+```
+
+When Gemini is unavailable or uncertain, Sterling will query the local model
+using the `ollama` Python package. The model defaults to `llama3` but you can
+override this via the `OLLAMA_MODEL` environment variable. Responses from
+Ollama are stored in the timeline with the tag `ollama_fallback`.
