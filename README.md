@@ -36,6 +36,11 @@ cards:
 
 ## API Endpoints
 
+Sterling keeps a timeline of phrases and intents it has processed. When an
+unknown request is received, the assistant looks back at recent events to
+provide context-aware suggestions.
+Fallback events are recorded with a `fallback:` tag for easier auditing.
+
 ### GET /sterling/info
 Returns version and system status.
 
@@ -55,11 +60,24 @@ curl -X POST http://localhost:5000/sterling/intent \
      -d '{"phrase": "SterlingDailyBriefing"}'
 ```
 
+### POST /sterling/contextual
+Route a free-form query through Sterling's memory-aware router. If the intent is
+unclear, Sterling will look at recent timeline events and suggest a likely
+intent.
+
+```bash
+curl -X POST http://localhost:5000/sterling/contextual \
+     -H "Content-Type: application/json" \
+     -d '{"query": "check the garage"}'
+```
+
 ### GET /sterling/history
 Returns the contents of `memory_timeline.json`, which stores previous events.
 
 ### GET /sterling/timeline
 Alias for `/sterling/history` that exposes the memory timeline.
+
+Sterling uses these timeline events to better handle uncertain phrases.
 
 ### POST /sterling/failsafe/reset
 Clears in-memory context and resets stored memory.

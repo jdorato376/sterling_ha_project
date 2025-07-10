@@ -42,9 +42,11 @@ def health_check():
 
 @app.route("/sterling/assistant", methods=["POST"])
 def sterling_assistant():
-    """Minimal placeholder assistant route."""
-    _ = request.get_json(force=True)
-    return jsonify({"response": "Assistant response placeholder"})
+    """Route generic assistant queries through the intent router."""
+    data = request.get_json(force=True)
+    query = data.get("query") or data.get("phrase") or ""
+    response = intent_router.route_intent(query)
+    return jsonify({"response": response})
 
 
 @app.route("/etsy/orders", methods=["GET"])
@@ -68,6 +70,15 @@ def handle_intent():
     data = request.get_json(force=True)
     phrase = data.get("phrase") or data.get("intent")
     response = intent_router.route_intent(phrase or "")
+    return jsonify({"response": response})
+
+
+@app.route('/sterling/contextual', methods=['POST'])
+def contextual_intent():
+    """Route phrases with memory-based fallback suggestions."""
+    data = request.get_json(force=True)
+    query = data.get("query") or ""
+    response = intent_router.route_intent(query, fallback=True)
     return jsonify({"response": response})
 
 
