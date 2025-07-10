@@ -62,6 +62,7 @@ def reset_memory() -> list:
 def get_timeline(
     limit: Optional[int] = None,
     tag: Optional[str] = None,
+    tags: Optional[List[str]] = None,
     event_type: Optional[str] = None,
     since: Optional[datetime] = None,
     contains: Optional[str] = None,
@@ -72,6 +73,8 @@ def get_timeline(
         data = [e for e in data if datetime.fromisoformat(e["timestamp"]) >= since]
     if tag:
         data = [evt for evt in data if evt.get("event", "").startswith(f"{tag}:")]
+    if tags:
+        data = [evt for evt in data if any(evt.get("event", "").startswith(f"{t}:") for t in tags)]
     if event_type:
         data = [evt for evt in data if evt.get("event", "").split(":", 1)[0] == event_type]
     if contains:

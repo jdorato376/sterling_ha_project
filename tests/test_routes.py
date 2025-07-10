@@ -139,3 +139,62 @@ def test_contextual_fallback(client, tmp_path, monkeypatch):
     # verify get_recent_phrases contains the free-form query
     phrases = main.memory_manager.get_recent_phrases(limit=2, contains="garage")
     assert any("garage" in p["event"] for p in phrases)
+
+
+def test_ollama_fallback_logging(tmp_path, monkeypatch):
+    mem_file = tmp_path / "memory_timeline.json"
+    mem_file.write_text("[]")
+    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+
+    class DummyOllama:
+        @staticmethod
+        def generate(model, prompt):
+            return {"response": "local hello"}
+
+    monkeypatch.setitem(sys.modules, "ollama", DummyOllama)
+
+    with app.test_client() as cl:
+        res = cl.post('/sterling/contextual', json={"query": "nonsense"})
+        assert res.status_code == 200
+        assert res.get_json()["response"] == "local hello"
+
+    events = json.loads(mem_file.read_text())
+    assert any(e["event"].startswith("_ollama_fallback:") for e in events)
+    assert any(e["event"].startswith("_local_llm_response:local hello") for e in events)
+
+
+def test_contextual_suggestion(monkeypatch, tmp_path):
+    mem_file = tmp_path / "memory_timeline.json"
+    mem_file.write_text("[]")
+    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+
+    main.memory_manager.add_event("phrase:SterlingCheckGarage")
+    main.memory_manager.add_event("intent:SterlingCheckGarage")
+
+    suggestion = main.intent_router.contextual_suggestion("garage")
+    assert suggestion and "garage" in suggestion.lower()
+
+
+def test_agent_fallback_chain(monkeypatch, tmp_path):
+    from addons.sterling_os import agent_orchestrator
+
+    mem_file = tmp_path / "memory_timeline.json"
+    mem_file.write_text("[]")
+    monkeypatch.setattr(agent_orchestrator.memory_manager, "MEMORY_FILE", mem_file)
+    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+
+    monkeypatch.setattr(agent_orchestrator, "_gemini_response", lambda q: (_ for _ in ()).throw(RuntimeError("fail")))
+
+    def fake_local(prompt):
+        agent_orchestrator.memory_manager.add_event(f"_ollama_fallback:{prompt}")
+        agent_orchestrator.memory_manager.add_event("_local_llm_response:local hi")
+        return "local hi"
+
+    monkeypatch.setattr(agent_orchestrator, "_local_llm_response", fake_local)
+
+    result = agent_orchestrator.handle_query("hello")
+    assert result["agent_used"] == "ollama"
+    assert result["response"] == "local hi"
+
+    events = json.loads(mem_file.read_text())
+    assert any(e["event"].startswith("_ollama_fallback:") for e in events)
