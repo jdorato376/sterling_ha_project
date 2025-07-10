@@ -29,7 +29,7 @@ def test_sterling_assistant(client):
     payload = {'query': 'What is my schedule?', 'context': 'general'}
     res = client.post('/sterling/assistant', json=payload)
     assert res.status_code == 200
-    assert res.get_json() == {"response": "Assistant response placeholder"}
+    assert res.get_json() == {"response": "I'm not sure, but here's what I can try..."}
 
 def test_etsy_orders(client):
     res = client.get('/etsy/orders')
@@ -57,6 +57,28 @@ def test_handle_intent(client, tmp_path, monkeypatch):
     # memory file should record the intent
     timeline = json.loads(mem_file.read_text())
     assert timeline and timeline[-1]["event"].startswith("intent:")
+
+
+def test_phrase_logging_and_timeline_filter(client, tmp_path, monkeypatch):
+    mem_file = tmp_path / "memory_timeline.json"
+    mem_file.write_text("[]")
+    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+
+    # Send a phrase that will be unknown
+    payload = {"phrase": "Turn off the moon"}
+    client.post('/sterling/intent', json=payload)
+
+    timeline = json.loads(mem_file.read_text())
+    # First event should log the phrase
+    assert any(e["event"].startswith("phrase:") for e in timeline)
+
+    # get_timeline filtering
+    recent_unknown = main.memory_manager.get_timeline(limit=1, tag="unknown")
+    assert recent_unknown and "unknown:" in recent_unknown[0]["event"]
+
+    # recent phrases helper
+    phrases = main.memory_manager.get_recent_phrases(limit=1)
+    assert phrases and phrases[0]["event"].startswith("phrase:")
 
 
 def test_get_history(client, tmp_path, monkeypatch):
@@ -94,3 +116,26 @@ def test_get_timeline(client, tmp_path, monkeypatch):
         assert res.status_code == 200
         data = res.get_json()
         assert data[0]["event"] == "boot"
+
+
+def test_contextual_fallback(client, tmp_path, monkeypatch):
+    mem_file = tmp_path / "memory_timeline.json"
+    mem_file.write_text("[]")
+    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+
+    # First send a known intent so memory contains it
+    client.post('/sterling/intent', json={"phrase": "SterlingCheckGarage"})
+
+    # Now send a related free-form query
+    res = client.post('/sterling/contextual', json={"query": "garage"})
+    assert res.status_code == 200
+    txt = res.get_json()["response"]
+    assert "garage" in txt.lower()
+
+    # fallback event should be logged
+    timeline = json.loads(mem_file.read_text())
+    assert any(e["event"].startswith("fallback:") for e in timeline)
+
+    # verify get_recent_phrases contains the free-form query
+    phrases = main.memory_manager.get_recent_phrases(limit=2, contains="garage")
+    assert any("garage" in p["event"] for p in phrases)
