@@ -1,0 +1,16 @@
+{
+        "name": "Sterling OS",
+        "version": "1.0.0",
+        "slug": "sterling_os",
+        "description": "Sterling: Executive AI Assistant Add-on with Gemini & Ollama Routing",
+        "startup": "application",
+        "boot": "auto",
+        "hassio_api": true,
+        "homeassistant_api": true,
+        "host_network": true,
+        "privileged": ["SYS_ADMIN"],
+        "arch": ["aarch64", "amd64", "armv7"],
+        "options": {},
+        "schema": {},
+        "image": "ghcr.io/jdorato376/sterling_os"
+    }
