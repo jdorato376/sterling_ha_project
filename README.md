@@ -143,3 +143,16 @@ curl -X POST http://localhost:5000/sterling/fallback/query \
 ```
 
 Any local fallback replies are tagged `_ollama_fallback` in the timeline for easy review.
+
+## Webhook Rebuild
+
+To pull the latest code and reinstall dependencies while the container is
+running, send a POST request to `/webhook/rebuild`:
+
+```bash
+curl -X POST http://localhost:5000/webhook/rebuild
+```
+
+## Self-Healing Git Automation
+
+Any changes made at runtime (such as log updates) are automatically committed and pushed back to `main`. Provide a `GIT_AUTH_TOKEN` environment variable if your repository requires authentication. Auto-commits use the message `[Sterling Auto-Fix]`.

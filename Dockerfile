@@ -1,24 +1,31 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 # Set working directory
 WORKDIR /app
 
-# Install git and dependencies
-RUN apt-get update && apt-get install -y git
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends git curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy files
-COPY requirements.txt .
-COPY entrypoint.sh .
+# Pre-configure git for safe operations
+RUN git config --global --add safe.directory /app \
+    && git config --global user.email "sterling@localhost" \
+    && git config --global user.name "Sterling Bot"
+
+# Copy dependency files first
+COPY requirements.txt entrypoint.sh generate_env.sh ./
 
 # Install Python packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Set permissions
-RUN chmod +x /app/entrypoint.sh
+# Set script permissions
+RUN chmod +x entrypoint.sh generate_env.sh
 
-# Copy rest of the project
+# Copy the rest of the project (including optional .env)
 COPY . .
 
-# Entrypoint
+# Ensure .env is secured if present
+RUN if [ -f .env ]; then chmod 600 .env; fi
+
 ENTRYPOINT ["./entrypoint.sh"]
 
