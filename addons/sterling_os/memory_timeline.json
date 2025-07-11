@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "timestamp": "2025-07-11T00:55:49.094296+00:00",
+    "event": "phrase:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-11T00:55:49.094537+00:00",
+    "event": "unknown:What is my schedule?"
+  }
+]
