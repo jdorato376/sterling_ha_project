@@ -1,4 +1,6 @@
-Flask
-requests
-aiohttp
-python-dotenv
+Flask==2.3.2
+gunicorn==21.2.0
+pytest==8.2.1
+Werkzeug==2.3.8
+aiohttp==3.9.5
+requests==2.31.0

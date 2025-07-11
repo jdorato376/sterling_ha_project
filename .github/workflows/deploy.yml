@@ -1,19 +1,25 @@
-name: CI
+name: Deploy Sterling API
 
 on:
-  pull_request:
-    branches: [ main ]
+  push:
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Docker Build Test
-        uses: docker/build-push-action@v5
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          context: .
-          file: ./addons/sterling_os/Dockerfile
-          push: false
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Tests
+        run: pytest -q
