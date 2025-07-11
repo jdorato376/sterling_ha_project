@@ -4,14 +4,17 @@ import platform
 import subprocess
 import datetime
 
+import uptime_tracker
+
 
 app = Flask(__name__)
-start_time = datetime.datetime.now()
+APP_VERSION = os.getenv("APP_VERSION", "4.0.0")
+app.config["APP_START_TIME"] = uptime_tracker._state.get("time_started")
 
 @app.route("/")
 def root():
     """Simple health check for container orchestration."""
-    return jsonify(status="alive", version="4.0.0")
+    return jsonify(status="alive", version=APP_VERSION)
 
 @app.route("/info")
 def info():
@@ -19,6 +22,7 @@ def info():
         "models": ["gpt-4", "gpt-4o", "gpt-3.5"],
         "fallback_chain": "gpt-4 \u2192 gpt-4o \u2192 gpt-3.5",
         "commit": os.getenv("GITHUB_SHA", "local-dev"),
+        "version": APP_VERSION,
     })
 
 @app.route("/metadata")
@@ -40,7 +44,7 @@ def metadata():
 @app.route("/sterling/status", methods=["GET"])
 def status():
     """Report runtime status and uptime information."""
-    uptime = datetime.datetime.now() - start_time
+    uptime = datetime.timedelta(seconds=int(uptime_tracker.get_uptime()))
     return jsonify({
         "status": "running",
         "uptime": str(uptime),
@@ -48,6 +52,11 @@ def status():
         "containerized": os.environ.get("DOCKER_CONTAINER", "unknown"),
         "python_version": platform.python_version(),
     })
+
+@app.route("/status")
+def short_status():
+    """Alias for /sterling/status"""
+    return status()
 
 @app.route("/sterling/version", methods=["GET"])
 def version():
@@ -59,7 +68,19 @@ def version():
         "commit_hash": commit_hash,
         "branch": os.getenv("GIT_BRANCH", "unknown"),
         "image_id": os.getenv("DOCKER_IMAGE", "unknown"),
+        "version": APP_VERSION,
     })
+
+@app.route("/version")
+def short_version():
+    """Alias for /sterling/version"""
+    return version()
+
+
+@app.route("/heartbeat")
+def heartbeat():
+    verbose = request.args.get("verbose", "false").lower() == "true"
+    return jsonify(uptime_tracker.heartbeat(verbose=verbose))
 
 @app.route("/sterling/info", methods=["GET"])
 def sterling_info():
