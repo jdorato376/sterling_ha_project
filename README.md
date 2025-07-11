@@ -100,3 +100,15 @@ When Gemini is unavailable or uncertain, Sterling will query the local model
 using the `ollama` Python package. The model defaults to `llama3` but you can
 override this via the `OLLAMA_MODEL` environment variable. Responses from
 Ollama are stored in the timeline with the tag `ollama_fallback`.
+
+## Environment Variables
+
+Sterling can be customized via a few optional environment variables. You can
+define these in a `.env` file when running `docker-compose` or directly in your
+container runtime settings.
+
+- `OLLAMA_MODEL` - Name of the local model to query when Gemini is unavailable.
+  Defaults to `llama3`.
+- `SCENE_MAP_PATH` - Path to the JSON file containing the autonomy scene
+  mappings. Defaults to `addons/sterling_os/scene_mapper.json`.
+
