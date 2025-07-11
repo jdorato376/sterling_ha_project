@@ -1,0 +1,5 @@
+{
+  "monitor_frequency_sec": 30,
+  "test_layer": false,
+  "log_heartbeat": false
+}
