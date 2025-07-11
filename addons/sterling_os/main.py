@@ -10,6 +10,15 @@ from .autonomy_engine import AutonomyEngine
 from . import timeline_orchestrator
 from . import scene_executor
 
+import sys
+import os
+import importlib.util
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, REPO_ROOT)
+spec = importlib.util.spec_from_file_location('cognitive_router', os.path.join(REPO_ROOT, 'cognitive_router.py'))
+cognitive_router = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(cognitive_router)
+
 app = Flask(__name__)
 
 # Load configuration
@@ -53,6 +62,15 @@ def sterling_assistant():
     query = data.get("query") or data.get("phrase") or ""
     response = intent_router.route_intent(query)
     return jsonify({"response": response})
+
+
+@app.route('/sterling/route', methods=['POST'])
+def cognitive_route():
+    """Route a query through the cognitive router."""
+    data = request.get_json(force=True)
+    query = data.get('query') or ''
+    result = cognitive_router.handle_request(query)
+    return jsonify(result)
 
 
 @app.route("/etsy/orders", methods=["GET"])

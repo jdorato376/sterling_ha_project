@@ -45,11 +45,11 @@ spec.loader.exec_module(memory_manager)
 def temp_memory(tmp_path, monkeypatch):
     file = tmp_path / 'memory.json'
     file.write_text('[]')
-    monkeypatch.setattr(memory_manager, 'MEMORY_FILE', file)
-    monkeypatch.setattr(autonomy_engine.memory_manager, 'MEMORY_FILE', file)
-    monkeypatch.setattr(scene_executor.memory_manager, 'MEMORY_FILE', file)
-    monkeypatch.setattr(fallback_router.memory_manager, 'MEMORY_FILE', file)
-    monkeypatch.setattr(timeline_orchestrator.memory_manager, 'MEMORY_FILE', file)
+    monkeypatch.setattr(memory_manager.MEMORY_STORE, 'path', file)
+    monkeypatch.setattr(autonomy_engine.memory_manager.MEMORY_STORE, 'path', file)
+    monkeypatch.setattr(scene_executor.memory_manager.MEMORY_STORE, 'path', file)
+    monkeypatch.setattr(fallback_router.memory_manager.MEMORY_STORE, 'path', file)
+    monkeypatch.setattr(timeline_orchestrator.memory_manager.MEMORY_STORE, 'path', file)
     yield
 
 
@@ -110,7 +110,7 @@ def test_timeline_prune(monkeypatch, tmp_path):
     ]
     file = tmp_path / 'memory.json'
     file.write_text(json.dumps(data))
-    monkeypatch.setattr(timeline_orchestrator.memory_manager, 'MEMORY_FILE', file)
+    monkeypatch.setattr(timeline_orchestrator.memory_manager.MEMORY_STORE, 'path', file)
     remaining = timeline_orchestrator.prune_older_than(1)
     assert len(remaining) == 1
     assert remaining[0]['event'] == 'new'

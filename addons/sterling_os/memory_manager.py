@@ -1,12 +1,22 @@
 """Simple JSON-based memory timeline manager."""
 
-import json
 from collections import OrderedDict
+from dataclasses import dataclass, asdict
 from pathlib import Path
 from datetime import datetime, timezone
 from typing import Optional, List, Dict
 
-MEMORY_FILE = Path(__file__).resolve().parent / "memory_timeline.json"
+from json_store import JSONStore
+
+MEMORY_STORE = JSONStore(Path(__file__).resolve().parent / "memory_timeline.json", default=[])
+
+
+@dataclass(slots=True)
+class TimelineEvent:
+    """Structured timeline entry."""
+
+    timestamp: str
+    event: str
 
 # Keep a small LRU cache of recently logged phrases to reduce disk writes
 RECENT_CACHE_SIZE = 20
@@ -15,24 +25,21 @@ _RECENT_PHRASE_CACHE: OrderedDict[str, datetime] = OrderedDict()
 
 def load_memory() -> List[Dict]:
     """Return the parsed timeline data."""
-    if MEMORY_FILE.exists():
-        with MEMORY_FILE.open() as f:
-            try:
-                return json.load(f)
-            except json.JSONDecodeError:
-                return []
-    return []
+    return MEMORY_STORE.read()
 
 
 def add_event(event: str) -> None:
     """Append a timestamped event string to the timeline."""
     data = load_memory()
-    data.append({
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "event": event,
-    })
-    with MEMORY_FILE.open("w") as f:
-        json.dump(data, f, indent=2)
+    data.append(
+        asdict(
+            TimelineEvent(
+                timestamp=datetime.now(timezone.utc).isoformat(),
+                event=event,
+            )
+        )
+    )
+    MEMORY_STORE.write(data)
 
 
 def log_phrase(query: str, intent: Optional[str] = None) -> None:
@@ -53,8 +60,7 @@ def log_phrase(query: str, intent: Optional[str] = None) -> None:
 
 def reset_memory() -> list:
     """Clear the timeline file and return an empty list."""
-    with MEMORY_FILE.open("w") as f:
-        json.dump([], f, indent=2)
+    MEMORY_STORE.write([])
     _RECENT_PHRASE_CACHE.clear()
     return []
 

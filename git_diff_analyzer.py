@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 import subprocess
 import json
 import os
 
 
-def get_last_commit_diff():
+def get_last_commit_diff() -> dict:
     """Extract git diff of the last commit and return structured JSON."""
     try:
         diff_output = subprocess.check_output(
