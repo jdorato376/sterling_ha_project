@@ -5,3 +5,4 @@ __pycache__/
 secrets.yaml
 Sterling_OS_Addon_MARS_FINAL.zip
 memory.json
+.env
