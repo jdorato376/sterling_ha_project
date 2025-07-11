@@ -89,5 +89,16 @@ def assistant():
 def heal():
     return jsonify(action="restart", status="initiated")
 
+
+@app.route("/webhook/rebuild", methods=["POST"])
+def webhook_rebuild():
+    """Pull latest code and reinstall dependencies."""
+    try:
+        subprocess.call(["git", "pull", "origin", "main"])  # best effort
+        subprocess.call(["pip", "install", "--no-cache-dir", "-r", "requirements.txt"])
+        return jsonify(status="updated")
+    except Exception as e:
+        return jsonify(status="error", detail=str(e)), 500
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
