@@ -99,7 +99,7 @@ ollama serve &
 When Gemini is unavailable or uncertain, Sterling will query the local model
 using the `ollama` Python package. The model defaults to `llama3` but you can
 override this via the `OLLAMA_MODEL` environment variable. Responses from
-Ollama are stored in the timeline with the tag `ollama_fallback`.
+Ollama are stored in the timeline with the tag `_ollama_fallback`.
 
 ## Environment Variables
 
@@ -111,4 +111,22 @@ container runtime settings.
   Defaults to `llama3`.
 - `SCENE_MAP_PATH` - Path to the JSON file containing the autonomy scene
   mappings. Defaults to `addons/sterling_os/scene_mapper.json`.
+- `HOME_ASSISTANT_URL` - Base URL for your Home Assistant instance. Defaults
+  to `http://localhost:8123`.
 
+
+## Autonomy Engine
+
+Sterling can execute Home Assistant scenes autonomously. Scenes are mapped in a JSON file referenced by `SCENE_MAP_PATH`. Use the `/sterling/scene` endpoint to trigger a single scene or `/sterling/autonomy/start` to queue one for later execution. The next queued scene can be run via `/sterling/autonomy/next`. Scene requests are dispatched asynchronously with `aiohttp` so Sterling remains responsive while communicating with Home Assistant.
+
+Timeline summaries are available from `/sterling/timeline/summary` and provide a short recap of recent events. The autonomy engine records task start, interrupt, and execution events which helps Sterling maintain context even after a restart.
+
+To retrieve a fallback response from Gemini with automatic Ollama escalation, send a query to `/sterling/fallback/query`:
+
+```bash
+curl -X POST http://localhost:5000/sterling/fallback/query \
+     -H "Content-Type: application/json" \
+     -d '{"query": "what's the weather"}'
+```
+
+Any local fallback replies are tagged `_ollama_fallback` in the timeline for easy review.
