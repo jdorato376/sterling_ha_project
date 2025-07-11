@@ -1,4 +1,7 @@
-def adjust_behavior_based_on_diff(diff_data):
+from __future__ import annotations
+
+
+def adjust_behavior_based_on_diff(diff_data: dict) -> dict:
     """Map git diff changes to runtime behavior config."""
     behavior = {
         "monitor_frequency_sec": 30,

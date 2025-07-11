@@ -1,4 +1,3 @@
-import json
 from datetime import datetime, timedelta, timezone
 from typing import List, Dict
 
@@ -18,8 +17,7 @@ def prune_older_than(days: int) -> List[Dict]:
     remaining = [
         e for e in events if datetime.fromisoformat(e["timestamp"]) >= cutoff
     ]
-    with memory_manager.MEMORY_FILE.open("w") as f:
-        json.dump(remaining, f, indent=2)
+    memory_manager.MEMORY_STORE.write(remaining)
     return remaining
 
 

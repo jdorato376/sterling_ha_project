@@ -144,6 +144,27 @@ curl -X POST http://localhost:5000/sterling/fallback/query \
 
 Any local fallback replies are tagged `_ollama_fallback` in the timeline for easy review.
 
+## Cognitive Router
+
+Sterling analyzes every incoming query with the cognitive router. The router
+classifies intent and dispatches the text to a specialized agent such as
+`finance`, `home_automation`, `security`, or `daily_briefing`. Each routing
+decision is appended to `runtime_memory.json` under the `route_logs` key for
+easy auditing. If no category matches, the request falls back to the `general`
+agent which uses the intent router.
+
+The router uses a simple keyword map to determine which agent should
+handle a request. Updating the keywords in ``cognitive_router.ROUTE_KEYWORDS``
+allows new phrases to be recognized without retraining models.
+
+Send queries to the router via the ``/sterling/route`` endpoint:
+
+```bash
+curl -X POST http://localhost:5000/sterling/route \
+     -H "Content-Type: application/json" \
+     -d '{"query": "show my budget"}'
+```
+
 ## Webhook Rebuild
 
 To pull the latest code and reinstall dependencies while the container is

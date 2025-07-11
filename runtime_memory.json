@@ -1,5 +1,9 @@
 {
   "monitor_frequency_sec": 30,
   "test_layer": false,
-  "log_heartbeat": false
+  "log_heartbeat": false,
+  "last_success": true,
+  "fallback_triggered": false,
+  "agent_trace": [],
+  "escalation_path": []
 }

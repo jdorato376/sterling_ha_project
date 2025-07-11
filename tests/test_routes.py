@@ -37,6 +37,50 @@ def test_etsy_orders(client):
     assert res.get_json() == {"results": []}
 
 
+def test_cognitive_route_endpoint(tmp_path, monkeypatch):
+    mem_file = tmp_path / 'runtime_memory.json'
+    mem_file.write_text('{}')
+
+    spec = importlib.util.spec_from_file_location(
+        'cognitive_router', os.path.join(os.path.dirname(__file__), '..', 'cognitive_router.py')
+    )
+    cognitive_router = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cognitive_router)
+    monkeypatch.setattr(cognitive_router.RUNTIME_STORE, 'path', mem_file)
+    monkeypatch.setattr(main, 'cognitive_router', cognitive_router)
+
+    with app.test_client() as cl:
+        res = cl.post('/sterling/route', json={'query': 'show my budget'})
+        assert res.status_code == 200
+        assert res.get_json()['agent'] == 'finance'
+
+    data = json.loads(mem_file.read_text())
+    assert data['route_logs'][-1]['agent'] == 'finance'
+
+
+def test_cognitive_route_escalation(tmp_path, monkeypatch):
+    mem_file = tmp_path / 'runtime_memory.json'
+    mem_file.write_text('{}')
+
+    spec = importlib.util.spec_from_file_location(
+        'cognitive_router', os.path.join(os.path.dirname(__file__), '..', 'cognitive_router.py')
+    )
+    cognitive_router = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cognitive_router)
+    monkeypatch.setattr(cognitive_router.RUNTIME_STORE, 'path', mem_file)
+    monkeypatch.setattr(cognitive_router.agent_reflector.RUNTIME_STORE, 'path', mem_file)
+    monkeypatch.setattr(main, 'cognitive_router', cognitive_router)
+
+    with app.test_client() as cl:
+        res = cl.post('/sterling/route', json={'query': 'toggle kitchen light'})
+        assert res.status_code == 200
+        body = res.get_json()
+        assert body['agent'] == 'general'
+
+    data = json.loads(mem_file.read_text())
+    assert data['fallback_triggered'] is True
+
+
 def test_sterling_info(client):
     res = client.get('/sterling/info')
     assert res.status_code == 200
@@ -48,7 +92,7 @@ def test_sterling_info(client):
 def test_handle_intent(client, tmp_path, monkeypatch):
     mem_file = tmp_path / "memory_timeline.json"
     mem_file.write_text("[]")
-    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+    monkeypatch.setattr(main.memory_manager.MEMORY_STORE, "path", mem_file)
     payload = {"phrase": "SterlingCheckGarage"}
     res = client.post('/sterling/intent', json=payload)
     assert res.status_code == 200
@@ -62,7 +106,7 @@ def test_handle_intent(client, tmp_path, monkeypatch):
 def test_phrase_logging_and_timeline_filter(client, tmp_path, monkeypatch):
     mem_file = tmp_path / "memory_timeline.json"
     mem_file.write_text("[]")
-    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+    monkeypatch.setattr(main.memory_manager.MEMORY_STORE, "path", mem_file)
 
     # Send a phrase that will be unknown
     payload = {"phrase": "Turn off the moon"}
@@ -85,7 +129,7 @@ def test_get_history(client, tmp_path, monkeypatch):
     mem_file = tmp_path / "memory_timeline.json"
     mem_file.write_text('[{"timestamp": "2025-01-01T00:00:00Z", "event": "start"}]')
 
-    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+    monkeypatch.setattr(main.memory_manager.MEMORY_STORE, "path", mem_file)
     with app.test_client() as cl:
         res = cl.get('/sterling/history')
         assert res.status_code == 200
@@ -97,7 +141,7 @@ def test_failsafe_reset(tmp_path, monkeypatch):
     mem_file = tmp_path / "memory_timeline.json"
     mem_file.write_text('[{"event": "x"}]')
     monkeypatch.chdir(tmp_path)
-    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+    monkeypatch.setattr(main.memory_manager.MEMORY_STORE, "path", mem_file)
     with app.test_client() as cl:
         res = cl.post('/sterling/failsafe/reset')
         assert res.status_code == 200
@@ -110,7 +154,7 @@ def test_failsafe_reset(tmp_path, monkeypatch):
 def test_get_timeline(client, tmp_path, monkeypatch):
     mem_file = tmp_path / "memory_timeline.json"
     mem_file.write_text('[{"timestamp": "2025-01-01T00:00:00Z", "event": "boot"}]')
-    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+    monkeypatch.setattr(main.memory_manager.MEMORY_STORE, "path", mem_file)
     with app.test_client() as cl:
         res = cl.get('/sterling/timeline')
         assert res.status_code == 200
@@ -121,7 +165,7 @@ def test_get_timeline(client, tmp_path, monkeypatch):
 def test_contextual_fallback(client, tmp_path, monkeypatch):
     mem_file = tmp_path / "memory_timeline.json"
     mem_file.write_text("[]")
-    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+    monkeypatch.setattr(main.memory_manager.MEMORY_STORE, "path", mem_file)
 
     # First send a known intent so memory contains it
     client.post('/sterling/intent', json={"phrase": "SterlingCheckGarage"})
@@ -144,7 +188,7 @@ def test_contextual_fallback(client, tmp_path, monkeypatch):
 def test_ollama_fallback_logging(tmp_path, monkeypatch):
     mem_file = tmp_path / "memory_timeline.json"
     mem_file.write_text("[]")
-    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+    monkeypatch.setattr(main.memory_manager.MEMORY_STORE, "path", mem_file)
 
     class DummyOllama:
         @staticmethod
@@ -166,7 +210,7 @@ def test_ollama_fallback_logging(tmp_path, monkeypatch):
 def test_contextual_suggestion(monkeypatch, tmp_path):
     mem_file = tmp_path / "memory_timeline.json"
     mem_file.write_text("[]")
-    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+    monkeypatch.setattr(main.memory_manager.MEMORY_STORE, "path", mem_file)
 
     main.memory_manager.add_event("phrase:SterlingCheckGarage")
     main.memory_manager.add_event("intent:SterlingCheckGarage")
@@ -180,8 +224,8 @@ def test_agent_fallback_chain(monkeypatch, tmp_path):
 
     mem_file = tmp_path / "memory_timeline.json"
     mem_file.write_text("[]")
-    monkeypatch.setattr(agent_orchestrator.memory_manager, "MEMORY_FILE", mem_file)
-    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+    monkeypatch.setattr(agent_orchestrator.memory_manager.MEMORY_STORE, "path", mem_file)
+    monkeypatch.setattr(main.memory_manager.MEMORY_STORE, "path", mem_file)
 
     monkeypatch.setattr(agent_orchestrator, "_gemini_response", lambda q: (_ for _ in ()).throw(RuntimeError("fail")))
 
@@ -203,10 +247,11 @@ def test_agent_fallback_chain(monkeypatch, tmp_path):
 def test_get_timeline_multiple_tags(tmp_path, monkeypatch):
     mem_file = tmp_path / "memory_timeline.json"
     mem_file.write_text("[]")
-    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+    monkeypatch.setattr(main.memory_manager.MEMORY_STORE, "path", mem_file)
 
     main.memory_manager.add_event("fallback:one")
     main.memory_manager.add_event("_ollama_fallback:two")
 
     events = main.memory_manager.get_timeline(tags=["fallback", "_ollama_fallback"])
     assert len(events) == 2
+

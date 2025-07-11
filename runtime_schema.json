@@ -1,0 +1,14 @@
+{
+  "finance": {
+    "expected_keys": ["response"],
+    "success_value": null
+  },
+  "home_automation": {
+    "expected_keys": ["status"],
+    "success_value": "success"
+  },
+  "general": {
+    "expected_keys": ["response"],
+    "success_value": null
+  }
+}
