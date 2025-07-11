@@ -1,4 +1,4 @@
-# Sterling Home Assistant Project
+# Sterling API: Executive AI Control Layer
 
 This repository contains a minimal Home Assistant add-on named **Sterling OS**. The add-on runs a simple Flask application and is packaged as a Docker image.
 
@@ -36,6 +36,19 @@ cards:
 
 ## API Endpoints
 
+### Core Routes
+
+| Method | Route | Purpose |
+|--------|-------|---------|
+| GET    | `/`               | Ping status check |
+| GET    | `/info`           | Model chain + commit metadata |
+| GET    | `/metadata`       | Commit hash and runtime info |
+| GET    | `/sterling/status`| Runtime status and uptime |
+| GET    | `/sterling/version`| Git version information |
+| GET    | `/sterling/info`  | Available models and fallback chain |
+| POST   | `/sterling/assistant` | Main assistant query |
+| GET    | `/self-heal`      | Restart hooks for recovery |
+
 Sterling keeps a timeline of phrases and intents it has processed. When an
 unknown request is received, the assistant looks back at recent events to
 provide context-aware suggestions.
@@ -46,7 +59,7 @@ Returns version and system status.
 
 ```json
 {
-  "version": "1.0.0",
+  "version": "4.0.0",
   "status": "ok"
 }
 ```
