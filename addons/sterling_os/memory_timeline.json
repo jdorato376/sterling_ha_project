@@ -6,5 +6,13 @@
   {
     "timestamp": "2025-07-11T00:55:49.094537+00:00",
     "event": "unknown:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-11T01:02:05.972175+00:00",
+    "event": "phrase:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-11T01:02:05.972423+00:00",
+    "event": "unknown:What is my schedule?"
   }
 ]
