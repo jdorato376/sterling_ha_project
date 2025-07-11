@@ -1,35 +1,48 @@
-from flask import Flask, request, jsonify
-from dotenv import load_dotenv
 import os
+import subprocess
+import datetime
+import platform
 
-load_dotenv()
+start_time = datetime.datetime.now()
 
-app = Flask(__name__)
-
-@app.route("/sterling/health")
-def health():
-    return {"status": "ok"}
-
-@app.route("/sterling/assistant", methods=["POST"])
-def assistant():
-    data = request.json
+@app.route("/sterling/status", methods=["GET"])
+def status():
+    uptime = datetime.datetime.now() - start_time
     return jsonify({
-        "response": f"Received query: {data.get('query')}",
-        "actions_taken": ["logged query"],
-        "home_assistant_update": False,
-        "cost_savings": "$0"
-    })
-@app.route("/etsy/orders", methods=["GET"])
-def etsy_orders():
-    return jsonify({
-        "results": [  # <-- changed from "orders" to "results"
-            {"id": "123", "status": "shipped", "item": "AI Smart Plug"},
-            {"id": "124", "status": "processing", "item": "Smart Home Hub"}
-        ]
+        "status": "running",
+        "uptime": str(uptime),
+        "hostname": platform.node(),
+        "containerized": os.environ.get("DOCKER_CONTAINER", "unknown"),
+        "python_version": platform.python_version()
     })
 
+@app.route("/sterling/version", methods=["GET"])
+def version():
+    try:
+        commit_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()
+    except Exception as e:
+        commit_hash = f"Error: {str(e)}"
+    return jsonify({
+        "commit_hash": commit_hash,
+        "branch": os.getenv("GIT_BRANCH", "unknown"),
+        "image_id": os.getenv("DOCKER_IMAGE", "unknown")
+    })
 
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+@app.route("/sterling/info", methods=["GET"])
+def info():
+    models = []
+    try:
+        import openai
+        models.append("OpenAI")
+    except ImportError:
+        pass
+    try:
+        import ollama
+        models.append("Ollama")
+    except ImportError:
+        pass
+    return jsonify({
+        "available_models": models,
+        "fallback_chain": models[::-1] if models else ["None"]
+    })
 
