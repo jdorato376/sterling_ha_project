@@ -3,22 +3,22 @@ FROM python:3.11-slim
 # Set working directory
 WORKDIR /app
 
-# Install git and dependencies
+# Install git
 RUN apt-get update && apt-get install -y git
 
-# Copy files
+# Copy files first (so chmod works)
 COPY requirements.txt .
 COPY entrypoint.sh .
 
-# Install Python packages
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Set permissions
-RUN chmod +x /app/entrypoint.sh
+# Fix script permissions
+RUN chmod +x entrypoint.sh
 
-# Copy rest of the project
+# Copy everything else
 COPY . .
 
-# Entrypoint
+# Set entrypoint
 ENTRYPOINT ["./entrypoint.sh"]
 
