@@ -5,6 +5,10 @@ from pathlib import Path
 from . import memory_manager
 from . import devgpt_engine
 from . import intent_router
+from . import fallback_router
+from .autonomy_engine import AutonomyEngine
+from . import timeline_orchestrator
+from . import scene_executor
 
 app = Flask(__name__)
 
@@ -22,6 +26,8 @@ ENABLE_DEVGPT = CONFIG.get("enable_devgpt", False)
 
 if MEMORY_ENABLED:
     memory_manager.load_memory()
+
+engine = AutonomyEngine()
 
 
 def interpret_intent(intent: str) -> str:
@@ -82,6 +88,42 @@ def contextual_intent():
     return jsonify({"response": response})
 
 
+@app.route('/sterling/fallback/query', methods=['POST'])
+def fallback_query():
+    """Return a response using Gemini with Ollama fallback."""
+    data = request.get_json(force=True)
+    prompt = data.get('query') or ''
+    reply = fallback_router.route_query(prompt)
+    return jsonify({'response': reply})
+
+
+@app.route('/sterling/scene', methods=['POST'])
+def run_scene():
+    """Execute a named scene immediately."""
+    data = request.get_json(force=True)
+    name = data.get('name') or ''
+    import asyncio
+    result = asyncio.run(scene_executor.execute_scene(name))
+    return jsonify({'success': result})
+
+
+@app.route('/sterling/autonomy/start', methods=['POST'])
+def autonomy_start():
+    """Add a scene to the autonomy stack."""
+    data = request.get_json(force=True)
+    name = data.get('name') or ''
+    engine.start_task(name)
+    return jsonify({'queued': name})
+
+
+@app.route('/sterling/autonomy/next', methods=['POST'])
+def autonomy_next():
+    """Run the next task in the autonomy engine."""
+    import asyncio
+    scene = asyncio.run(engine.run_next())
+    return jsonify({'executed': scene})
+
+
 @app.route('/sterling/intent/escalate', methods=['POST'])
 def intent_escalate():
     """Placeholder route for escalation logic."""
@@ -100,6 +142,13 @@ def get_history():
 def get_timeline():
     """Return the memory timeline events."""
     return jsonify(memory_manager.get_timeline())
+
+
+@app.route('/sterling/timeline/summary', methods=['GET'])
+def get_timeline_summary():
+    """Return a short summary of recent events."""
+    summary = timeline_orchestrator.timeline_summary()
+    return jsonify({'summary': summary})
 
 
 @app.route('/sterling/failsafe/reset', methods=['POST'])
