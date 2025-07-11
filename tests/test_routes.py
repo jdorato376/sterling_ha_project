@@ -198,3 +198,15 @@ def test_agent_fallback_chain(monkeypatch, tmp_path):
 
     events = json.loads(mem_file.read_text())
     assert any(e["event"].startswith("_ollama_fallback:") for e in events)
+
+
+def test_get_timeline_multiple_tags(tmp_path, monkeypatch):
+    mem_file = tmp_path / "memory_timeline.json"
+    mem_file.write_text("[]")
+    monkeypatch.setattr(main.memory_manager, "MEMORY_FILE", mem_file)
+
+    main.memory_manager.add_event("fallback:one")
+    main.memory_manager.add_event("_ollama_fallback:two")
+
+    events = main.memory_manager.get_timeline(tags=["fallback", "_ollama_fallback"])
+    assert len(events) == 2
