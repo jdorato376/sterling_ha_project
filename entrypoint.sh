@@ -1,8 +1,7 @@
 #!/bin/bash
-
 set -e
 
-# ensure git is usable in container
+# Ensure git is usable in container
 git config --global --add safe.directory /app
 if [ -f .git/index.lock ]; then
   rm -f .git/index.lock
@@ -54,3 +53,4 @@ until start_server; do
   auto_push
   sleep 5
 done
+
