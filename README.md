@@ -242,3 +242,5 @@ You should receive a JSON response indicating the service is running.
 - [Phase 4–5 Strategic Vision](docs/phase4_5_strategic_vision.md)
 - [Navigating the Future of Smart Homes](docs/navigating_future_smart_homes.md)
 - [Pluto-Class Autonomy Stack](docs/pluto_class_autonomy_stack.md)
+- [Codex GPT Phase 4 Overview](docs/codex_gpt_phase4.md)
+- [Codex Phase 5 Autonomous Scenes](docs/codex_phase5_autonomous_scenes.md)
