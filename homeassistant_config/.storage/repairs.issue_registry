@@ -10,6 +10,13 @@
         "domain": "homeassistant",
         "is_persistent": false,
         "issue_id": "platform_integration_no_support_sensor_file"
+      },
+      {
+        "created": "2025-07-12T14:32:35.829107+00:00",
+        "dismissed_version": null,
+        "domain": "homeassistant",
+        "is_persistent": false,
+        "issue_id": "imperial_unit_system"
       }
     ]
   }

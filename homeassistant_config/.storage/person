@@ -8,7 +8,9 @@
         "id": "jimmy_dorato_iii",
         "name": "Jimmy Dorato III",
         "user_id": "b5375df0efff4754900bbf55b755ff0a",
-        "device_trackers": []
+        "device_trackers": [
+          "device_tracker.james_dorato_iiis_iphone"
+        ]
       }
     ]
   }
