@@ -240,3 +240,5 @@ You should receive a JSON response indicating the service is running.
 ## Roadmap Documents
 - [Phase 3 AI Autonomy Roadmap](docs/phase3_ai_autonomy_roadmap.md)
 - [Phase 4–5 Strategic Vision](docs/phase4_5_strategic_vision.md)
+- [Navigating the Future of Smart Homes](docs/navigating_future_smart_homes.md)
+- [Pluto-Class Autonomy Stack](docs/pluto_class_autonomy_stack.md)
