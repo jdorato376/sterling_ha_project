@@ -13,3 +13,4 @@ logs/
 *.swp
 *.save
 
+addons/sterling_os/trust_registry_store.json
