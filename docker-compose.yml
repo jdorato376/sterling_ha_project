@@ -10,3 +10,14 @@ services:
     volumes:
       - .:/app
     restart: always
+
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: homeassistant
+    ports:
+      - "8123:8123"
+    volumes:
+      - ./homeassistant_config:/config
+      - ./metadata.json:/config/metadata.json:ro
+    restart: always
+
