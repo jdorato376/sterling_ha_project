@@ -1,0 +1,6 @@
+{
+  "codex": {"trust": 0.9, "type": "executive"},
+  "gemini": {"trust": 0.85, "type": "analyst"},
+  "home_assistant": {"trust": 0.75, "type": "primary"},
+  "fallback_agent": {"trust": 0.6, "type": "redundant"}
+}

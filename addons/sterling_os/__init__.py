@@ -16,6 +16,7 @@ from . import (
     sterling_suggestions,
     risk_intelligence,
     self_writing,
+    trust_registry,
 )
 
 __all__ = [
@@ -33,5 +34,6 @@ __all__ = [
     "sterling_suggestions",
     "risk_intelligence",
     "self_writing",
+    "trust_registry",
 ]
 

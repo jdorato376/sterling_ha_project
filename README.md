@@ -226,6 +226,16 @@ zero-downtime patching.
 These modules enhance Sterling GPT's abilities **without replacing** the core
 assistant pipeline. Each utility is optional and can be loaded as needed.
 
+### Trust-Based Decision Framework
+
+The `agent_senate` module relies on `trust_registry.py` for agent scores stored
+in `trust_weights.json`. Each entry may include a `type` label for clarity
+(e.g., `"executive"`, `"redundant"`). Weights range from `0.0` to `1.0` and are
+clamped using `set_weight()`. Incremental adjustments can be applied via
+`update_weight()` after successful or failed actions. Updated scores persist in
+`trust_registry_store.json` so trust history survives restarts. The highest
+weighted response wins when multiple agents propose answers.
+
 ## Smoke Test API
 
 With the development server running, verify the `/status` endpoint:
