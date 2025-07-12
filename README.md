@@ -209,6 +209,23 @@ pip install -r requirements.txt
 pytest -q
 ```
 
+## Enhancement Modules
+
+Sterling OS ships with a set of lightweight utilities in `addons/sterling_os`.
+These modules enable advanced behaviors such as multi-agent voting and
+zero-downtime patching.
+
+- `agent_senate.py` – collaborative voting framework
+- `command_stream.py` – timeline logging for executed commands
+- `infrastructure_advisor.py` – simple scaling recommendations
+- `patch_layer.py` – apply YAML patches at runtime
+- `predictive_scene.py` – season-aware scene mapping
+- `risk_intelligence.py` – basic log scanning for risky events
+- `self_writing.py` – infer automations from recent activity
+
+These modules enhance Sterling GPT's abilities **without replacing** the core
+assistant pipeline. Each utility is optional and can be loaded as needed.
+
 ## Smoke Test API
 
 With the development server running, verify the `/status` endpoint:
@@ -219,3 +236,7 @@ curl --fail http://localhost:5000/status
 
 You should receive a JSON response indicating the service is running.
 
+
+## Roadmap Documents
+- [Phase 3 AI Autonomy Roadmap](docs/phase3_ai_autonomy_roadmap.md)
+- [Phase 4–5 Strategic Vision](docs/phase4_5_strategic_vision.md)
