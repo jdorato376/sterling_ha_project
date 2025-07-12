@@ -1,0 +1,19 @@
+2025-07-12 04:17:43.052 ERROR (MainThread) [homeassistant.components.sensor] The file platform for the sensor integration does not support platform setup. Please remove it from your config.
+2025-07-12 04:17:43.052 ERROR (MainThread) [homeassistant.components.sensor] The file platform for the sensor integration does not support platform setup. Please remove it from your config.
+2025-07-12 04:19:19.242 WARNING (MainThread) [homeassistant.components.http.ban] Login attempt or request with invalid authentication from localhost (127.0.0.1). Requested URL: '/auth/token'. (Home Assistant/2025.5 (io.robbie.HomeAssistant; build:2025.1264; iOS 18.5.0) Alamofire/5.8.0)
+2025-07-12 04:19:25.120 WARNING (MainThread) [homeassistant.components.http.ban] Login attempt or request with invalid authentication from localhost (127.0.0.1). Requested URL: '/auth/token'. (Home Assistant/2025.5 (io.robbie.HomeAssistant; build:2025.1264; iOS 18.5.0) Alamofire/5.8.0)
+2025-07-12 04:19:25.237 ERROR (MainThread) [aiohttp.server] Unhandled exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/web_protocol.py", line 602, in start
+    resp, reset = await task
+                  ^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/web_protocol.py", line 535, in _handle_request
+    resp, reset = await self.finish_response(request, resp, start_time)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/web_protocol.py", line 714, in finish_response
+    await resp.write_eof()
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/web_ws.py", line 443, in write_eof
+    await self.close()
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/web_ws.py", line 451, in close
+    raise RuntimeError("Call .prepare() first")
+RuntimeError: Call .prepare() first

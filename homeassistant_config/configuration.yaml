@@ -1,0 +1,25 @@
+default_config:
+
+# UI theme support
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Load additional YAML files
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+# Sterling Git Metadata from metadata.json
+sensor:
+  - platform: file
+    name: Sterling Commit Hash
+    file_path: /config/metadata.json
+    value_template: "{{ value_json.commit }}"
+    scan_interval: 60
+
+  - platform: file
+    name: Sterling Build Timestamp
+    file_path: /config/metadata.json
+    value_template: "{{ value_json.timestamp }}"
+    scan_interval: 60
+
