@@ -9,27 +9,27 @@
         "last_event_type": null,
         "last_event_attributes": null
       },
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"stt.home_assistant_cloud","state":"unknown","attributes":{"friendly_name":"Home Assistant Cloud"},"last_changed":"2025-07-12T15:10:02.529517+00:00","last_reported":"2025-07-12T15:10:02.529517+00:00","last_updated":"2025-07-12T15:10:02.529517+00:00","context":{"id":"01JZZJZ9S1YDVR6TDJ5Q98FACB","parent_id":null,"user_id":null}},
       "extra_data": null,
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"tts.home_assistant_cloud","state":"unknown","attributes":{"friendly_name":"Home Assistant Cloud"},"last_changed":"2025-07-12T15:10:02.529788+00:00","last_reported":"2025-07-12T15:10:02.529788+00:00","last_updated":"2025-07-12T15:10:02.529788+00:00","context":{"id":"01JZZJZ9S1M6SJWDEHX2FATPTE","parent_id":null,"user_id":null}},
       "extra_data": null,
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
-      "state": {"entity_id":"person.jimmy_dorato_iii","state":"home","attributes":{"editable":true,"id":"jimmy_dorato_iii","device_trackers":["device_tracker.james_dorato_iiis_iphone"],"latitude":42.52558999663207,"longitude":-73.73270279681597,"gps_accuracy":16,"source":"person.jimmy_dorato_iii","user_id":"b5375df0efff4754900bbf55b755ff0a","friendly_name":"Jimmy Dorato III"},"last_changed":"2025-07-12T15:10:02.543592+00:00","last_reported":"2025-07-12T15:10:02.543592+00:00","last_updated":"2025-07-12T15:10:02.543592+00:00","context":{"id":"01JZZJZ9SFZTG2159Z4R28E7TH","parent_id":null,"user_id":null}},
+      "state": {"entity_id":"person.jimmy_dorato_iii","state":"home","attributes":{"editable":true,"id":"jimmy_dorato_iii","device_trackers":["device_tracker.james_dorato_iiis_iphone"],"latitude":42.52552540171643,"longitude":-73.7325552552234,"gps_accuracy":15,"source":"device_tracker.james_dorato_iiis_iphone","user_id":"b5375df0efff4754900bbf55b755ff0a","friendly_name":"Jimmy Dorato III"},"last_changed":"2025-07-12T15:10:02.543592+00:00","last_reported":"2025-07-12T15:10:20.467288+00:00","last_updated":"2025-07-12T15:10:20.467288+00:00","context":{"id":"01JZZJZV9KMWFKKA4V7KP25HP7","parent_id":null,"user_id":null}},
       "extra_data": null,
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
-      "state": {"entity_id":"device_tracker.james_dorato_iiis_iphone","state":"home","attributes":{"source_type":"gps","battery_level":95,"latitude":42.52558999663207,"longitude":-73.73270279681597,"gps_accuracy":16,"altitude":63.41637187786634,"vertical_accuracy":30,"friendly_name":"James Dorato III’s iPhone"},"last_changed":"2025-07-12T15:10:02.686714+00:00","last_reported":"2025-07-12T15:10:02.686714+00:00","last_updated":"2025-07-12T15:10:02.686714+00:00","context":{"id":"01JZZJZ9XYDGYMJNACSV8CKWY0","parent_id":null,"user_id":null}},
+      "state": {"entity_id":"device_tracker.james_dorato_iiis_iphone","state":"home","attributes":{"source_type":"gps","battery_level":95,"latitude":42.52552540171643,"longitude":-73.7325552552234,"gps_accuracy":15,"altitude":62.91895189569159,"vertical_accuracy":30,"friendly_name":"James Dorato III’s iPhone"},"last_changed":"2025-07-12T15:10:20.467082+00:00","last_reported":"2025-07-12T15:10:20.467082+00:00","last_updated":"2025-07-12T15:10:20.467082+00:00","context":{"id":"01JZZJZV9K3R7TGV86V0RKT14A","parent_id":null,"user_id":null}},
       "extra_data": null,
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"sensor.james_dorato_iiis_iphone_battery_level","state":"95","attributes":{"unit_of_measurement":"%","device_class":"battery","icon":"mdi:battery-90","friendly_name":"James Dorato III’s iPhone Battery Level"},"last_changed":"2025-07-12T15:10:02.687250+00:00","last_reported":"2025-07-12T15:10:02.687250+00:00","last_updated":"2025-07-12T15:10:02.687250+00:00","context":{"id":"01JZZJZ9XZJND91TP48EFBGWYW","parent_id":null,"user_id":null}},
@@ -37,7 +37,7 @@
         "native_value": 95,
         "native_unit_of_measurement": "%"
       },
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"sensor.james_dorato_iiis_iphone_sim_1","state":"unavailable","attributes":{"icon":"mdi:dots-square","friendly_name":"James Dorato III’s iPhone SIM 1"},"last_changed":"2025-07-12T15:10:02.687368+00:00","last_reported":"2025-07-12T15:10:02.687368+00:00","last_updated":"2025-07-12T15:10:02.687368+00:00","context":{"id":"01JZZJZ9XZ26A3H1J559AYBEKP","parent_id":null,"user_id":null}},
@@ -45,7 +45,7 @@
         "native_value": "unavailable",
         "native_unit_of_measurement": null
       },
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"sensor.james_dorato_iiis_iphone_sim_2","state":"unavailable","attributes":{"icon":"mdi:dots-square","friendly_name":"James Dorato III’s iPhone SIM 2"},"last_changed":"2025-07-12T15:10:02.687478+00:00","last_reported":"2025-07-12T15:10:02.687478+00:00","last_updated":"2025-07-12T15:10:02.687478+00:00","context":{"id":"01JZZJZ9XZMKX7M85ETG53VT6H","parent_id":null,"user_id":null}},
@@ -53,15 +53,15 @@
         "native_value": "unavailable",
         "native_unit_of_measurement": null
       },
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
-      "state": {"entity_id":"sensor.james_dorato_iiis_iphone_geocoded_location","state":"942 Ridge View Cir\nCastleton On Hudson NY 12033\nUnited States","attributes":{"Administrative Area":"NY","Areas Of Interest":"N/A","Country":"United States","Inland Water":"N/A","ISO Country Code":"US","Locality":"Castleton On Hudson","Location":[42.52558999663207,-73.73270279681597],"Name":"942 Ridge View Cir","Ocean":"N/A","Postal Code":"12033","Sub Administrative Area":"Rensselaer County","Sub Locality":"N/A","Sub Thoroughfare":"942","Thoroughfare":"Ridge View Cir","Time Zone":"America/New_York","Zones":["Home","Home"],"icon":"mdi:map","friendly_name":"James Dorato III’s iPhone Geocoded Location"},"last_changed":"2025-07-12T15:10:02.687608+00:00","last_reported":"2025-07-12T15:10:02.687608+00:00","last_updated":"2025-07-12T15:10:02.687608+00:00","context":{"id":"01JZZJZ9XZ83R662F3N1AT8JED","parent_id":null,"user_id":null}},
+      "state": {"entity_id":"sensor.james_dorato_iiis_iphone_geocoded_location","state":"942 Ridge View Cir\nCastleton On Hudson NY 12033\nUnited States","attributes":{"Administrative Area":"NY","Areas Of Interest":"N/A","Country":"United States","Inland Water":"N/A","ISO Country Code":"US","Locality":"Castleton On Hudson","Location":[42.52552540171643,-73.7325552552234],"Name":"942 Ridge View Cir","Ocean":"N/A","Postal Code":"12033","Sub Administrative Area":"Rensselaer County","Sub Locality":"N/A","Sub Thoroughfare":"942","Thoroughfare":"Ridge View Cir","Time Zone":"America/New_York","Zones":["Home","Home"],"icon":"mdi:map","friendly_name":"James Dorato III’s iPhone Geocoded Location"},"last_changed":"2025-07-12T15:10:02.687608+00:00","last_reported":"2025-07-12T15:10:20.587209+00:00","last_updated":"2025-07-12T15:10:20.587209+00:00","context":{"id":"01JZZJZVDB95C7GMFVYP8T3ZYT","parent_id":null,"user_id":null}},
       "extra_data": {
         "native_value": "942 Ridge View Cir\nCastleton On Hudson NY 12033\nUnited States",
         "native_unit_of_measurement": null
       },
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"sensor.james_dorato_iiis_iphone_app_version","state":"2025.5","attributes":{"icon":"mdi:cellphone","friendly_name":"James Dorato III’s iPhone App Version"},"last_changed":"2025-07-12T15:10:02.687718+00:00","last_reported":"2025-07-12T15:10:02.687718+00:00","last_updated":"2025-07-12T15:10:02.687718+00:00","context":{"id":"01JZZJZ9XZPKSA4P7W1WM6TY38","parent_id":null,"user_id":null}},
@@ -69,7 +69,7 @@
         "native_value": "2025.5",
         "native_unit_of_measurement": null
       },
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"sensor.james_dorato_iiis_iphone_last_update_trigger","state":"unavailable","attributes":{"icon":"mdi:dots-square","friendly_name":"James Dorato III’s iPhone Last Update Trigger"},"last_changed":"2025-07-12T15:10:02.688198+00:00","last_reported":"2025-07-12T15:10:02.688198+00:00","last_updated":"2025-07-12T15:10:02.688198+00:00","context":{"id":"01JZZJZ9Y0T6QER12GW8CG5HYW","parent_id":null,"user_id":null}},
@@ -77,7 +77,7 @@
         "native_value": "unavailable",
         "native_unit_of_measurement": null
       },
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"sensor.james_dorato_iiis_iphone_location_permission","state":"Authorized Always","attributes":{"icon":"mdi:map","friendly_name":"James Dorato III’s iPhone Location permission"},"last_changed":"2025-07-12T15:10:02.688397+00:00","last_reported":"2025-07-12T15:10:02.688397+00:00","last_updated":"2025-07-12T15:10:02.688397+00:00","context":{"id":"01JZZJZ9Y0EGQND15CE2B2YSMH","parent_id":null,"user_id":null}},
@@ -85,7 +85,7 @@
         "native_value": "Authorized Always",
         "native_unit_of_measurement": null
       },
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"sensor.james_dorato_iiis_iphone_audio_output","state":"unavailable","attributes":{"icon":"mdi:dots-square","friendly_name":"James Dorato III’s iPhone Audio Output"},"last_changed":"2025-07-12T15:10:02.688551+00:00","last_reported":"2025-07-12T15:10:02.688551+00:00","last_updated":"2025-07-12T15:10:02.688551+00:00","context":{"id":"01JZZJZ9Y08RFCAKW661QXVY8E","parent_id":null,"user_id":null}},
@@ -93,7 +93,7 @@
         "native_value": "unavailable",
         "native_unit_of_measurement": null
       },
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"sensor.james_dorato_iiis_iphone_connection_type","state":"unavailable","attributes":{"icon":"mdi:dots-square","friendly_name":"James Dorato III’s iPhone Connection Type"},"last_changed":"2025-07-12T15:10:02.688660+00:00","last_reported":"2025-07-12T15:10:02.688660+00:00","last_updated":"2025-07-12T15:10:02.688660+00:00","context":{"id":"01JZZJZ9Y0EX79AADGMVK22WHK","parent_id":null,"user_id":null}},
@@ -101,7 +101,7 @@
         "native_value": "unavailable",
         "native_unit_of_measurement": null
       },
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"sensor.james_dorato_iiis_iphone_ssid","state":"Dorato Wi-Fi","attributes":{"icon":"mdi:wifi","friendly_name":"James Dorato III’s iPhone SSID"},"last_changed":"2025-07-12T15:10:02.688760+00:00","last_reported":"2025-07-12T15:10:02.688760+00:00","last_updated":"2025-07-12T15:10:02.688760+00:00","context":{"id":"01JZZJZ9Y006N222M9HG64ZKMN","parent_id":null,"user_id":null}},
@@ -109,7 +109,7 @@
         "native_value": "Dorato Wi-Fi",
         "native_unit_of_measurement": null
       },
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"sensor.james_dorato_iiis_iphone_bssid","state":"a2:b8:2b:1:7e:17","attributes":{"icon":"mdi:wifi-star","friendly_name":"James Dorato III’s iPhone BSSID"},"last_changed":"2025-07-12T15:10:02.688865+00:00","last_reported":"2025-07-12T15:10:02.688865+00:00","last_updated":"2025-07-12T15:10:02.688865+00:00","context":{"id":"01JZZJZ9Y0M2AZVP646W42CXYQ","parent_id":null,"user_id":null}},
@@ -117,7 +117,7 @@
         "native_value": "a2:b8:2b:1:7e:17",
         "native_unit_of_measurement": null
       },
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"sensor.james_dorato_iiis_iphone_battery_state","state":"Not Charging","attributes":{"Low Power Mode":false,"icon":"mdi:battery-90","friendly_name":"James Dorato III’s iPhone Battery State"},"last_changed":"2025-07-12T15:10:02.688965+00:00","last_reported":"2025-07-12T15:10:02.688965+00:00","last_updated":"2025-07-12T15:10:02.688965+00:00","context":{"id":"01JZZJZ9Y0C19S0XHXME448D7W","parent_id":null,"user_id":null}},
@@ -125,7 +125,7 @@
         "native_value": "Not Charging",
         "native_unit_of_measurement": null
       },
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"sensor.james_dorato_iiis_iphone_storage","state":"unavailable","attributes":{"icon":"mdi:dots-square","friendly_name":"James Dorato III’s iPhone Storage"},"last_changed":"2025-07-12T15:10:02.689048+00:00","last_reported":"2025-07-12T15:10:02.689048+00:00","last_updated":"2025-07-12T15:10:02.689048+00:00","context":{"id":"01JZZJZ9Y177MBJ2F9ZN1TQX43","parent_id":null,"user_id":null}},
@@ -133,12 +133,12 @@
         "native_value": "unavailable",
         "native_unit_of_measurement": null
       },
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"tts.google_translate_en_com","state":"unknown","attributes":{"friendly_name":"Google Translate en com"},"last_changed":"2025-07-12T15:10:02.698479+00:00","last_reported":"2025-07-12T15:10:02.698479+00:00","last_updated":"2025-07-12T15:10:02.698479+00:00","context":{"id":"01JZZJZ9YA57BXGB49YVW5BF4W","parent_id":null,"user_id":null}},
       "extra_data": null,
-      "last_seen": "2025-07-12T15:10:03.053433+00:00"
+      "last_seen": "2025-07-12T15:22:29.467023+00:00"
     },
     {
       "state": {"entity_id":"conversation.home_assistant","state":"unknown","attributes":{"friendly_name":"Home Assistant","supported_features":1},"last_changed":"2025-07-12T14:05:11.338685+00:00","last_reported":"2025-07-12T14:05:11.338685+00:00","last_updated":"2025-07-12T14:05:11.338685+00:00","context":{"id":"01JZZF8HSAV56MQ2QNR7TZ8YBK","parent_id":null,"user_id":null}},
