@@ -255,3 +255,17 @@ def test_get_timeline_multiple_tags(tmp_path, monkeypatch):
     events = main.memory_manager.get_timeline(tags=["fallback", "_ollama_fallback"])
     assert len(events) == 2
 
+
+def test_ha_chat_endpoint(tmp_path, monkeypatch):
+    spec = importlib.util.spec_from_file_location(
+        'cognitive_router', os.path.join(os.path.dirname(__file__), '..', 'cognitive_router.py')
+    )
+    cognitive_router = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cognitive_router)
+
+    monkeypatch.setattr(os, 'environ', {**os.environ, 'HA_TOKEN': 'token'})
+
+    with app.test_client() as cl:
+        res = cl.post('/ha-chat', json={'message': 'hello'}, headers={'Authorization': 'Bearer token'})
+        assert res.status_code == 200
+

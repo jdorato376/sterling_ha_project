@@ -5,6 +5,7 @@ import subprocess
 import datetime
 
 import uptime_tracker
+from cognitive_router import route_with_self_critique
 
 
 app = Flask(__name__)
@@ -105,6 +106,19 @@ def assistant():
     data = request.get_json(force=True)
     query = data.get("query", "")
     return jsonify({"response": "I'm not sure, but here's what I can try...", "query": query})
+
+
+@app.route("/ha-chat", methods=["POST"])
+def ha_chat():
+    """Home Assistant bridge endpoint."""
+    token = request.headers.get("Authorization", "").removeprefix("Bearer ").strip()
+    expected = os.getenv("HA_TOKEN")
+    if expected and token != expected:
+        return jsonify({"error": "unauthorized"}), 401
+    data = request.get_json(force=True)
+    message = data.get("message", "")
+
+    return jsonify(route_with_self_critique(message))
 
 @app.route("/self-heal")
 def heal():

@@ -43,7 +43,10 @@ log_metadata
 auto_push
 
 start_server() {
-  gunicorn app:app -b 0.0.0.0:5000 --timeout 300
+  gunicorn app:app -b 0.0.0.0:5000 --timeout 300 &
+  child=$!
+  trap 'echo ">>> Caught termination signal"; kill $child; wait $child' TERM INT
+  wait $child
 }
 
 until start_server; do

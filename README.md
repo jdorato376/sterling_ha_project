@@ -34,6 +34,25 @@ cards:
         {{ states('sensor.sterling_response') or "Awaiting input..." }}
 ```
 
+To send chat prompts from Home Assistant, configure a `rest_command` that posts
+to the `/ha-chat` endpoint:
+
+```yaml
+rest_command:
+  send_ha_chat:
+    url: "https://your-sterling-backend/ha-chat"
+    method: POST
+    headers:
+      Authorization: "Bearer YOUR_LONG_LIVED_TOKEN"
+    payload: '{"message": "{{ input_text.ha_chat_input.state }}"}'
+```
+
+You can automate sending messages by adding the `automation_chat.yaml` snippet
+from the `addons/sterling_os` folder to your Home Assistant configuration. The
+automation triggers whenever `input_text.ha_chat_input` changes, posts the text
+to `/ha-chat`, waits for `sensor.ai_response` to update and then clears the
+input box.
+
 ## API Endpoints
 
 ### Core Routes
@@ -116,9 +135,9 @@ Ollama are stored in the timeline with the tag `_ollama_fallback`.
 
 ## Environment Variables
 
-Sterling can be customized via a few optional environment variables. You can
-define these in a `.env` file when running `docker-compose` or directly in your
-container runtime settings.
+Sterling can be customized via a few optional environment variables. Copy the
+provided `.env.example` to `.env` and fill in real values when running
+`docker-compose` or launching the container manually.
 
 - `OLLAMA_MODEL` - Name of the local model to query when Gemini is unavailable.
   Defaults to `llama3`.
@@ -126,6 +145,7 @@ container runtime settings.
   mappings. Defaults to `addons/sterling_os/scene_mapper.json`.
 - `HOME_ASSISTANT_URL` - Base URL for your Home Assistant instance. Defaults
   to `http://localhost:8123`.
+- `HA_TOKEN` - Optional token used to authorize Home Assistant chat requests.
 
 
 ## Autonomy Engine
@@ -177,3 +197,25 @@ curl -X POST http://localhost:5000/webhook/rebuild
 ## Self-Healing Git Automation
 
 Any changes made at runtime (such as log updates) are automatically committed and pushed back to `main`. Provide a `GIT_AUTH_TOKEN` environment variable if your repository requires authentication. Auto-commits use the message `[Sterling Auto-Fix]`.
+
+## Continuous Integration & Testing
+
+All pushes and pull requests trigger the CI workflow defined in `.github/workflows/ci.yml`, which installs dependencies and runs `pytest` on the codebase.
+
+To run the tests locally:
+
+```bash
+pip install -r requirements.txt
+pytest -q
+```
+
+## Smoke Test API
+
+With the development server running, verify the `/status` endpoint:
+
+```bash
+curl --fail http://localhost:5000/status
+```
+
+You should receive a JSON response indicating the service is running.
+

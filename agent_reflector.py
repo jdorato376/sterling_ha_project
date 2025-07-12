@@ -3,20 +3,19 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import Callable, Dict, Tuple
 
-from json_store import JSONStore
-
 import schema_escalator
+import runtime_memory
 
-RUNTIME_STORE = JSONStore(Path("runtime_memory.json"))
+# Alias for backwards compatibility
+RUNTIME_STORE = runtime_memory.RUNTIME_STORE
 
 
 def reflect(agent: str, query: str, result: Dict, fallback_handler: Callable[[str], Dict]) -> Tuple[Dict, bool, bool]:
     """Log agent result and escalate if schema check fails."""
     success = schema_escalator.check_schema(agent, result)
-    data = RUNTIME_STORE.read()
+    data = runtime_memory.read_memory()
     trace = data.setdefault("agent_trace", [])
     entry = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -36,7 +35,7 @@ def reflect(agent: str, query: str, result: Dict, fallback_handler: Callable[[st
         data["fallback_triggered"] = False
     data["last_success"] = bool(success)
     trace.append(entry)
-    RUNTIME_STORE.write(data)
+    runtime_memory.write_memory(data)
     return result, success, fallback
 
 __all__ = ["reflect"]

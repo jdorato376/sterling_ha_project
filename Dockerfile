@@ -27,5 +27,7 @@ COPY . .
 # Ensure .env is secured if present
 RUN if [ -f .env ]; then chmod 600 .env; fi
 
+HEALTHCHECK --interval=60s --timeout=5s CMD curl -f http://localhost:5000/sterling/status || exit 1
+
 ENTRYPOINT ["./entrypoint.sh"]
 

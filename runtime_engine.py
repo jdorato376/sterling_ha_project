@@ -2,10 +2,8 @@ from __future__ import annotations
 
 from git_diff_analyzer import get_last_commit_diff
 from behavior_modulator import adjust_behavior_based_on_diff
-from json_store import JSONStore
-from pathlib import Path
+import runtime_memory
 
-RUNTIME_STORE = JSONStore(Path("runtime_memory.json"))
 
 
 def update_runtime_config() -> None:
@@ -16,7 +14,7 @@ def update_runtime_config() -> None:
         return
     updated_behavior = adjust_behavior_based_on_diff(diff_data)
     try:
-        RUNTIME_STORE.write(updated_behavior)
+        runtime_memory.write_memory(updated_behavior)
         print("✅ Runtime behavior updated.")
     except Exception as exc:  # pragma: no cover - log error only
         print(f"❌ Failed to update runtime config: {exc}")
