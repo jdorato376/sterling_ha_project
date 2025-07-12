@@ -8,3 +8,8 @@ memory.json
 .pytest_cache/
 runtime_memory.json
 logs/
+
+# Editor temp files
+*.swp
+*.save
+
