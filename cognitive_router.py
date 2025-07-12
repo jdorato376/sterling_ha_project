@@ -11,12 +11,16 @@ from datetime import datetime, timezone
 from typing import Callable, Dict, List
 
 import runtime_memory
+from json_store import JSONStore
+from pathlib import Path
 
 from addons.sterling_os import intent_router
 import agent_reflector
 
 # Path to the runtime memory store is managed by ``runtime_memory``
 RUNTIME_STORE = runtime_memory.RUNTIME_STORE
+# Separate log for routing decisions
+ROUTER_LOG_STORE = JSONStore(Path("router_log.json"), default=[])
 
 
 def log_route(query: str, agent: str, success: bool, fallback: bool) -> None:
@@ -35,11 +39,42 @@ def log_route(query: str, agent: str, success: bool, fallback: bool) -> None:
     runtime_memory.write_memory(data)
 
 
+def log_router_decision(query: str, agent: str, method: str, success: bool) -> None:
+    """Log router classification details to ``router_log.json``."""
+    logs = ROUTER_LOG_STORE.read()
+    logs.append(
+        {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "query": query,
+            "agent": agent,
+            "method": method,
+            "success": success,
+        }
+    )
+    ROUTER_LOG_STORE.write(logs)
+    recent = [l for l in logs if l["query"] == query][-3:]
+    if len(recent) == 3 and all(not l["success"] for l in recent):
+        runtime_memory.alert_admin("Routing failures", query)
+
+
+def sanitize_response(text: str) -> str:
+    """Basic output sanitization to avoid HTML/script injection."""
+    return text.replace("<", "").replace(">", "")
+
+
 ROUTE_KEYWORDS: Dict[str, List[str]] = {
     "finance": ["finance", "budget", "invoice"],
     "home_automation": ["garage", "light", "scene", "home"],
     "security": ["alarm", "secure", "security"],
     "daily_briefing": ["briefing", "schedule", "agenda"],
+}
+
+# loose embedding keyword map for secondary classification
+EMBEDDING_KEYWORDS: Dict[str, List[str]] = {
+    "finance": ["tax", "expense", "revenue"],
+    "home_automation": ["switch", "thermostat", "hvac"],
+    "security": ["camera", "door", "lock"],
+    "daily_briefing": ["news", "weather"],
 }
 
 # Last matched keyword for introspection
@@ -52,6 +87,12 @@ def classify_request(query: str) -> str:
     lower = query.lower()
     for agent, keywords in ROUTE_KEYWORDS.items():
         for k in keywords:
+            if k in lower:
+                LAST_MATCH = k
+                return agent
+    # second pass using embedding keywords
+    for agent, kws in EMBEDDING_KEYWORDS.items():
+        for k in kws:
             if k in lower:
                 LAST_MATCH = k
                 return agent
@@ -113,6 +154,8 @@ __all__ = [
     "handle_request",
     "classify_request",
     "log_route",
+    "log_router_decision",
+    "sanitize_response",
     "LAST_MATCH",
     "route_with_self_critique",
 ]
@@ -121,10 +164,13 @@ __all__ = [
 def handle_request(query: str) -> Dict:
     """Classify the request and dispatch to the appropriate agent."""
     agent = classify_request(query)
+    method = "keyword" if LAST_MATCH in sum(ROUTE_KEYWORDS.values(), []) else "embedding"
     handler = HANDLERS.get(agent, HANDLERS["general"])
     result = handler(query)
+    result["response"] = sanitize_response(result.get("response", ""))
     result, success, fallback = agent_reflector.reflect(agent, query, result, HANDLERS["general"])
     log_route(query, agent, success, fallback)
+    log_router_decision(query, agent, method, success)
     return result
 
 
@@ -137,6 +183,7 @@ def route_with_self_critique(query: str) -> Dict:
     """
     route_1 = handle_request(query)
     route_2_raw = general_agent(query)
+    route_2_raw["response"] = sanitize_response(route_2_raw.get("response", ""))
     # log the general agent execution separately so the decision is traceable
     result2, success2, fallback2 = agent_reflector.reflect(
         "general", query, route_2_raw, HANDLERS["general"]
