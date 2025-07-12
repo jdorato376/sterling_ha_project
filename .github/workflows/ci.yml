@@ -20,6 +20,11 @@ jobs:
         pip install -r requirements.txt
         pip install pytest requests flask python-dotenv
 
+    - name: Secret scan
+      run: |
+        pip install trufflehog
+        trufflehog --regex --entropy=False .
+
     - name: Run Flask app in background
       run: |
         python app.py &

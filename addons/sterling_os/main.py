@@ -73,6 +73,18 @@ def cognitive_route():
     return jsonify(result)
 
 
+@app.route('/ha-chat', methods=['POST'])
+def ha_chat():
+    token = request.headers.get('Authorization', '').removeprefix('Bearer ').strip()
+    expected = os.environ.get('HA_TOKEN')
+    if expected and token != expected:
+        return jsonify({'error': 'unauthorized'}), 401
+    data = request.get_json(force=True)
+    query = data.get('message', '')
+    result = cognitive_router.route_with_self_critique(query)
+    return jsonify(result)
+
+
 @app.route("/etsy/orders", methods=["GET"])
 def etsy_orders():
     """Return an empty list of orders as a stub."""

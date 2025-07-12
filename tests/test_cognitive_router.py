@@ -65,3 +65,23 @@ def test_security_classification(tmp_path, monkeypatch):
     data = json.loads(log_file.read_text())
     assert data['route_logs'][-1]['agent'] == 'security'
 
+
+def test_route_with_self_critique_uses_general(tmp_path, monkeypatch):
+    log_file = tmp_path / 'runtime_memory.json'
+    log_file.write_text('{}')
+    monkeypatch.setattr(cognitive_router.RUNTIME_STORE, 'path', log_file)
+
+    def low_conf_agent(query: str):
+        return {"agent": "finance", "response": "low", "confidence": 0.1}
+
+    monkeypatch.setattr(cognitive_router, 'finance_agent', low_conf_agent)
+    cognitive_router.HANDLERS['finance'] = low_conf_agent
+
+    result = cognitive_router.route_with_self_critique('show my budget')
+    assert result['agent'] == 'general'
+    data = json.loads(log_file.read_text())
+    # ensure both routes were logged
+    assert len(data['route_logs']) == 2
+    assert data['route_logs'][0]['agent'] == 'finance'
+    assert data['route_logs'][1]['agent'] == 'general'
+

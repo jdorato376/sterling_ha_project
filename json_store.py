@@ -45,6 +45,8 @@ class JSONStore:
         try:
             with tmp_path.open("w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2)
+                f.flush()
+                os.fsync(f.fileno())
             try:
                 os.replace(tmp_path, self.path)
             except OSError:

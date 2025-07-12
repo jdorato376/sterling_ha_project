@@ -16,7 +16,7 @@ spec.loader.exec_module(git_diff_analyzer)
 
 def test_update_runtime_config(tmp_path, monkeypatch):
     runtime_file = tmp_path / 'runtime_memory.json'
-    monkeypatch.setattr(runtime_engine.RUNTIME_STORE, 'path', runtime_file)
+    monkeypatch.setattr(runtime_engine.runtime_memory.RUNTIME_STORE, 'path', runtime_file)
     monkeypatch.setattr(git_diff_analyzer, 'get_last_commit_diff', lambda: {'modified': ['app.py']})
     monkeypatch.setattr(runtime_engine, 'get_last_commit_diff', git_diff_analyzer.get_last_commit_diff)
     runtime_engine.update_runtime_config()

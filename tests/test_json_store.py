@@ -108,3 +108,29 @@ def test_rename_fallback(tmp_path, monkeypatch):
     store.write({"b": 2})
     assert json.loads(file.read_text()) == {"b": 2}
     assert moved.get("done")
+
+
+def test_disk_full(tmp_path, monkeypatch):
+    file = tmp_path / "full.json"
+    store = JSONStore(file, default={})
+
+    def bad_dump(*args, **kwargs):
+        raise OSError(28, "No space left on device")
+
+    monkeypatch.setattr(json, "dump", bad_dump)
+    with pytest.raises(JSONStoreError):
+        store.write({"x": 1})
+    assert not file.exists()
+
+
+def test_fsync_failure(tmp_path, monkeypatch):
+    file = tmp_path / "fsync.json"
+    store = JSONStore(file, default={})
+
+    def bad_fsync(fd):
+        raise OSError("fsync fail")
+
+    monkeypatch.setattr(os, "fsync", bad_fsync)
+    with pytest.raises(JSONStoreError):
+        store.write({"y": 1})
+    assert not file.exists()
