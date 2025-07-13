@@ -1,0 +1,40 @@
+# Phase 5: Temporal Intelligence
+
+sensor:
+  - platform: mqtt
+    state_topic: "rtl_433/Acurite-606TX/1234/temperature_C"
+    name: "AcuRite Outdoor Temperature"
+    unit_of_measurement: "°C"
+    unique_id: acurite_outdoor_temperature
+    device_class: temperature
+    state_class: measurement
+
+  - platform: mqtt
+    state_topic: "rtl_433/Acurite-606TX/1234/solar_radiation_W_per_m2"
+    name: "AcuRite Solar Radiation"
+    unit_of_measurement: "W/m²"
+    unique_id: acurite_solar_radiation
+    device_class: illuminance
+    state_class: measurement
+
+automation:
+  - id: calendar_vacation_mode_start
+    alias: "Calendar: Activate Vacation Mode"
+    trigger:
+      - platform: calendar
+        event: start
+        entity_id: calendar.your_travel_calendar
+        offset: "-00:15:00"
+    condition:
+      - condition: template
+        value_template: "{{ 'vacation' in trigger.calendar_event.summary | lower }}"
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.home_mode
+        data:
+          option: "Vacation"
+      - service: persistent_notification.create
+        data:
+          title: "Vacation Mode Activated"
+          message: "Based on your calendar, Vacation Mode is now active."

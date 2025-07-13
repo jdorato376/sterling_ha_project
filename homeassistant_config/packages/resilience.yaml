@@ -1,0 +1,37 @@
+# Phase 4: Long-Range Resilience
+
+binary_sensor:
+  - platform: ping
+    host: 8.8.8.8
+    name: "Internet Connection Google DNS"
+    count: 3
+    scan_interval: 30
+  - platform: ping
+    host: 1.1.1.1
+    name: "Internet Connection Cloudflare DNS"
+    count: 3
+    scan_interval: 30
+  - platform: template
+    sensors:
+      overall_internet_status:
+        friendly_name: "Overall Internet Status"
+        value_template: >
+          {{ is_state('binary_sensor.internet_connection_google_dns', 'on') and is_state('binary_sensor.internet_connection_cloudflare_dns', 'on') }}
+        device_class: connectivity
+
+automation:
+  - id: save_critical_state_on_shutdown
+    alias: "Resilience: Save Critical State on Shutdown"
+    trigger:
+      - platform: homeassistant
+        event: shutdown
+    action:
+      - service: python_script.save_critical_state
+
+  - id: restore_critical_state_on_startup
+    alias: "Resilience: Restore Critical State on Startup"
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      - service: python_script.restore_critical_state

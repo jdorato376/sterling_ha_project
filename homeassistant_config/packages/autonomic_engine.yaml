@@ -1,0 +1,60 @@
+# Phase 2: Autonomic Behavior Engine
+
+input_select:
+  home_mode:
+    name: "Home Mode"
+    options:
+      - "Day"
+      - "Night"
+      - "Away"
+      - "Vacation"
+      - "Offline"
+      - "Override"
+    initial: "Day"
+    icon: mdi:home-circle
+
+input_boolean:
+  override_active:
+    name: "Manual Override Active"
+    icon: mdi:account-hard-hat
+
+automation:
+  - id: set_mode_day
+    alias: "Set Mode: Day"
+    trigger:
+      - platform: sun
+        event: sunrise
+        offset: "+00:30:00"
+    condition:
+      - condition: state
+        entity_id: input_select.home_mode
+        state_not: "Vacation"
+      - condition: state
+        entity_id: input_boolean.override_active
+        state: "off"
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.home_mode
+        data:
+          option: "Day"
+
+  - id: set_mode_night
+    alias: "Set Mode: Night"
+    trigger:
+      - platform: sun
+        event: sunset
+        offset: "+00:30:00"
+    condition:
+      - condition: state
+        entity_id: input_select.home_mode
+        state_not: "Vacation"
+      - condition: state
+        entity_id: input_boolean.override_active
+        state: "off"
+    action:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.home_mode
+        data:
+          option: "Night"

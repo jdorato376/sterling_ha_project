@@ -1,0 +1,38 @@
+# Phase 8: Executive Governance and Policy Enforcement
+
+alarm_control_panel:
+  - platform: manual
+    name: "Sterling Security Alarm"
+    code: !secret alarm_code
+    arming_time: 10
+    delay_time: 5
+    trigger_time: 120
+    disarm_after_trigger: false
+    arming_states:
+      - armed_away
+      - armed_home
+      - armed_night
+      - armed_vacation
+    unique_id: sterling_security_alarm
+
+automation:
+  - id: security_breach_lockdown
+    alias: "Security: Breach Lockdown"
+    trigger:
+      - platform: state
+        entity_id: alarm_control_panel.sterling_security_alarm
+        to: "triggered"
+    action:
+      - service: light.turn_on
+        target:
+          area_id: all
+        data:
+          brightness_pct: 100
+          rgb_color: [255, 0, 0]
+      - service: notify.mobile_app_your_phone
+        data:
+          title: "SECURITY BREACH!"
+          message: "Intrusion detected! All systems locked down."
+          data:
+            ttl: 0
+            priority: high

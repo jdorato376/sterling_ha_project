@@ -1,0 +1,18 @@
+# Phase 9: Asset Intelligence
+
+template:
+  - sensor:
+      - name: "HVAC Run Time Today"
+        unique_id: hvac_run_time_today
+        unit_of_measurement: "min"
+        state: >
+          {% set hvac_entity = 'climate.your_thermostat' %}
+          {% if is_state(hvac_entity, 'heating') or is_state(hvac_entity, 'cooling') %}
+            {% set start_time = states[hvac_entity].last_changed %}
+            {% set now_time = now() %}
+            {% set duration = (now_time - start_time).total_seconds() / 60 %}
+            {{ (states('sensor.hvac_run_time_today') | float(0) + duration) | round(1) }}
+          {% else %}
+            {{ states('sensor.hvac_run_time_today') | float(0) }}
+          {% endif %}
+        icon: mdi:hvac
