@@ -1,5 +1,8 @@
 FROM python:3.12-slim
 
+ARG GPT_CONTAINER=gpt4t
+ENV GPT_CONTAINER=$GPT_CONTAINER
+
 # Set working directory
 WORKDIR /app
 

@@ -2,11 +2,16 @@ version: '3.8'
 
 services:
   sterling-api:
-    build: .
+    build:
+      context: .
+      args:
+        GPT_CONTAINER: ${GPT_CONTAINER:-gpt4t}
     ports:
       - "5000:5000"
     env_file:
       - .env
+    environment:
+      - GPT_CONTAINER=${GPT_CONTAINER}
     volumes:
       - .:/app
     restart: always

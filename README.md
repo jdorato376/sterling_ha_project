@@ -31,8 +31,16 @@ cards:
     card:
       type: markdown
       content: >
-        {{ states('sensor.sterling_response') or "Awaiting input..." }}
+{{ states('sensor.sterling_response') or "Awaiting input..." }}
 ```
+
+### Quick Add-on Bundle
+
+For a ready-to-run setup, unpack `sterling_ha_addon_bundle.zip` in this
+repository. The archive provides the Sterling add-on folder along with
+Home Assistant YAML examples, including the Lovelace chat card. Copy the
+`sterling_ha_addon` directory to your `/addons` folder and import the
+files under `homeassistant/` into your configuration.
 
 To send chat prompts from Home Assistant, configure a `rest_command` that posts
 to the `/ha-chat` endpoint:
@@ -146,6 +154,7 @@ provided `.env.example` to `.env` and fill in real values when running
 - `HOME_ASSISTANT_URL` - Base URL for your Home Assistant instance. Defaults
   to `http://localhost:8123`.
 - `HA_TOKEN` - Optional token used to authorize Home Assistant chat requests.
+- `GPT_CONTAINER` - Name of the containerized LLM to use. Defaults to `gpt4t`.
 
 
 ## Autonomy Engine
