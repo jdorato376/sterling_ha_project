@@ -1,0 +1,62 @@
+name: Codex Sterling Autopilot
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  autopilot_codex:
+    name: "\U0001F9E0 Codex Setup & HA Deployment"
+    runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      HA_HOST: ${{ secrets.HA_HOST }}
+      HA_TOKEN: ${{ secrets.HA_LONG_LIVED_TOKEN }}
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node (Codex CLI)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Codex CLI
+        run: npm install -g @openai/codex
+
+      - name: Run Codex: Integrate Sterling into HA
+        run: |
+          codex exec --full-auto "
+          You're Codex, part of Sterling GPT.
+          Automate the Home Assistant setup:
+          - Ensure /custom_components/sterling is properly deployed
+          - Update configuration.yaml to include 'sterling' component
+          - Confirm correct permissions and directory structure
+          - Add a Lovelace dashboard called 'Sterling Panel'
+          - Add a HA script named 'Run Sterling Assistant'
+          - Ensure ha core will restart cleanly
+          - Prepare for voice and text input from Assist
+          "
+
+      - name: Commit Codex Changes
+        run: |
+          git config user.name "Sterling Codex Bot"
+          git config user.email "codex@sterling.ai"
+          git commit -am "\U0001F9E0 Codex: Auto-integrated Sterling into HA" || echo "No changes"
+          git push origin main
+
+      - name: Deploy to Home Assistant
+        run: |
+          ssh -o StrictHostKeyChecking=no user@$HA_HOST "
+            cd /config &&
+            git fetch origin &&
+            git reset --hard origin/main &&
+            ha core restart
+          "
+
+      - name: Notify Success
+        run: echo "✅ Codex setup complete. HA is live with Sterling AI."
