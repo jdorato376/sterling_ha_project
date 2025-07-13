@@ -22,6 +22,7 @@ def info():
     return jsonify({
         "models": ["gpt-4", "gpt-4o", "gpt-3.5"],
         "fallback_chain": "gpt-4 \u2192 gpt-4o \u2192 gpt-3.5",
+        "container": os.getenv("GPT_CONTAINER", "gpt4t"),
         "commit": os.getenv("GITHUB_SHA", "local-dev"),
         "version": APP_VERSION,
     })

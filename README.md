@@ -146,6 +146,7 @@ provided `.env.example` to `.env` and fill in real values when running
 - `HOME_ASSISTANT_URL` - Base URL for your Home Assistant instance. Defaults
   to `http://localhost:8123`.
 - `HA_TOKEN` - Optional token used to authorize Home Assistant chat requests.
+- `GPT_CONTAINER` - Name of the containerized LLM to use. Defaults to `gpt4t`.
 
 
 ## Autonomy Engine
