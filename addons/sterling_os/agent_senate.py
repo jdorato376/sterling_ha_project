@@ -2,7 +2,7 @@
 
 from typing import Iterable, Dict, List
 
-from . import trust_registry
+from . import trust_registry, escalation_engine, diplomacy_protocol
 
 
 class AgentSenate:
@@ -10,9 +10,18 @@ class AgentSenate:
         self.agents = list(agents)
 
     def decide(self, votes: Dict[str, bool], quorum: int | None = None) -> bool:
-        """Return True if approvals meet the quorum."""
+        """Return True if approvals meet the quorum, escalate on ties."""
         quorum = quorum or (len(self.agents) // 2 + 1)
-        approvals = sum(1 for agent, approve in votes.items() if approve)
+        approvals = sum(1 for _, approve in votes.items() if approve)
+        rejections = len(votes) - approvals
+
+        if approvals == rejections:
+            result = diplomacy_protocol.mediate(votes, trust_registry.load_weights())
+            if result is None:
+                escalation_engine.escalate_scene("agent_vote", "tie")
+                return False
+            return result
+
         return approvals >= quorum
 
     def vote_on_action(self, agent_responses: List[Dict]) -> Dict:
