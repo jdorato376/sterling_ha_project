@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from typing import Dict
 
 from . import behavior_audit, scene_status_tracker, memory_manager
+from . import agent_constitution
 
 
 ESCALATION_EVENT = "escalation"
@@ -24,3 +25,17 @@ def escalate_scene(scene_id: str, reason: str) -> Dict:
     # also record in memory timeline for retrospective analysis
     memory_manager.add_event(f"escalation:{scene_id}:{reason}")
     return data
+
+
+def escalate_to_admin(task: str, error: str, fallback_agent: str) -> Dict:
+    """Notify admin of a task failure and fallback switch."""
+    message = f"{task} failed: {error}; switched to {fallback_agent}"
+    return escalate_scene(task, message)
+
+
+def should_escalate(scene_confidence: float, agent_weight: float) -> bool:
+    """Return True if uncertainty or low trust warrants escalation."""
+    protocols = agent_constitution.get_protocols()
+    threshold = float(protocols.get("uncertainty_threshold", 0.2))
+    return scene_confidence < threshold or agent_weight < 0.5
+

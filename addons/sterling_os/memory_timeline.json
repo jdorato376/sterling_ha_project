@@ -14,5 +14,73 @@
   {
     "timestamp": "2025-07-11T01:02:05.972423+00:00",
     "event": "unknown:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:30.620717+00:00",
+    "event": "phrase:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:30.626819+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:30.633148+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:30.749537+00:00",
+    "event": "phrase:tell me a joke"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:30.751877+00:00",
+    "event": "unknown:tell me a joke"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:30.771268+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:30.775660+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:30.823964+00:00",
+    "event": "phrase:show my budget"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:30.825770+00:00",
+    "event": "unknown:show my budget"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:30.860947+00:00",
+    "event": "escalation:scene1:fail"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:31.292414+00:00",
+    "event": "phrase:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:31.295403+00:00",
+    "event": "unknown:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:31.323080+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:31.329222+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:31.426164+00:00",
+    "event": "phrase:hello"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:31.428572+00:00",
+    "event": "unknown:hello"
+  },
+  {
+    "timestamp": "2025-07-13T00:32:31.447342+00:00",
+    "event": "unknown:hello"
   }
 ]
