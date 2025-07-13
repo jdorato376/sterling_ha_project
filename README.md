@@ -255,6 +255,19 @@ curl --fail http://localhost:5000/status
 
 You should receive a JSON response indicating the service is running.
 
+## Canary Diagnostic Workflow
+
+The `canary.yml` GitHub Actions workflow validates Home Assistant configuration and runs a Codex-powered system diagnostic. Trigger it manually from the Actions tab or when you push to `main` to confirm API access and write permissions remain intact.
+
+## Sentinel Monitor Workflow
+
+`sentinel.yml` provides an hourly watchdog. It validates configuration, runs a full diagnostic via Codex, and restarts Home Assistant through the API. Enable it to keep Sterling fully autonomous and self-healing.
+
+## Local Sentinel Test Script
+
+Run `./start.sh` to execute a basic Sentinel diagnostic on your Home Assistant instance. The script checks API reachability, confirms the presence of `configuration.yaml`, verifies the optional `input_boolean.canary_test` entity, tests Codex write access, and validates YAML syntax. Update the `HA_URL`, `HA_TOKEN`, and `OPENAI_API_KEY` variables inside the script before running.
+
+
 
 ## Roadmap Documents
 - [Phase 3 AI Autonomy Roadmap](docs/phase3_ai_autonomy_roadmap.md)

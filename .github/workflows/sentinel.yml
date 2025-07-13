@@ -1,0 +1,46 @@
+name: Sterling Sentinel Monitor
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 * * * *'  # Hourly health check
+  workflow_dispatch:
+
+jobs:
+  sentinel_watchdog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sterling Repo
+        uses: actions/checkout@v3
+
+      - name: Validate HA Configuration (YAML)
+        run: |
+          docker run -v "${{ github.workspace }}:/config" --rm \
+          ghcr.io/home-assistant/home-assistant:stable \
+          --script check_config
+
+      - name: Canary Prompt to Sterling
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          npm install -g @openai/codex
+          codex exec --full-auto "
+          Sterling, run sentinel mode: 
+          1. Validate HA API access.
+          2. Ensure input_boolean.canary_test exists.
+          3. Toggle it to test service call.
+          4. Confirm write access to /config.
+          5. Run YAML syntax check.
+          6. Report and fix drift if found.
+          7. Return full system diagnostic summary."
+
+      - name: Restart Home Assistant via API
+        env:
+          HA_TOKEN: ${{ secrets.HA_LONG_LIVED_TOKEN }}
+          HA_URL: ${{ secrets.HA_URL }}
+        run: |
+          curl -s -X POST "https://${HA_URL}/api/services/homeassistant/restart" \
+            -H "Authorization: Bearer ${HA_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d '{}'
