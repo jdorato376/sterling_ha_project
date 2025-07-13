@@ -4,6 +4,35 @@
   "log_heartbeat": false,
   "last_success": true,
   "fallback_triggered": false,
-  "agent_trace": [],
-  "escalation_path": []
+  "agent_trace": [
+    {
+      "timestamp": "2025-07-13T00:32:31.432902+00:00",
+      "agent": "general",
+      "query": "hello",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-13T00:32:31.452570+00:00",
+      "agent": "general",
+      "query": "hello",
+      "success": true
+    }
+  ],
+  "escalation_path": [],
+  "route_logs": [
+    {
+      "timestamp": "2025-07-13T00:32:31.439082+00:00",
+      "query": "hello",
+      "agent": "general",
+      "success": true,
+      "fallback": false
+    },
+    {
+      "timestamp": "2025-07-13T00:32:31.458806+00:00",
+      "query": "hello",
+      "agent": "general",
+      "success": true,
+      "fallback": false
+    }
+  ]
 }

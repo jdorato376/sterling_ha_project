@@ -24,3 +24,9 @@ def escalate_scene(scene_id: str, reason: str) -> Dict:
     # also record in memory timeline for retrospective analysis
     memory_manager.add_event(f"escalation:{scene_id}:{reason}")
     return data
+
+
+def escalate_to_admin(task: str, error: str, fallback_agent: str) -> Dict:
+    """Notify admin of a task failure and fallback switch."""
+    message = f"{task} failed: {error}; switched to {fallback_agent}"
+    return escalate_scene(task, message)
