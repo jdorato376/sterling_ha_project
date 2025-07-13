@@ -255,6 +255,84 @@ curl --fail http://localhost:5000/status
 
 You should receive a JSON response indicating the service is running.
 
+## Canary Diagnostic Workflow
+
+The `canary.yml` GitHub Actions workflow validates Home Assistant configuration and runs a Codex-powered system diagnostic. Trigger it manually from the Actions tab or when you push to `main` to confirm API access and write permissions remain intact.
+
+## Sentinel Monitor Workflow
+
+`sentinel.yml` provides an hourly watchdog. It validates configuration, runs a full diagnostic via Codex, and restarts Home Assistant through the API. Enable it to keep Sterling fully autonomous and self-healing.
+
+## Local Sentinel Test Script
+
+Run `./start.sh` to execute a recovery-enabled Sentinel diagnostic. The script will restore your configuration from the repository if `/config/configuration.yaml` is missing and then perform several checks:
+
+1. Verify Home Assistant API reachability.
+2. Ensure `configuration.yaml` exists.
+3. Create `input_boolean.canary_test` if it is missing.
+4. Toggle the canary entity to confirm service calls.
+5. Validate Codex CLI write access.
+6. Run `check_config` to validate YAML syntax.
+
+The script reads `REPO_URL`, `HA_URL`, `HA_TOKEN`, `OPENAI_API_KEY`, and `CONFIG_PATH` from the environment, falling back to sensible defaults. Configure these variables before running if needed.
+
+
+## Sentinel GitOps Redeployment Webhook
+
+Use this webhook to redeploy the entire Home Assistant configuration from GitHub when called.
+
+Add the automation to `automations.yaml`:
+```yaml
+- id: sterling_gitops_redeploy
+  alias: "Sterling Sentinel Webhook — Redeploy Config"
+  mode: single
+  trigger:
+    platform: webhook
+    webhook_id: sterling_gitops_sync
+  action:
+    - service: hassio.addon_restart
+      data:
+        addon: core_ssh
+    - delay: "00:00:05"
+    - service: shell_command.sterling_gitops_sync
+```
+
+Define the shell command in `configuration.yaml`:
+```yaml
+shell_command:
+  sterling_gitops_sync: >
+    bash -c "cd /config &&
+    ha core stop &&
+    rm -rf .git old_* backup_* custom_components/sterling* sterling_ha_project &&
+    git clone https://github.com/jdorato376/sterling_ha_project.git &&
+    mkdir -p custom_components &&
+    cp -r sterling_ha_project/homeassistant_config/custom_components/sterling custom_components/sterling &&
+    cp -n sterling_ha_project/homeassistant_config/configuration.yaml /config/ &&
+    cp -n sterling_ha_project/homeassistant_config/secrets.yaml /config/ &&
+    cp -n sterling_ha_project/homeassistant_config/automations.yaml /config/ &&
+    cp -n sterling_ha_project/homeassistant_config/scripts.yaml /config/ &&
+    chmod -R 755 custom_components/sterling &&
+    ha core start"
+```
+
+Trigger the webhook with `.github/workflows/sentinel_trigger.yml`:
+```yaml
+name: Trigger Sterling Sentinel Webhook
+
+on:
+  workflow_dispatch:
+
+jobs:
+  trigger_webhook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger HA Sentinel Mode via Webhook
+        run: |
+          curl -X POST https://${{ secrets.HA_URL }}/api/webhook/sterling_gitops_sync \
+            -H "Authorization: Bearer ${{ secrets.HA_LONG_LIVED_TOKEN }}" \
+            -H "Content-Type: application/json"
+```
+Ensure `HA_URL` and `HA_LONG_LIVED_TOKEN` secrets are set in your GitHub repository.
 
 ## Roadmap Documents
 - [Phase 3 AI Autonomy Roadmap](docs/phase3_ai_autonomy_roadmap.md)
