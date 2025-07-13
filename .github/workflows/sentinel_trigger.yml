@@ -1,0 +1,14 @@
+name: Trigger Sterling Sentinel Webhook
+
+on:
+  workflow_dispatch:
+
+jobs:
+  trigger_webhook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger HA Sentinel Mode via Webhook
+        run: |
+          curl -fsSL -X POST "https://${{ secrets.HA_URL }}/api/webhook/sterling_gitops_sync" \
+            -H "Authorization: Bearer ${{ secrets.HA_LONG_LIVED_TOKEN }}" \
+            -H "Content-Type: application/json"
