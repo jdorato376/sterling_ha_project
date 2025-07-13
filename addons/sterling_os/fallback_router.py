@@ -38,3 +38,9 @@ def route_query(prompt: str) -> str:
     except Exception:
         pass
     return "I'm not sure."
+
+
+def fallback_to_safe_mode(prompt: str) -> dict:
+    """Return a structured fallback response."""
+    reply = route_query(prompt)
+    return {"agent": "fallback_agent", "intent": prompt, "response": reply}
