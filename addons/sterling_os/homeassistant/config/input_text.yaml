@@ -1,0 +1,6 @@
+
+input_text:
+  voice_input:
+    name: Voice Input
+    initial: ""
+    max: 255

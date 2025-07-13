@@ -1,0 +1,7 @@
+
+intent_script:
+  SterlingAssistant:
+    speech:
+      text: "{{ query_result }}"
+    action:
+      - service: rest_command.send_to_sterling

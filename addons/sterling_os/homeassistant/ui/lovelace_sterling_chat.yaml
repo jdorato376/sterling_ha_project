@@ -1,0 +1,14 @@
+
+type: vertical-stack
+cards:
+  - type: markdown
+    content: >
+      **Sterling Chat Interface**
+  - type: input-text
+    entity: input_text.voice_input
+    name: "Ask Sterling"
+  - type: button
+    name: Send
+    tap_action:
+      action: call-service
+      service: rest_command.send_to_sterling

@@ -1,0 +1,8 @@
+
+rest_command:
+  send_to_sterling:
+    url: "http://localhost:8000/sterling/assistant"
+    method: post
+    headers:
+      Content-Type: application/json
+    payload: '{"query": "{{ states("input_text.voice_input") }}"}'

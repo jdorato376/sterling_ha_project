@@ -1,0 +1,18 @@
+
+{
+  "name": "Sterling AI Executive",
+  "version": "1.0",
+  "slug": "sterling_ai",
+  "description": "Executive AI Assistant embedded into Home Assistant",
+  "startup": "services",
+  "boot": "auto",
+  "url": "https://github.com/jdorato376/sterling_ha_project",
+  "arch": ["aarch64", "amd64", "armv7", "i386"],
+  "host_network": true,
+  "homeassistant_api": true,
+  "auth_api": true,
+  "full_access": true,
+  "map": ["config:rw", "ssl", "addons", "backup", "share"],
+  "options": {},
+  "schema": {}
+}
