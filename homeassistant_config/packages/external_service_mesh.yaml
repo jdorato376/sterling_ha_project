@@ -1,0 +1,48 @@
+# Phase 7: External Service Mesh
+
+intent_script:
+  GetHomeSummary:
+    description: "Provides a summary of the home's current status."
+    speech:
+      text: >
+        {% set temp = states('sensor.outdoor_temperature') %}
+        {% set lights_on = expand('light.living_room_lights', 'light.kitchen_lights') | select('is_state', 'on') | list | count %}
+        The outdoor temperature is {{ temp }} degrees. There are {{ lights_on }} lights on.
+    action:
+      - service: persistent_notification.create
+        data:
+          title: "Siri Intent: Home Summary"
+          message: "Siri requested a home summary."
+
+sensor:
+  - platform: template
+    trigger:
+      - platform: event
+        event_type: homepod_temp_webhook
+    sensors:
+      living_room_homepod_temperature:
+        friendly_name: "Living Room HomePod Temperature"
+        value_template: "{{ trigger.event.data.temperature }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        unique_id: living_room_homepod_temperature_sensor
+      living_room_homepod_humidity:
+        friendly_name: "Living Room HomePod Humidity"
+        value_template: "{{ trigger.event.data.humidity }}"
+        unit_of_measurement: "%"
+        device_class: humidity
+        state_class: measurement
+        unique_id: living_room_homepod_humidity_sensor
+
+automation:
+  - id: receive_homepod_sensor_data
+    alias: "Receive HomePod Sensor Data"
+    trigger:
+      - platform: webhook
+        webhook_id: homepod_temp_webhook
+    action:
+      - service: persistent_notification.create
+        data:
+          title: "HomePod Data Received"
+          message: "Received temperature and humidity from {{ trigger.json.homepod_name }}"

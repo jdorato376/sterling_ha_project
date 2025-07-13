@@ -9,6 +9,7 @@ homeassistant:
   time_zone: America/New_York
   allowlist_external_dirs:
     - /config
+  packages: !include_dir_named packages
 
 logger:
   default: info
@@ -29,4 +30,7 @@ sensor:
     scan_interval: 60
     unique_id: sterling_build_timestamp_fallback
     icon: mdi:clock-outline
+
+python_script:
+shell_command:
 

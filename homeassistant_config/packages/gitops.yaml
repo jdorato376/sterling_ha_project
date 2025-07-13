@@ -1,0 +1,48 @@
+# Phase 1: GitOps + Auto-Sync Pipeline
+
+shell_command:
+  ha_gitops_sync: "/config/scripts/ha_gitops_sync.sh"
+
+automation:
+  - id: gitops_auto_sync_on_startup
+    alias: "GitOps: Auto Sync on Home Assistant Startup"
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      - service: shell_command.ha_gitops_sync
+        response_variable: sync_result
+      - choose:
+          - conditions: "{{ sync_result.returncode == 0 }}"
+            sequence:
+              - service: persistent_notification.create
+                data:
+                  title: "GitOps Sync Success"
+                  message: "Home Assistant config updated from Git and reloaded successfully."
+          - conditions: "{{ sync_result.returncode != 0 }}"
+            sequence:
+              - service: persistent_notification.create
+                data:
+                  title: "GitOps Sync Failed"
+                  message: "Home Assistant config sync failed. Check logs for details: /config/logs/gitops_sync.log"
+  - id: gitops_auto_sync_periodic
+    alias: "GitOps: Auto Sync Periodically"
+    trigger:
+      - platform: time_pattern
+        minutes: "/60"
+    action:
+      - service: shell_command.ha_gitops_sync
+        response_variable: sync_result
+      - choose:
+          - conditions: "{{ sync_result.returncode == 0 }}"
+            sequence:
+              - service: persistent_notification.create
+                data:
+                  title: "GitOps Sync Success (Periodic)"
+                  message: "Home Assistant config updated from Git and reloaded successfully."
+          - conditions: "{{ sync_result.returncode != 0 }}"
+            sequence:
+              - service: persistent_notification.create
+                data:
+                  title: "GitOps Sync Failed (Periodic)"
+                  message: "Home Assistant config sync failed. Check logs for details: /config/logs/gitops_sync.log"
