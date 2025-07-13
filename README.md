@@ -357,6 +357,34 @@ automation:
 ```
 
 
+## Executive Deployment Script
+`sterling_sentinel_deploy.sh` (version 3.0) bootstraps a clean Home Assistant OS
+installation with Sterling in **Sentinel Mode**. The script wipes any old files,
+clones this repo, installs the custom component, enables GitOps, injects a
+canary entity and wires a webhook for automated recovery.
+
+Set the following variables (or load them from your secret manager) before
+running:
+```bash
+export HA_LONG_LIVED_TOKEN="<your token>"
+export HA_URL="http://34.0.39.235:8123"  # your HA server URL
+export GITHUB_REPO="https://github.com/jdorato376/sterling_ha_project.git"
+export GITHUB_BRANCH="main"
+```
+Then execute:
+```bash
+./sterling_sentinel_deploy.sh
+```
+
+For an even quicker start you can run `auto_sentinel_boot.sh`, which wraps the
+deploy script with sane defaults and points `HA_URL` to `34.0.39.235:8123`:
+
+```bash
+export HA_LONG_LIVED_TOKEN="<your token>"
+./auto_sentinel_boot.sh
+```
+
+
 
 ## Roadmap Documents
 - [Phase 3 AI Autonomy Roadmap](docs/phase3_ai_autonomy_roadmap.md)
