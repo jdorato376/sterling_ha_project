@@ -1,0 +1,15 @@
+models:
+  gpt-5:
+    status: pre-registered
+    access: sandbox
+    cost: 0.06
+    allow_live: false
+  gemini-4:
+    status: pre-registered
+    access: sandbox
+    cost: 0.00
+    allow_live: false
+  claude-next:
+    status: pending
+    access: sandbox
+    allow_live: false

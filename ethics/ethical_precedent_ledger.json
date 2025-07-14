@@ -1,0 +1,7 @@
+{
+  "cmd": {
+    "command": "cmd",
+    "approved_agent": "agent_a",
+    "risk": "low"
+  }
+}

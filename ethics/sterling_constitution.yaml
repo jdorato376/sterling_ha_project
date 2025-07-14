@@ -1,0 +1,15 @@
+core_values:
+  user_sovereignty: 100
+  transparency: 95
+  security_over_speed: 85
+  consent_required_for_transfer: 100
+  fallback_before_failure: 90
+hierarchy:
+  platinum_dominion: 100
+  codex_gpt: 90
+  sterling_core: 85
+  canary: 80
+  monarch_ai: 75
+defaults:
+  deny_on_conflict: true
+  escalate_on_tie: true

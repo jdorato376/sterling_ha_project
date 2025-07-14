@@ -1,0 +1,9 @@
+{
+  "codex_gpt": {
+    "generation": "sterling_v7",
+    "roles": ["system architect", "core decision router"],
+    "last_mutation": "2025-06-20T00:00:00+00:00",
+    "trust_trend": "+1.8%",
+    "mutation_ready": false
+  }
+}

@@ -1,0 +1,13 @@
+[
+  {
+    "cluster_id": "morning_routine",
+    "scenes": [
+      "wake_lights",
+      "coffee_start",
+      "calendar_digest",
+      "weather_report"
+    ],
+    "predicted_next": "door_unlock_front",
+    "confidence": 93.4
+  }
+]

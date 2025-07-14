@@ -1,0 +1,16 @@
+{
+  "finance": {
+    "governor": "Sterling GPT",
+    "locked": false,
+    "scene_count": 12,
+    "last_executed": "2025-07-13T14:00:00",
+    "status": "active"
+  },
+  "home": {
+    "governor": "Codex GPT",
+    "locked": true,
+    "scene_count": 24,
+    "last_executed": "2025-07-13T18:20:00",
+    "status": "executing"
+  }
+}

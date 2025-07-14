@@ -1,0 +1,4 @@
+fallback_on_failure: true
+pause_before_risky_action: true
+require_user_ack_for_build: true
+minimum_trust_to_delegate: 0.7

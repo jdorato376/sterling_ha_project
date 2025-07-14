@@ -1,0 +1,19 @@
+{
+  "sterling_shutdown": {
+    "trigger": "multi-agent crash",
+    "action": [
+      "kill_all_scenes",
+      "load_ha_backup_config",
+      "reboot_safe_mode",
+      "notify_executive"
+    ]
+  },
+  "financial_freeze": {
+    "trigger": "Monarch trust_score < 55",
+    "action": [
+      "pause all automated payments",
+      "cancel open transfers",
+      "log freeze event"
+    ]
+  }
+}

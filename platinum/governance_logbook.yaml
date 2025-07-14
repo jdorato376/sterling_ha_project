@@ -1,0 +1,24 @@
+- action: dominion_audit
+  audit_timestamp: '2025-07-13T23:48:19.077698+00:00'
+  git_status: ae1af432959bf59042bcf9e0a7224ffd8a1b1bf0
+  governor: Platinum Dominion
+  phase: '11'
+  routing_result: Pass
+  timestamp: '2025-07-13T23:48:19.079883+00:00'
+  trust_links: Validated
+- action: escalation
+  reason: fail
+  scene: scene1
+  timestamp: '2025-07-13T23:48:19.089703+00:00'
+- action: dominion_audit
+  audit_timestamp: '2025-07-14T00:18:13.913758+00:00'
+  git_status: 66a29a8b5565d91d69962625ef92502240391ba0
+  governor: Platinum Dominion
+  phase: '11'
+  routing_result: Pass
+  timestamp: '2025-07-14T00:18:13.916847+00:00'
+  trust_links: Validated
+- action: escalation
+  reason: fail
+  scene: scene1
+  timestamp: '2025-07-14T00:18:13.930020+00:00'

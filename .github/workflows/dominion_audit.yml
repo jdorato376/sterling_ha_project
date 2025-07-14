@@ -1,0 +1,23 @@
+name: Dominion Phase 11 Audit
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  dominion_audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - name: Install Codex CLI
+        run: npm install -g @openai/codex
+      - name: Trigger Phase 11 Dominion Audit
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          codex exec --full-auto "Sterling, initiate Phase 11 Dominion Test"
+      - name: Validate dominion_audit.json
+        run: |
+          cat dominion_audit.json || echo "⚠️ Dominion audit result not found."

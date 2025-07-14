@@ -82,5 +82,141 @@
   {
     "timestamp": "2025-07-13T00:32:31.447342+00:00",
     "event": "unknown:hello"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:18.889779+00:00",
+    "event": "phrase:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:18.893549+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:18.898622+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:18.993230+00:00",
+    "event": "phrase:tell me a joke"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:18.995570+00:00",
+    "event": "unknown:tell me a joke"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:19.010619+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:19.014421+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:19.054430+00:00",
+    "event": "phrase:show my budget"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:19.056086+00:00",
+    "event": "unknown:show my budget"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:19.091436+00:00",
+    "event": "escalation:scene1:fail"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:19.555028+00:00",
+    "event": "phrase:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:19.558266+00:00",
+    "event": "unknown:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:19.580041+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:19.583855+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:19.697284+00:00",
+    "event": "phrase:hello"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:19.699048+00:00",
+    "event": "unknown:hello"
+  },
+  {
+    "timestamp": "2025-07-13T23:48:19.715520+00:00",
+    "event": "unknown:hello"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:13.697878+00:00",
+    "event": "phrase:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:13.702857+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:13.706801+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:13.805964+00:00",
+    "event": "phrase:tell me a joke"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:13.807664+00:00",
+    "event": "unknown:tell me a joke"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:13.830583+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:13.834609+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:13.888382+00:00",
+    "event": "phrase:show my budget"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:13.890829+00:00",
+    "event": "unknown:show my budget"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:13.936817+00:00",
+    "event": "escalation:scene1:fail"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:14.606718+00:00",
+    "event": "phrase:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:14.616379+00:00",
+    "event": "unknown:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:14.650652+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:14.654812+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:14.945807+00:00",
+    "event": "phrase:hello"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:14.949646+00:00",
+    "event": "unknown:hello"
+  },
+  {
+    "timestamp": "2025-07-14T00:18:14.996201+00:00",
+    "event": "unknown:hello"
   }
 ]
