@@ -13,10 +13,10 @@ spec.loader.exec_module(audit_logger)
 def test_log_event(tmp_path, monkeypatch):
     log_file = tmp_path / 'audit.json'
     monkeypatch.setattr(audit_logger, 'AUDIT_LOG', str(log_file))
-    audit_logger.log_event('INFO', 'hello')
+    audit_logger.log_event('INFO', 'hello', origin='unit')
     data = log_file.read_text()
     assert 'hello' in data
-    audit_logger.log_event('WARN', 'x')
+    audit_logger.log_event('WARN', 'x', origin='unit')
     loaded = json.loads(log_file.read_text())
     assert len(loaded) == 2
 

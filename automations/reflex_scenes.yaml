@@ -1,0 +1,14 @@
+# Reflex automation scenes for Phase 42
+automation:
+  - alias: "Sterling Reflex Morning Briefing"
+    trigger:
+      - platform: time
+        at: "07:30:00"
+    action:
+      - service: python_script.siri_briefing
+  - alias: "Sterling Reflex Night Lock"
+    trigger:
+      - platform: time
+        at: "22:00:00"
+    action:
+      - service: script.lockdown_sequence

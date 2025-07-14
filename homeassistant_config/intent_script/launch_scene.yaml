@@ -1,0 +1,8 @@
+intent_script:
+  LaunchScene:
+    speech:
+      text: "Triggering executive automation."
+    action:
+      - service: script.trigger_scene
+        data_template:
+          scene_id: '{{ scene_id }}'

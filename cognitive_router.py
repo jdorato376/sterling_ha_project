@@ -16,6 +16,8 @@ from pathlib import Path
 
 from addons.sterling_os import intent_router
 import agent_reflector
+from addons.sterling_os.reflex_intelligence import reflex_engine
+from addons.sterling_os.platinum_dominion import aegis_enforcer
 
 # Path to the runtime memory store is managed by ``runtime_memory``
 RUNTIME_STORE = runtime_memory.RUNTIME_STORE
@@ -52,8 +54,8 @@ def log_router_decision(query: str, agent: str, method: str, success: bool) -> N
         }
     )
     ROUTER_LOG_STORE.write(logs)
-    recent = [l for l in logs if l["query"] == query][-3:]
-    if len(recent) == 3 and all(not l["success"] for l in recent):
+    recent = [entry for entry in logs if entry["query"] == query][-3:]
+    if len(recent) == 3 and all(not entry["success"] for entry in recent):
         runtime_memory.alert_admin("Routing failures", query)
 
 
@@ -127,9 +129,11 @@ def security_agent(query: str) -> Dict:
 
 
 def daily_briefing_agent(query: str) -> Dict:
+    from addons.sterling_os.siri_briefing_agent import main as run_briefing
+    run_briefing()
     return {
         "agent": "daily_briefing",
-        "response": "Today's briefing is empty",
+        "response": "Daily briefing dispatched",
         "confidence": 0.9,
     }
 
@@ -161,13 +165,29 @@ __all__ = [
 ]
 
 
-def handle_request(query: str) -> Dict:
+def handle_request(query: str, *, origin: str | None = None, context: str | None = None) -> Dict:
     """Classify the request and dispatch to the appropriate agent."""
     agent = classify_request(query)
+    reflex_engine.inject_event_prediction(agent, query, datetime.now(timezone.utc).isoformat())
+    if origin:
+        from addons.sterling_os import audit_logger
+        audit_logger.log_event("INFO", f"Request from {origin}: {query}", origin=origin)
+    if aegis_enforcer.enforce_governance(agent, query).get("status") != "approved":
+        return {"error": "Blocked by Platinum Dominion Constitution"}
     method = "keyword" if LAST_MATCH in sum(ROUTE_KEYWORDS.values(), []) else "embedding"
     handler = HANDLERS.get(agent, HANDLERS["general"])
     result = handler(query)
     result["response"] = sanitize_response(result.get("response", ""))
+
+    # optional memory fusion for siri proxy or exec summaries
+    if context == "siri_proxy" or "exec_summary" in query:
+        from addons.sterling_os import memory_engine, memory_logger
+        persona = "personal" if agent == "daily_briefing" else "professional"
+        refs = memory_engine.adaptive_memory_match(query, persona)
+        if isinstance(refs, list) and refs:
+            summaries = "\n".join([r.get("summary", "") for r in refs])
+            result["response"] += f"\n\n\U0001F501 Relevant Past Knowledge:\n{summaries}"
+        memory_logger.log_memory_entry(query, result.get("response", ""), persona)
     result, success, fallback = agent_reflector.reflect(agent, query, result, HANDLERS["general"])
     log_route(query, agent, success, fallback)
     log_router_decision(query, agent, method, success)
