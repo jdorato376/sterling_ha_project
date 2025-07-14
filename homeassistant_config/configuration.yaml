@@ -1,0 +1,36 @@
+homeassistant:
+  name: Home
+  latitude: 42.5255628
+  longitude: -73.7326258
+  elevation: 0
+  unit_system: imperial
+  currency: USD
+  country: US
+  time_zone: America/New_York
+  allowlist_external_dirs:
+    - /config
+  packages: !include_dir_named packages
+
+logger:
+  default: info
+  logs:
+    homeassistant.components.file: debug
+
+sensor:
+  - platform: command_line
+    name: "Sterling Commit Hash"
+    command: "cat /config/metadata.json | jq -r .commit"
+    scan_interval: 60
+    unique_id: sterling_commit_hash_fallback
+    icon: mdi:source-branch
+
+  - platform: command_line
+    name: "Sterling Build Timestamp"
+    command: "cat /config/metadata.json | jq -r .timestamp"
+    scan_interval: 60
+    unique_id: sterling_build_timestamp_fallback
+    icon: mdi:clock-outline
+
+python_script:
+shell_command:
+

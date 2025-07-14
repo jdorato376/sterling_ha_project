@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  sterling-api:
+    build:
+      context: .
+      args:
+        GPT_CONTAINER: ${GPT_CONTAINER:-gpt4t}
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    environment:
+      - GPT_CONTAINER=${GPT_CONTAINER}
+    volumes:
+      - .:/app
+    restart: always
+
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: homeassistant
+    ports:
+      - "8123:8123"
+    volumes:
+      - ./homeassistant_config:/config
+      - ./metadata.json:/config/metadata.json:ro
+    restart: always
+

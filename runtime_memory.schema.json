@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Sterling Runtime Memory",
+  "type": "object",
+  "properties": {
+    "monitor_frequency_sec": {"type": "integer", "minimum": 0, "default": 30},
+    "test_layer": {"type": "boolean", "default": false},
+    "log_heartbeat": {"type": "boolean", "default": false},
+    "last_success": {"type": "boolean", "default": true},
+    "fallback_triggered": {"type": "boolean", "default": false},
+    "agent_trace": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "timestamp": {"type": "string", "format": "date-time"},
+          "agent": {"type": "string"},
+          "query": {"type": "string"},
+          "success": {"type": "boolean"},
+          "escalated_to": {"type": "string"}
+        },
+        "required": ["timestamp", "agent", "query", "success"],
+        "additionalProperties": false
+      },
+      "default": []
+    },
+    "route_logs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "timestamp": {"type": "string", "format": "date-time"},
+          "query": {"type": "string"},
+          "agent": {"type": "string"},
+          "success": {"type": "boolean"},
+          "fallback": {"type": "boolean"}
+        },
+        "required": ["timestamp", "query", "agent", "success", "fallback"],
+        "additionalProperties": false
+      },
+      "default": []
+    },
+    "escalation_path": {
+      "type": "array",
+      "items": {"type": "string"},
+      "default": []
+    }
+  },
+  "additionalProperties": false
+}

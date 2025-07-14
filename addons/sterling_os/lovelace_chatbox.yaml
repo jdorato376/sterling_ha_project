@@ -1,0 +1,32 @@
+type: vertical-stack
+cards:
+  - type: markdown
+    content: |
+      ## Sterling OS Chat
+      _Ask Sterling anything..._
+      **Status:** {{ states('sensor.sterling_status') }}
+  - type: entities
+    entities:
+      - sensor.sterling_tasks
+  - type: custom:config-template-card
+    entities:
+      - sensor.sterling_response
+    card:
+      type: markdown
+      content: >
+        {{ states('sensor.sterling_response') or "Awaiting input..." }}
+  - type: button
+    name: Pause
+    tap_action:
+      action: call-service
+      service: script.sterling_pause
+  - type: button
+    name: Resume
+    tap_action:
+      action: call-service
+      service: script.sterling_resume
+  - type: button
+    name: Confirm
+    tap_action:
+      action: call-service
+      service: script.sterling_confirm

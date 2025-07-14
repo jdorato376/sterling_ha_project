@@ -1,0 +1,9 @@
+# Default trust profile for agent arbitration
+# Agents with higher trust scores have more voting weight.
+# governance_mode can be 'strict', 'adaptive', or 'sovereign'
+governance_mode: strict
+trust_scores:
+  core: 1.0
+  scene_planner: 0.8
+  security_monitor: 0.9
+  energy_optimizer: 0.7

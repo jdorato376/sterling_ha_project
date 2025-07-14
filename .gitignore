@@ -1,0 +1,16 @@
+venv/
+__pycache__/
+*.pyc
+.env
+secrets.yaml
+Sterling_OS_Addon_MARS_FINAL.zip
+memory.json
+.pytest_cache/
+runtime_memory.json
+logs/
+
+# Editor temp files
+*.swp
+*.save
+
+addons/sterling_os/trust_registry_store.json

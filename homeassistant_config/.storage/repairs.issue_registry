@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "minor_version": 2,
+  "key": "repairs.issue_registry",
+  "data": {
+    "issues": [
+      {
+        "created": "2025-07-12T03:45:14.012167+00:00",
+        "dismissed_version": "2025.7.0",
+        "domain": "homeassistant",
+        "is_persistent": false,
+        "issue_id": "platform_integration_no_support_sensor_file"
+      },
+      {
+        "created": "2025-07-12T14:32:35.829107+00:00",
+        "dismissed_version": null,
+        "domain": "homeassistant",
+        "is_persistent": false,
+        "issue_id": "imperial_unit_system"
+      }
+    ]
+  }
+}

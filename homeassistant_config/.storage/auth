@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "auth",
+  "data": {
+    "users": [
+      {
+        "id": "4812fef137a444638d15582b34b162fe",
+        "group_ids": [
+          "system-read-only"
+        ],
+        "is_owner": false,
+        "is_active": true,
+        "name": "Home Assistant Content",
+        "system_generated": true,
+        "local_only": false
+      },
+      {
+        "id": "0a81f7ee500f4a7c85694753aea4291e",
+        "group_ids": [
+          "system-admin"
+        ],
+        "is_owner": false,
+        "is_active": true,
+        "name": "Home Assistant Cloud",
+        "system_generated": true,
+        "local_only": true
+      },
+      {
+        "id": "b5375df0efff4754900bbf55b755ff0a",
+        "group_ids": [
+          "system-admin"
+        ],
+        "is_owner": true,
+        "is_active": true,
+        "name": "Jimmy Dorato III",
+        "system_generated": false,
+        "local_only": false
+      }
+    ],
+    "groups": [
+      {
+        "id": "system-admin",
+        "name": "Administrators"
+      },
+      {
+        "id": "system-users",
+        "name": "Users"
+      },
+      {
+        "id": "system-read-only",
+        "name": "Read Only"
+      }
+    ],
+    "credentials": [
+      {
+        "id": "1944f66317824124bc5e1430165c331d",
+        "user_id": "b5375df0efff4754900bbf55b755ff0a",
+        "auth_provider_type": "homeassistant",
+        "auth_provider_id": null,
+        "data": {
+          "username": "jimmydoratoiii"
+        }
+      }
+    ],
+    "refresh_tokens": [
+      {
+        "id": "1c9b27617ff04a058f804f8cf36abad4",
+        "user_id": "4812fef137a444638d15582b34b162fe",
+        "client_id": null,
+        "client_name": null,
+        "client_icon": null,
+        "token_type": "system",
+        "created_at": "2025-07-12T03:41:18.763013+00:00",
+        "access_token_expiration": 1800.0,
+        "token": "c4981c5c9d58620bb69cf5b4f720179b2c3957a6649a66f3e6889ac0371b3653042c2449533b21818fcac68a7cf948a99150f4f0fd3ffa436ee766b57866b841",
+        "jwt_key": "c74768d7241c7af35c0554b7a463aeb82bcb0c30ff8379caac5ac3395c28a7f01588a4be9857abcd0e85275d075cc206ea02861aab427194e2b5973f013cb300",
+        "last_used_at": null,
+        "last_used_ip": null,
+        "expire_at": null,
+        "credential_id": null,
+        "version": "2025.7.0"
+      },
+      {
+        "id": "e0d469daa9ca4e05a8d0a25f4f4197ba",
+        "user_id": "b5375df0efff4754900bbf55b755ff0a",
+        "client_id": "http://34.130.172.128:8123/",
+        "client_name": null,
+        "client_icon": null,
+        "token_type": "normal",
+        "created_at": "2025-07-12T03:58:39.543989+00:00",
+        "access_token_expiration": 1800.0,
+        "token": "d4bb9d1fbc99ad5c2c2c8d9fd161665710fcec3e545071ad8a76f50c6c5f5d6e69ef35230bf8bbd2872c77b3f16d8fed9f149d2d9106499950a2584baf8f5fad",
+        "jwt_key": "ab9f6e9fd58cac94e1294d4641598691a368a29c2015de5313039cb6130d1a4537e242ef0b885ed81f9826dc65e2eb1845477ee60f5e886f52639cceec1c5174",
+        "last_used_at": "2025-07-12T14:59:37.282165+00:00",
+        "last_used_ip": "104.228.12.36",
+        "expire_at": 1760108377.282165,
+        "credential_id": "1944f66317824124bc5e1430165c331d",
+        "version": "2025.7.0"
+      },
+      {
+        "id": "55b6ba1f2d7d40db82b4351e4c1d8c2d",
+        "user_id": "b5375df0efff4754900bbf55b755ff0a",
+        "client_id": "https://home-assistant.io/iOS",
+        "client_name": null,
+        "client_icon": null,
+        "token_type": "normal",
+        "created_at": "2025-07-12T14:02:49.365119+00:00",
+        "access_token_expiration": 1800.0,
+        "token": "75920daf0a8379684f8e63f76180af8907415ec3800b76b153a5fbfbe211242bf9f07726a3ea012dd6481aaabe0f6f845fd60ef79a2081d7301d7478567329c9",
+        "jwt_key": "af35f77bbba9dfc100ec515836a10bca0e0e7a042709a1c1a221fd6f05508237d9d77f90b4d87ef3ce9549665cf4df6fc2e854460825f92afdfa5f7604f8429c",
+        "last_used_at": "2025-07-12T14:02:49.365197+00:00",
+        "last_used_ip": "127.0.0.1",
+        "expire_at": 1760104969.365197,
+        "credential_id": "1944f66317824124bc5e1430165c331d",
+        "version": "2025.7.0"
+      },
+      {
+        "id": "a6b89c8f7ce84bf5a1c62d2534785a2b",
+        "user_id": "b5375df0efff4754900bbf55b755ff0a",
+        "client_id": "https://home-assistant.io/iOS",
+        "client_name": null,
+        "client_icon": null,
+        "token_type": "normal",
+        "created_at": "2025-07-12T14:06:27.609575+00:00",
+        "access_token_expiration": 1800.0,
+        "token": "cd50aef4e8afda395bff0240b307d00249c6267445850d139a392d70594d4c4427558eae001d2fc7a27091bc9f66095a4b1bfb5b64de6d9eb531ed3ae1cd06d6",
+        "jwt_key": "63ff64434d701349ddfbcbc626abf2a2321119ead4dec21b6803695047834c3d83b5fad5905df722a307b94370823cdc41f7e437ddf82646aad54b3890963fa9",
+        "last_used_at": "2025-07-12T14:47:07.192273+00:00",
+        "last_used_ip": "127.0.0.1",
+        "expire_at": 1760107627.192273,
+        "credential_id": "1944f66317824124bc5e1430165c331d",
+        "version": "2025.7.0"
+      }
+    ]
+  }
+}
