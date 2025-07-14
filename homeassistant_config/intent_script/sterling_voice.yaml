@@ -1,0 +1,8 @@
+intent_script:
+  ActivateExecutiveScene:
+    speech:
+      text: "Activating executive scene: {{ scene_name }}"
+    action:
+      - service: scene.turn_on
+        target:
+          entity_id: "scene.{{ scene_name | lower | replace(' ', '_') }}"

@@ -1,6 +1,6 @@
-from __future__ import annotations
-
 """Rotate failing agents based on scorecard history."""
+
+from __future__ import annotations
 
 import json
 import os

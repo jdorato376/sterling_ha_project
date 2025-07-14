@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Vote-based agent arbitration for Sterling OS.
 
 This module exposes two layers of decision making:
@@ -7,6 +5,8 @@ This module exposes two layers of decision making:
 ``handle_query`` provides a simple escalation chain used by existing tests.
 ``arbitrate`` implements a weighted voting model for Phase 5 features.
 """
+
+from __future__ import annotations
 
 from datetime import datetime, timezone
 from typing import Dict, Optional
