@@ -1,62 +1,42 @@
-name: Codex Sterling Autopilot
+name: Sterling Canary Diagnostic
+
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  autopilot_codex:
-    name: "\U0001F9E0 Codex Setup & HA Deployment"
+  canary:
     runs-on: ubuntu-latest
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      HA_HOST: ${{ secrets.HA_HOST }}
-      HA_TOKEN: ${{ secrets.HA_LONG_LIVED_TOKEN }}
 
     steps:
-      - name: Checkout Repo
+      - name: \ud83d\udcdd Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Set up Node (Codex CLI)
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: Install Codex CLI
-        run: npm install -g @openai/codex
-
-      - name: Run Codex: Integrate Sterling into HA
+      - name: \ud83e\udde0 Install YAML Linter
         run: |
-          codex exec --full-auto "
-          You're Codex, part of Sterling GPT.
-          Automate the Home Assistant setup:
-          - Ensure /custom_components/sterling is properly deployed
-          - Update configuration.yaml to include 'sterling' component
-          - Confirm correct permissions and directory structure
-          - Add a Lovelace dashboard called 'Sterling Panel'
-          - Add a HA script named 'Run Sterling Assistant'
-          - Ensure ha core will restart cleanly
-          - Prepare for voice and text input from Assist
-          "
+          sudo apt-get update
+          sudo apt-get install -y yamllint
 
-      - name: Commit Codex Changes
+      - name: \ud83d\udd0d Validate HA Configs
         run: |
-          git config user.name "Sterling Codex Bot"
-          git config user.email "codex@sterling.ai"
-          git commit -am "\U0001F9E0 Codex: Auto-integrated Sterling into HA" || echo "No changes"
-          git push origin main
+          echo "\ud83d\udea8 Canary Lint Check Initiated"
+          FILES=("configuration.yaml" "automations.yaml" "scripts.yaml")
 
-      - name: Deploy to Home Assistant
-        run: |
-          ssh -o StrictHostKeyChecking=no user@$HA_HOST "
-            cd /config &&
-            git fetch origin &&
-            git reset --hard origin/main &&
-            ha core restart
-          "
+          ERRORS=0
+          for file in "${FILES[@]}"; do
+            if [ -f "$file" ]; then
+              echo "\ud83e\uddca Linting $file..."
+              yamllint "$file" || ERRORS=$((ERRORS+1))
+            else
+              echo "\u26a0\ufe0f Skipped missing $file"
+            fi
+          done
 
-      - name: Notify Success
-        run: echo "✅ Codex setup complete. HA is live with Sterling AI."
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "\u274c Lint errors detected"
+            exit 1
+          else
+            echo "\u2705 All configs pass lint"
+          fi
+
