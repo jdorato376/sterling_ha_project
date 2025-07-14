@@ -22,6 +22,7 @@ def log_event(level: str, message: str) -> None:
     data.append(log_entry)
     # keep last 1000 entries
     data = data[-1000:]
+    os.makedirs(os.path.dirname(AUDIT_LOG), exist_ok=True)
     with open(AUDIT_LOG, "w") as f:
         json.dump(data, f, indent=2)
 

@@ -1,6 +1,6 @@
-from __future__ import annotations
-
 """Simple constitution layer for agent governance."""
+
+from __future__ import annotations
 
 import json
 from pathlib import Path

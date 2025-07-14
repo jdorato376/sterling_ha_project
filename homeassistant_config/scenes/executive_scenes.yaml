@@ -1,0 +1,14 @@
+scene:
+  - name: Sterling Focus Mode
+    entities:
+      light.office_lamp:
+        state: on
+        brightness: 100
+      input_boolean.do_not_disturb: on
+
+  - name: Sterling Sync Mode
+    entities:
+      switch.adaptive_lighting_sync_mode_living_room: on
+      media_player.living_room_tv:
+        state: on
+        source: "Apple TV"

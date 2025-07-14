@@ -1,6 +1,6 @@
-from __future__ import annotations
-
 """Write immutable audit logs for scene behavior."""
+
+from __future__ import annotations
 
 import json
 import hashlib
