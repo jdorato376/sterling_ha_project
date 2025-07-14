@@ -5,12 +5,15 @@ from datetime import datetime
 AUDIT_LOG = "memory/audit_log.json"
 
 
-def log_event(level: str, message: str) -> None:
+def log_event(level: str, message: str, origin: str | None = None) -> None:
+    """Append an audit log entry with optional origin metadata."""
     log_entry = {
         "timestamp": datetime.now().isoformat(),
         "level": level,
         "message": message,
     }
+    if origin is not None:
+        log_entry["origin"] = origin
     if os.path.exists(AUDIT_LOG):
         try:
             with open(AUDIT_LOG, "r") as f:

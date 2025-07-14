@@ -33,6 +33,13 @@ from . import (
     predictive_trust,
     smart_router,
     trust_registry,
+    intent_oracle,
+    reflex_path_builder,
+    persona_memory_handler,
+    memory_engine,
+    memory_logger,
+    reflex_intelligence,
+    platinum_dominion,
 )
 
 __all__ = [
@@ -67,5 +74,12 @@ __all__ = [
     "predictive_trust",
     "smart_router",
     "trust_registry",
+    "intent_oracle",
+    "reflex_path_builder",
+    "persona_memory_handler",
+    "memory_engine",
+    "memory_logger",
+    "reflex_intelligence",
+    "platinum_dominion",
 ]
 

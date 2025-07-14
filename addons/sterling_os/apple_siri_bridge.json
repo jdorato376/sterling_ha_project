@@ -1,0 +1,24 @@
+{
+  "apple_ready": true,
+  "preferred_context": "siri_proxy",
+  "persona_binding": {
+    "personal": "gpt_personal_assistant",
+    "professional": "gpt_professional_assistant"
+  },
+  "siri_triggers": [
+    "Good morning",
+    "What’s my summary?",
+    "Sterling, update me",
+    "What’s urgent today?",
+    "Is my house safe?",
+    "Tell me about home care today",
+    "Any legal alerts I need?"
+  ],
+  "exec_summary_defaults": {
+    "healthcare": true,
+    "finance": true,
+    "AI regulation": true,
+    "weather + security": true,
+    "smart home status": true
+  }
+}
