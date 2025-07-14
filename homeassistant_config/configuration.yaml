@@ -33,3 +33,10 @@ sensor:
 
 python_script:
 shell_command:
+input_text:
+
+  sterling_chat_input:
+    name: Sterling Chat Input
+    initial: ""
+    max: 300
+script: !include scripts.yaml

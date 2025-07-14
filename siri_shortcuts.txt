@@ -1,0 +1,2 @@
+say "Run kitchen scene" → http://your_ip:8123/api/services/script/turn_on { "entity_id": "script.kitchen_scene" }
+say "Close garage" → POST to /ha/control/device { "command": "close garage" }

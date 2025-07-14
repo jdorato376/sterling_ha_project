@@ -1,0 +1,6 @@
+send_sterling_query:
+  alias: "Send Sterling Chat Query"
+  sequence:
+    - service: python_script.sterling_chat_handler
+      data:
+        message: "{{ states('input_text.sterling_chat_input') }}"

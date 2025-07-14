@@ -1,0 +1,17 @@
+title: Sterling
+views:
+  - title: Sterling
+    path: sterling
+    icon: mdi:robot
+    cards:
+      - type: entities
+        title: Sterling Executive Chat
+        entities:
+          - input_text.sterling_chat_input
+          - script.send_sterling_query
+      - type: markdown
+        content: |
+          **Sterling Executive Assistant**
+          - Type your message into the input box
+          - Press the script to submit
+          - Sterling will process and log your request

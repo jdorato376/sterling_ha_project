@@ -1,31 +1,21 @@
-from datetime import datetime, timezone
-import json
-from pathlib import Path
+import json, os
+from datetime import datetime
+from addons.sterling_os.audit_logger import log_event
 
-TRACE_FILE = Path(__file__).resolve().parent / "scene_trace.json"
+TRACE_PATH = "addons/sterling_os/logs/scene_trace.json"
 
-
-def _load() -> list:
-    if TRACE_FILE.exists():
-        try:
-            return json.loads(TRACE_FILE.read_text())
-        except Exception:
-            return []
-    return []
-
-
-def record_scene_status(scene_id: str, status: str, agents_involved=None, quorum_score=0.0, interruptible=True, failsafe_triggered=False):
-    data = _load()
-    entry = {
-        "scene": scene_id,
-        "executed_at": datetime.now(timezone.utc).isoformat(),
+def trace_scene(scene_id, status, notes=None):
+    os.makedirs(os.path.dirname(TRACE_PATH), exist_ok=True)
+    trace = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "scene_id": scene_id,
         "status": status,
-        "agents_involved": agents_involved or [],
-        "quorum_score": quorum_score,
-        "interruptible": interruptible,
-        "failsafe_triggered": failsafe_triggered,
+        "notes": notes or {}
     }
-    data.append(entry)
-    TRACE_FILE.write_text(json.dumps(data, indent=2))
-    return entry
+    with open(TRACE_PATH, 'a') as f:
+        f.write(json.dumps(trace) + "\n")
+    log_event("trace_scene", status, {"scene": scene_id})
+    print(f"📍 Scene {scene_id} - {status}")
 
+if __name__ == "__main__":
+    trace_scene("startup_check", "success", {"boot_phase": "21"})
