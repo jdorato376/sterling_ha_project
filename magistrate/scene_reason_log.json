@@ -1,0 +1,16 @@
+[
+  {
+    "scene_id": "sprinkler_override_0713",
+    "initiated_by": "Sterling GPT",
+    "steps": [
+      "B-hyve sensor read moisture at 16%",
+      "Forecast: no rain",
+      "Time: 5:15 AM",
+      "Rule matched: moisture < 20% -> run sprinkler"
+    ],
+    "conflict_detected": false,
+    "trust_score_used": 91.4,
+    "final_action": "triggered zone 3 sprinkler",
+    "verdict": "no error"
+  }
+]

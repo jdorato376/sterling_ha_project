@@ -1,0 +1,17 @@
+# platinum_dominion.yaml – Governance Layer Summary
+
+sovereign_sync_protocol:
+  automation_in_home_assistant: false
+  sync_method: manual_curation
+  feedback_loop:
+    - agents in HA detect gaps or logic breaks
+    - escalate to Sterling GPT
+    - Codex GPT confirms, refactors, and pushes via GitHub
+    - HA receives config update on next pull or manual redeploy
+  validation:
+    - no config pushed unless Codex confirms Phase compliance
+    - all agents must pass heartbeat + context trace before merge
+    - all memory state must retain schema integrity
+  fail_safes:
+    - Sentinel and Canary run integrity sweep before pull
+    - HA never auto-merges into GitOps; only Codex on exec command

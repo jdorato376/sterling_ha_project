@@ -1,0 +1,5 @@
+{
+  "gpt-4o": {"trust": 94.6, "last_latency": 1.2, "cost": 0.0},
+  "gemini-pro": {"trust": 91.3, "last_latency": 0.8, "cost": 0.0},
+  "gpt-5": {"trust": 99.1, "last_latency": 1.9, "cost": 0.06, "allowed": false}
+}

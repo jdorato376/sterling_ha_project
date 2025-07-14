@@ -5,8 +5,22 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Dict
 
-from . import behavior_audit, scene_status_tracker, memory_manager
-from . import agent_constitution
+try:
+    from . import behavior_audit, scene_status_tracker, memory_manager
+    from . import agent_constitution
+except Exception:  # pragma: no cover - allow standalone execution
+    import importlib.util
+    from pathlib import Path
+    _base = Path(__file__).resolve().parent
+    for name in ["behavior_audit", "scene_status_tracker", "memory_manager", "agent_constitution"]:
+        spec = importlib.util.spec_from_file_location(name, _base / f"{name}.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        globals()[name] = mod
+try:  # optional governor integration
+    from platinum import GOVERNOR
+except Exception:  # pragma: no cover - governor optional
+    GOVERNOR = None
 
 
 ESCALATION_EVENT = "escalation"
@@ -24,6 +38,11 @@ def escalate_scene(scene_id: str, reason: str) -> Dict:
     behavior_audit.log_action(ESCALATION_EVENT, data)
     # also record in memory timeline for retrospective analysis
     memory_manager.add_event(f"escalation:{scene_id}:{reason}")
+    if GOVERNOR is not None:
+        try:
+            GOVERNOR.log_action(ESCALATION_EVENT, data)
+        except Exception:
+            pass  # pragma: no cover
     return data
 
 

@@ -1,0 +1,8 @@
+- timestamp: 2025-07-13T06:00:00
+  scene_id: "financial_transfer_0713"
+  ruling: "OVERRULED"
+  reason: "trust score of Monarch AI too low"
+  action_taken:
+    - rollback transfer
+    - notify Jimmy
+    - reduce Monarch trust by -5

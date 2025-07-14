@@ -16,6 +16,30 @@
       "agent": "general",
       "query": "hello",
       "success": true
+    },
+    {
+      "timestamp": "2025-07-13T23:48:19.703652+00:00",
+      "agent": "general",
+      "query": "hello",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-13T23:48:19.719661+00:00",
+      "agent": "general",
+      "query": "hello",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-14T00:18:14.955310+00:00",
+      "agent": "general",
+      "query": "hello",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-14T00:18:15.001401+00:00",
+      "agent": "general",
+      "query": "hello",
+      "success": true
     }
   ],
   "escalation_path": [],
@@ -29,6 +53,34 @@
     },
     {
       "timestamp": "2025-07-13T00:32:31.458806+00:00",
+      "query": "hello",
+      "agent": "general",
+      "success": true,
+      "fallback": false
+    },
+    {
+      "timestamp": "2025-07-13T23:48:19.709809+00:00",
+      "query": "hello",
+      "agent": "general",
+      "success": true,
+      "fallback": false
+    },
+    {
+      "timestamp": "2025-07-13T23:48:19.725957+00:00",
+      "query": "hello",
+      "agent": "general",
+      "success": true,
+      "fallback": false
+    },
+    {
+      "timestamp": "2025-07-14T00:18:14.982070+00:00",
+      "query": "hello",
+      "agent": "general",
+      "success": true,
+      "fallback": false
+    },
+    {
+      "timestamp": "2025-07-14T00:18:15.008295+00:00",
       "query": "hello",
       "agent": "general",
       "success": true,

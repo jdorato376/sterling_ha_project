@@ -1,0 +1,16 @@
+scene_id: "morning_briefing_0713"
+domain: "daily_routine"
+owner: "Sterling GPT"
+version: "v3.2"
+triggers:
+  - time: "07:00"
+  - voice: "start my day"
+rollback:
+  on_fail:
+    - restore_previous_scene
+    - log_error_to_git
+    - notify_jimmy
+success_criteria:
+  - all_actions_completed
+  - trust_score > 80
+  - sync_to_git == true

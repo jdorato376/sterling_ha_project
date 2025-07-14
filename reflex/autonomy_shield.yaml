@@ -1,0 +1,14 @@
+protection:
+  core_threads:
+    - daily_routine
+    - financial
+    - security
+  triggers:
+    - trust_score < 60
+    - agent_missing_heartbeat
+    - scene_execution > 90s
+  response:
+    - LOCK_SCENE
+    - ESCALATE_TO: "Codex GPT"
+    - REVERT_TO: "LKG_COMMIT"
+    - ALERT: "Jimmy"

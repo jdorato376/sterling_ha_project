@@ -1,0 +1,12 @@
+{
+  "2025-Q4": {
+    "forecast": "model shifts (GPT-5, Gemini-4 widespread)",
+    "impact": "retrain prompt layer for financial routines",
+    "action": "pre-sandbox all financial agents"
+  },
+  "2026-Q2": {
+    "forecast": "agent fatigue in reflex engine",
+    "impact": "SRE suggested: Canary + Sentinel merge",
+    "action": "provision dual-role config in mutation_engine.py"
+  }
+}

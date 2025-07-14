@@ -1,0 +1,15 @@
+route_policies:
+  priority:
+    - openrouter
+    - free-gpt4o
+    - gemini-pro
+    - gpt-3.5
+    - llama3
+  fallback:
+    - paid_gpt_5
+    - gemini_3_vision
+    - claude_opus
+cost_threshold:
+  max_cost: 0.00
+
+trust_override: true

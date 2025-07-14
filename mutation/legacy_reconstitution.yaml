@@ -1,0 +1,13 @@
+recovery_targets:
+  - scenes:
+      - legacy_morning_briefing_v2
+      - monarch_early_budget_model
+      - ha_backup_config
+  - agents:
+      - sentinel_2024_alpha
+      - monarch_ai_legacy
+trigger_conditions:
+  - high_scene_failure_rate
+  - model rollout delay
+  - user override request
+restoration_mode: "compatibility wrap + audit tagging"
