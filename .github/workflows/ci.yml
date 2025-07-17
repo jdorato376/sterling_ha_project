@@ -1,0 +1,25 @@
+name: CI
+on: [push]
+jobs:
+  lint-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: shellcheck scripts/*.sh
+  python-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [adaptive_router, concord_engine, repair_agent]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - run: pip install -r src/requirements.txt
+      - run: pytest tests/test_${{ matrix.module }}.py
+  build-addon:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker build addons/sterling_os
