@@ -1,12 +1,6 @@
-"""
-Phase 1: Vertex AI Client Stub
-Calls deployed model endpoint using GCP SDK.
-"""
-from google.cloud import aiplatform
-import os
+"""Vertex AI client stub"""
 
-def predict(query: str) -> str:
-    endpoint = os.getenv("VERTEX_ENDPOINT")
-    client = aiplatform.Endpoint(endpoint)
-    response = client.predict([{"content": query}])
-    return response.predictions[0]
+
+def predict(prompt: str) -> str:
+    """Return a placeholder prediction."""
+    return "VERTEX_RESPONSE_PLACEHOLDER"

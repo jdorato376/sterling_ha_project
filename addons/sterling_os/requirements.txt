@@ -1,5 +1,1 @@
-flask
-twilio
-openai
-requests
-ollama
+# (no dependencies yet—this lets "pip install -r requirements.txt" pass)
