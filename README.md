@@ -217,6 +217,9 @@ To run the tests locally:
 pip install -r requirements.txt
 pytest -q
 ```
+The dependencies installed via `requirements.txt` include modules such as
+`jsonschema` and `PyYAML`. These packages are required for parts of the
+Sterling OS add-ons and test suite to import correctly.
 
 ## Enhancement Modules
 
@@ -415,3 +418,38 @@ export HA_LONG_LIVED_TOKEN="<your token>"
 - [Phase 20.9 GitOps Readiness](docs/phase20_9_gitops_readiness.md)
 - [Phase 10–20 Depth Test Matrix](docs/phase10_20_depth_test_matrix.md)
 - [Phase 10–20 Remediation Patch](docs/phase10_20_remediation_patch.md)
+
+## Advanced Demo
+
+To run a demonstration of the advanced agents and fingerprinting helpers:
+
+```bash
+python demo_advanced.py
+```
+
+To fingerprint any file and optionally back it up:
+
+```bash
+python scripts/generate_fingerprint.py <path> --backup
+```
+The fingerprint helper reads the `STERLING_HSM_PROD_KEY` environment variable for
+signing. Set a placeholder value if you just want to test locally:
+
+```bash
+export STERLING_HSM_PROD_KEY=dummy_key
+```
+
+After deploying your GCP infrastructure you can run a quick validation with:
+
+```bash
+PROJECT_ID=<your-gcp-project> ./scripts/validate_deployment.sh
+```
+
+
+### Autonomous Repair Agent Demo
+
+Run the basic repair agent loop which demonstrates using an LLM to propose a fix:
+
+```bash
+python -m repair_agent.main
+```
