@@ -2,6 +2,14 @@
 
 This repository contains a minimal Home Assistant add-on named **Sterling OS**. The add-on runs a simple Flask application and is packaged as a Docker image.
 
+## Getting Started
+
+```bash
+./scripts/setup_environment.sh && \
+./scripts/deploy_vertex.sh && \
+./scripts/provision_ha.sh
+```
+
 ## 🔐 Image Authentication
 
 To pull the pre-built Docker image hosted on GitHub Packages, you may need to authenticate using a GitHub Personal Access Token. See the [GitHub Packages documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry) for instructions.
@@ -496,4 +504,18 @@ Sterling GPT introduces additional helpers used for upcoming phases:
 Generate an SBOM file via:
 ```bash
 python quantum_fingerprint.py sbom.json
+```
+
+## Phase Roadmap
+1. Module init & GitOps
+2. Adaptive Router
+…
+200. Cost tracking & Scaling
+
+### Getting Started
+```bash
+bash infrastructure/provision_vm.sh
+bash scripts/setup_environment.sh
+bash scripts/deploy_vertex.sh
+bash scripts/provision_ha.sh
 ```
