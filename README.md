@@ -5,9 +5,10 @@ This repository contains a minimal Home Assistant add-on named **Sterling OS**. 
 ## Getting Started
 
 ```bash
-./scripts/setup_environment.sh && \
-./scripts/deploy_vertex.sh && \
-./scripts/provision_ha.sh
+bash infrastructure/provision_vm.sh
+bash scripts/setup_environment.sh
+bash scripts/deploy_vertex.sh
+bash scripts/provision_ha.sh
 ```
 
 ## 🔐 Image Authentication
