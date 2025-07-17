@@ -1,5 +1,1 @@
-flask
-twilio
-openai
-requests
-ollama
+# minimal requirements for Sterling OS add-on
