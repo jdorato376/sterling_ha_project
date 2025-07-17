@@ -5,9 +5,10 @@ This repository contains a minimal Home Assistant add-on named **Sterling OS**. 
 ## Getting Started
 
 ```bash
-./scripts/setup_environment.sh && \
-./scripts/deploy_vertex.sh && \
-./scripts/provision_ha.sh
+bash infrastructure/provision_vm.sh
+bash scripts/setup_environment.sh
+bash scripts/deploy_vertex.sh
+bash scripts/provision_ha.sh
 ```
 
 ## 🔐 Image Authentication
@@ -44,11 +45,10 @@ cards:
 
 ### Quick Add-on Bundle
 
-For a ready-to-run setup, unpack `sterling_ha_addon_bundle.zip` in this
-repository. The archive provides the Sterling add-on folder along with
-Home Assistant YAML examples, including the Lovelace chat card. Copy the
-`sterling_ha_addon` directory to your `/addons` folder and import the
-files under `homeassistant/` into your configuration.
+For a ready-to-run setup, copy the `addons/sterling_os` directory from
+this repository into your Home Assistant `/addons` folder. The folder
+includes example YAML, such as the Lovelace chat card, which you can
+import into your configuration.
 
 To send chat prompts from Home Assistant, configure a `rest_command` that posts
 to the `/ha-chat` endpoint:

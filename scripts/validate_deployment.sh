@@ -5,8 +5,7 @@ SERVICE="ai-router"
 
 check_service() {
   echo "🔍 Checking Cloud Run service..."
-  gcloud run services describe $SERVICE --region $REGION --project $PROJECT_ID --format json > /dev/null
-  if [ $? -eq 0 ]; then
+  if gcloud run services describe "$SERVICE" --region "$REGION" --project "$PROJECT_ID" --format json >/dev/null; then
     echo "✅ Service $SERVICE is live."
   else
     echo "❌ Service $SERVICE not found."
@@ -15,8 +14,7 @@ check_service() {
 
 check_vertex() {
   echo "🔍 Checking Vertex API..."
-  gcloud services list --enabled --project $PROJECT_ID | grep aiplatform > /dev/null
-  if [ $? -eq 0 ]; then
+  if gcloud services list --enabled --project "$PROJECT_ID" | grep -q aiplatform; then
     echo "✅ Vertex AI API is enabled."
   else
     echo "❌ Vertex AI API not enabled."
