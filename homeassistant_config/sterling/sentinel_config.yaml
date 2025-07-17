@@ -1,9 +1,0 @@
-confidence_threshold: 0.66
-auto_rollback: true
-escalate_on_failure: true
-log_all_actions: true
-notify_user_on_critical: true
-scene_trace_enabled: true
-predictive_recovery_enabled: true
-router_fallback_enabled: true
-auto_validate_on_boot: true
