@@ -456,9 +456,9 @@ python -m repair_agent.main
 
 ## Sterling GPT: Vertex AI Integration
 
-Sterling GPT now routes queries through Vertex AI with Gemini 1.5 Flash, 1.5 Pro, and 2.5 Pro.
+Sterling GPT now routes queries using an OpenAI-compatible endpoint for Gemini models.
 - Deploys routing logic via Cloud Run
-- Query complexity determines which model is used
+- Query complexity determines whether GPT-3.5 or Gemini is called
 - Terraform manages infrastructure
 - Fully serverless, low-cost, and extensible
 
@@ -481,3 +481,19 @@ Run the helper script to ensure Cloud Run and secrets are configured:
 python scripts/validate_vertex_ready.py
 ```
 
+
+## Phase 168-200 Agent Stack
+
+Sterling GPT introduces additional helpers used for upcoming phases:
+
+- `self_repair.py` scans `diagnostics_log.json` and restores backups
+- `router_cost_guard.py` enforces a cost budget when routing models
+- `quantum_fingerprint.py` generates a CycloneDX SBOM from `requirements.txt`
+- `siri_receiver.py` exposes a simple Siri/HomeKit webhook endpoint
+- Terraform module `monitoring.tf` provisions Cloud Monitoring alerts
+- GitHub Actions workflow `deploy_router_stack.yml` builds and deploys the stack
+
+Generate an SBOM file via:
+```bash
+python quantum_fingerprint.py sbom.json
+```
