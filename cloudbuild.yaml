@@ -1,0 +1,118 @@
+# cloudbuild.yaml
+# CI/CD pipeline for the Sterling Dominion project.
+
+steps:
+  # ---------------------------------------------------------------------------
+  # Step 1: Install Python Dependencies & Run Unit Tests
+  # ---------------------------------------------------------------------------
+  - name: 'python:3.10-slim'
+    id: 'Run Unit Tests'
+    entrypoint: 'bash'
+    args:
+      - -c
+      - |
+        pip install -r ai_router/requirements.txt
+        # If you add tests, you can run them here with a command like:
+        # pytest ai_router/
+
+  # ---------------------------------------------------------------------------
+  # Step 2: Build the AI Router Docker Image
+  # ---------------------------------------------------------------------------
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Build AI Router Image'
+    args:
+      - 'build'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:${COMMIT_SHA}'
+      - '-f'
+      - 'ai_router/Dockerfile'
+      - '.'
+
+  # ---------------------------------------------------------------------------
+  # Step 3: Vulnerability Scanning
+  # This step scans the image for known vulnerabilities and will fail the build
+  # if any 'CRITICAL' or 'HIGH' severity issues are found.
+  # ---------------------------------------------------------------------------
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'Vulnerability Scan'
+    entrypoint: 'bash'
+    args:
+      - -c
+      - |
+        gcloud artifacts docker images scan ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:${COMMIT_SHA} \
+          --format='value(response.scan)' > /workspace/scan_id.txt && \
+        gcloud artifacts docker images list-vulnerabilities $(cat /workspace/scan_id.txt) \
+          --format='value(vulnerability.effectiveSeverity)' | if grep -Exq "CRITICAL|HIGH"; \
+          then echo "VULNERABILITY CHECK FAILED: Critical or High severity vulnerabilities found." && exit 1; \
+          else echo "Vulnerability check passed." && exit 0; fi
+
+  # ---------------------------------------------------------------------------
+  # Step 4: Generate Quantum Fingerprint (SBOM + HSM Signature)
+  # This step generates a Software Bill of Materials (SBOM) and signs it
+  # using the secure HSM key for supply chain integrity.
+  # ---------------------------------------------------------------------------
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'Generate Quantum Fingerprint'
+    entrypoint: 'bash'
+    args:
+      - -c
+      - |
+        ./scripts/generate_fingerprint.sh \
+          ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:${COMMIT_SHA} \
+          ${_KMS_KEY_NAME} \
+          1 \
+          ${_KMS_KEYRING} \
+          ${_REGION} \
+          /workspace/
+    volumes:
+      - name: 'docker_sock'
+        path: '/var/run/docker.sock'
+
+  # ---------------------------------------------------------------------------
+  # Step 5: Push Image and Artifacts to Storage
+  # ---------------------------------------------------------------------------
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Push AI Router Image'
+    args:
+      - 'push'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:${COMMIT_SHA}'
+
+  - name: 'gcr.io/cloud-builders/gsutil'
+    id: 'Upload Fingerprint Artifacts'
+    args:
+      - 'cp'
+      - '/workspace/sbom.json'
+      - '/workspace/sbom.sig'
+      - 'gs://${_ARTIFACT_BUCKET}/fingerprints/${_SERVICE_NAME}/${COMMIT_SHA}/'
+
+  # ---------------------------------------------------------------------------
+  # Step 6: Deploy to Cloud Run
+  # This final step deploys the new, scanned, and verified container image
+  # as a new revision to your Cloud Run service.
+  # ---------------------------------------------------------------------------
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'Deploy to Cloud Run'
+    args:
+      - 'run'
+      - 'deploy'
+      - '${_SERVICE_NAME}'
+      - '--image=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:${COMMIT_SHA}'
+      - '--region=${_REGION}'
+      - '--platform=managed'
+      - '--quiet'
+
+# Substitutions that can be passed into the build trigger
+substitutions:
+  _REGION: 'us-central1'
+  _REPO_NAME: 'sterling-dominion-repo'
+  _SERVICE_NAME: 'ai-router'
+  _KMS_KEY_NAME: 'quantum-fingerprint-key'
+  _KMS_KEYRING: 'sterling-dominion-keyring'
+  _ARTIFACT_BUCKET: 'sterling-build-artifacts'
+
+# Define the final image that will be produced by this build
+images:
+  - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:${COMMIT_SHA}'
+
+# Increase the default timeout for potentially complex builds
+timeout: '1800s'
