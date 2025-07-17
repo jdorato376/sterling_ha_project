@@ -24,4 +24,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: docker build addons/sterling_os
+
+      # ---------------------------------------------
+      # Remove the old `docker build` invocation:
+      # ---------------------------------------------
+
+      # 1) Enable QEMU so we can emulate Home Assistant’s target platforms
+      - name: Set up QEMU for multi-platform builds
+        uses: docker/setup-qemu-action@v2
+
+      # 2) Enable Buildx (no daemon needed)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # 3) Build the add-on with Buildx
+      - name: Build Sterling OS add-on
+        uses: docker/build-push-action@v4
+        with:
+          context: addons/sterling_os
+          load: true    # so it’s available locally for tests
+          push: false   # we don’t want to push to a registry
+
+      - name: Run tests
+        run: pytest -q

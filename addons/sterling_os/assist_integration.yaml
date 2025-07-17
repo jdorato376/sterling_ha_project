@@ -1,6 +1,0 @@
-intent_script:
-  SterlingDefault:
-    action:
-      - service: rest_command.call_sterling_intent
-        data:
-          intent: "{{ query }}"
