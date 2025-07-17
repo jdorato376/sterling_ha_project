@@ -453,3 +453,31 @@ Run the basic repair agent loop which demonstrates using an LLM to propose a fix
 ```bash
 python -m repair_agent.main
 ```
+
+## Sterling GPT: Vertex AI Integration
+
+Sterling GPT now routes queries through Vertex AI with Gemini 1.5 Flash, 1.5 Pro, and 2.5 Pro.
+- Deploys routing logic via Cloud Run
+- Query complexity determines which model is used
+- Terraform manages infrastructure
+- Fully serverless, low-cost, and extensible
+
+### Deployment Steps
+```bash
+cd terraform
+terraform init
+terraform apply -var="project_id=your-project-id" -var="docker_image=gcr.io/your-project-id/ai-router:latest"
+```
+
+### Run locally
+```bash
+cd ai_router
+python main.py
+```
+
+### Validate Vertex AI setup
+Run the helper script to ensure Cloud Run and secrets are configured:
+```bash
+python scripts/validate_vertex_ready.py
+```
+
