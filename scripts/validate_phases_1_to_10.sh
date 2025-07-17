@@ -19,11 +19,10 @@ else
   exit 1
 fi
 
-curl -s -X POST "http://localhost:8123/api/services/input_boolean/toggle" \
+if curl -s -X POST "http://localhost:8123/api/services/input_boolean/toggle" \
   -H "Authorization: Bearer $HA_LONG_LIVED_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"entity_id": "input_boolean.canary_test"}' | grep -q "200"
-if [ $? -eq 0 ]; then
+  -d '{"entity_id": "input_boolean.canary_test"}' | grep -q "200"; then
   echo "✅ Home Assistant API toggle successful"
 else
   echo "❌ API test failed"
@@ -42,11 +41,10 @@ else
 fi
 
 echo "📦 Phase 3: Reflex Engine — Canary Trigger Simulation"
-curl -s -X POST http://localhost:8123/api/services/script/turn_on \
+if curl -s -X POST http://localhost:8123/api/services/script/turn_on \
   -H "Authorization: Bearer $HA_LONG_LIVED_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"entity_id": "script.sterling_canary_simulate"}' | grep -q "200"
-if [ $? -eq 0 ]; then
+  -d '{"entity_id": "script.sterling_canary_simulate"}' | grep -q "200"; then
   echo "✅ Reflex engine script fired"
 else
   echo "❌ Reflex engine simulation failed"
@@ -71,11 +69,10 @@ else
 fi
 
 echo "📈 Phase 6: Escalation Intelligence & Trust Audit Trigger"
-curl -s -X POST http://localhost:8123/api/webhook/sterling_escalation_matrix_trigger \
+if curl -s -X POST http://localhost:8123/api/webhook/sterling_escalation_matrix_trigger \
   -H "Authorization: Bearer $HA_LONG_LIVED_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{}' | grep -q "200"
-if [ $? -eq 0 ]; then
+  -d '{}' | grep -q "200"; then
   echo "✅ Escalation Matrix webhook fired"
 else
   echo "❌ Escalation trigger failed"
@@ -93,11 +90,10 @@ else
 fi
 
 echo "🔄 Phase 8: Resilience Simulation"
-curl -s -X POST http://localhost:8123/api/services/scene/turn_on \
+if curl -s -X POST http://localhost:8123/api/services/scene/turn_on \
   -H "Authorization: Bearer $HA_LONG_LIVED_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"entity_id": "scene.resilience_simulation"}' | grep -q "200"
-if [ $? -eq 0 ]; then
+  -d '{"entity_id": "scene.resilience_simulation"}' | grep -q "200"; then
   echo "✅ Scene executed"
 else
   echo "❌ Scene trigger failed"
@@ -107,11 +103,10 @@ echo "🔁 Phase 9: AI Agent Switching Logic"
 python3 /config/sterling_ha_project/agents/agent_switch_test.py && echo "✅ Agent switching script passed" || echo "❌ Agent switching logic failed"
 
 echo "📡 Phase 10: Infrastructure Mastery & Reflex Lock"
-curl -s -X POST http://localhost:8123/api/webhook/sterling_full_reflex \
+if curl -s -X POST http://localhost:8123/api/webhook/sterling_full_reflex \
   -H "Authorization: Bearer $HA_LONG_LIVED_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{}' | grep -q "200"
-if [ $? -eq 0 ]; then
+  -d '{}' | grep -q "200"; then
   echo "✅ Reflex intelligence test webhook passed"
 else
   echo "❌ Reflex webhook failed"
