@@ -1,5 +1,0 @@
-{
-  "codex": {"gemini": 0.85, "home_assistant": 0.75, "fallback_agent": 0.65},
-  "gemini": {"codex": 0.5, "home_assistant": 0.6, "fallback_agent": 0.7},
-  "home_assistant": {"codex": 0.3, "gemini": 0.5, "fallback_agent": 0.9}
-}

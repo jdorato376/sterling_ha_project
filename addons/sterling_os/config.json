@@ -1,19 +1,17 @@
 {
-        "name": "Sterling OS",
-        "version": "1.0.0",
-        "slug": "sterling_os",
-        "description": "Sterling: Executive AI Assistant Add-on with Gemini & Ollama Routing",
-        "startup": "application",
-        "boot": "auto",
-        "hassio_api": true,
-        "homeassistant_api": true,
-        "host_network": true,
-        "privileged": [],
-        "arch": ["aarch64", "amd64", "armv7"],
-        "options": {},
-        "schema": {},
-        "dev_mode": false,
-        "memory_enabled": true,
-        "enable_devgpt": false,
-        "image": "ghcr.io/jdorato376/sterling_os:1.0.0"
-    }
+  "name": "Sterling OS",
+  "version": "0.1.0",
+  "slug": "sterling_os",
+  "description": "Sterling OS Home Assistant add-on scaffold",
+  "startup": "services",
+  "boot": "auto",
+  "host_network": false,
+  "options": {
+    "ha_url": "http://homeassistant.local:8123",
+    "ha_token": ""
+  },
+  "schema": {
+    "ha_url": "string",
+    "ha_token": "string"
+  }
+}

@@ -1,6 +1,0 @@
-{
-  "focus mode": "scene.sterling_focus_mode",
-  "sync mode": "scene.sterling_sync_mode",
-  "good morning": "script.exec_daily_briefing",
-  "goodnight": "script.lockdown_sequence"
-}
