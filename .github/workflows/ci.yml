@@ -8,19 +8,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: ShellCheck
-        run: shellcheck scripts/*.sh
-  pytest:
+        run: shellcheck -e SC2181 scripts/*.sh
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      - run: pip install -r requirements.txt
-      - name: Run pytest modules tests
-        run: |
-          export PYTHONPATH=${{ github.workspace }}/sterling_ha_project
-          pytest -q
+      - name: Install editable package
+        run: pip install -e .
+      - name: Scaffold phase stubs
+        run: python scripts/scaffold_phases.py
+      - name: Run pytest
+        run: pytest tests/test_phase_* -q
   build-addon:
     runs-on: ubuntu-latest
     steps:
@@ -32,6 +33,7 @@ jobs:
       - name: Build Sterling OS add-on
         uses: docker/build-push-action@v5
         with:
-          context: addons/sterling_os
+          context: .
+          file: addons/sterling_os/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: false

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Stage 0: prepare local environment
 set -euo pipefail
 
 # Clone repo if script not already inside it
