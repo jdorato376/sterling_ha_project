@@ -1,0 +1,16 @@
+# Cloud Build configuration for Sterling OS deployment to Vertex AI
+# This file builds the Sterling Home Assistant add-on container and pushes it to Artifact Registry.
+# Substitutions _REGION and _REPO are provided by deploy_vertex.sh via gcloud builds submit --substitutions.
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'Build and push Sterling HA container'
+    args:
+      - build
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO}/sterling-ha:latest'
+      - '-f'
+      - 'addons/sterling_os/Dockerfile'
+      - '.'
+images:
+  - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO}/sterling-ha:latest'
