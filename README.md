@@ -11,6 +11,12 @@ bash scripts/deploy_vertex.sh
 bash scripts/provision_ha.sh
 ```
 
+To regenerate the placeholder phase modules and tests, run:
+
+```bash
+./scripts/scaffold_phases.py
+```
+
 ## 🔐 Image Authentication
 
 To pull the pre-built Docker image hosted on GitHub Packages, you may need to authenticate using a GitHub Personal Access Token. See the [GitHub Packages documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry) for instructions.
@@ -519,3 +525,25 @@ bash scripts/setup_environment.sh
 bash scripts/deploy_vertex.sh
 bash scripts/provision_ha.sh
 ```
+
+## Phase 1-200 Overview
+1. Init & GitOps
+2. Adaptive Router
+3. Concord workflows
+4. Repair agents
+5. Memory store
+6. Backup routines
+7. Cost tracker
+8. Fallback switch
+9. Self learning
+10. Chronicle logging
+11. Audit trail
+12. Sovereign control
+13. UI integration
+14. Mobile push
+15. Self heal
+16. Automated patching
+17. Scheduled sweeps
+18. Restore processes
+19. HA integration
+20. Budget fallback
