@@ -34,3 +34,15 @@
   reason: fail
   scene: scene1
   timestamp: '2025-07-18T15:38:13.700327+00:00'
+- action: dominion_audit
+  audit_timestamp: '2025-07-18T15:39:48.026675+00:00'
+  git_status: f777175fcf9dfeddda6575f5bb186a97cda1ec56
+  governor: Platinum Dominion
+  phase: '11'
+  routing_result: Pass
+  timestamp: '2025-07-18T15:39:48.028501+00:00'
+  trust_links: Validated
+- action: escalation
+  reason: fail
+  scene: scene1
+  timestamp: '2025-07-18T15:39:48.039479+00:00'
