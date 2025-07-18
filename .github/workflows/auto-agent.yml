@@ -1,0 +1,78 @@
+name: Auto Agent
+on:
+  push:
+    branches: [main]
+  issue_comment:
+    types: [created]
+  schedule:
+    - cron: '0 4 * * *'  # Daily at 4 AM UTC
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'push' ||
+      github.event_name == 'schedule' ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '/codex run'))
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install shellcheck-py
+          
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+          
+      - name: Run Sterling HA Agent
+        run: python tools/agent.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Comment on issue (if triggered by comment)
+        if: github.event_name == 'issue_comment'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { readFileSync } = require('fs');
+            const { join } = require('path');
+            
+            let scorecard = {};
+            try {
+              const scorecardPath = join(process.cwd(), 'agent_scorecard.json');
+              scorecard = JSON.parse(readFileSync(scorecardPath, 'utf8'));
+            } catch (e) {
+              console.log('No scorecard found');
+            }
+            
+            const status = scorecard.status || 'unknown';
+            const emoji = status === 'success' ? '✅' : '❌';
+            
+            const comment = `${emoji} **Sterling HA Agent Run Complete**
+            
+            **Status:** ${status}
+            **Timestamp:** ${scorecard.timestamp || 'N/A'}
+            **Lint Passed:** ${scorecard.lint_passed || false}
+            **Tests Passed:** ${scorecard.tests_passed || false}
+            **Changed Files:** ${scorecard.changed_files?.length || 0}
+            
+            Run triggered by: /codex run command`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

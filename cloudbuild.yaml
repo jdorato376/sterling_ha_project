@@ -1,0 +1,114 @@
+steps:
+  # Build and push the Sterling HA add-on image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/sterling-ha-addon:$SHORT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/sterling-ha-addon:latest'
+      - '-f'
+      - 'addons/sterling_os/Dockerfile'
+      - '.'
+    id: 'build-addon'
+
+  # Push the image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/sterling-ha-addon:$SHORT_SHA'
+    id: 'push-addon-sha'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/sterling-ha-addon:latest'
+    id: 'push-addon-latest'
+
+  # Optionally upload and deploy Vertex AI model
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        # Enable required APIs
+        gcloud services enable aiplatform.googleapis.com
+        gcloud services enable artifactregistry.googleapis.com
+        
+        # Check if Vertex AI model should be deployed
+        if [ "${_DEPLOY_VERTEX}" = "true" ]; then
+          echo "Deploying Vertex AI model..."
+          
+          # Create Artifact Registry repository if it doesn't exist
+          gcloud artifacts repositories create sterling-ai-repo \
+            --repository-format=docker \
+            --location=${_REGION} \
+            --description="Sterling HA AI models" || true
+          
+          # Build and push AI model container
+          docker build -t ${_REGION}-docker.pkg.dev/$PROJECT_ID/sterling-ai-repo/sterling-ai-model:$SHORT_SHA \
+            -f addons/sterling_os/Dockerfile .
+          docker push ${_REGION}-docker.pkg.dev/$PROJECT_ID/sterling-ai-repo/sterling-ai-model:$SHORT_SHA
+          
+          # Create or update Vertex AI endpoint
+          ENDPOINT_ID=$(gcloud ai endpoints list --region=${_REGION} \
+            --filter="displayName=Sterling HA Endpoint" \
+            --format="value(name)" | head -1)
+          
+          if [ -z "$ENDPOINT_ID" ]; then
+            echo "Creating new Vertex AI endpoint..."
+            ENDPOINT_ID=$(gcloud ai endpoints create \
+              --region=${_REGION} \
+              --display-name="Sterling HA Endpoint" \
+              --format="value(name)")
+          fi
+          
+          echo "Endpoint ID: $ENDPOINT_ID"
+          
+          # Deploy model to endpoint
+          gcloud ai endpoints deploy-model $ENDPOINT_ID \
+            --region=${_REGION} \
+            --model=${_REGION}-docker.pkg.dev/$PROJECT_ID/sterling-ai-repo/sterling-ai-model:$SHORT_SHA \
+            --display-name="sterling-ha-model-$SHORT_SHA" \
+            --traffic-split=0=100 \
+            --machine-type=n1-standard-2 || true
+        else
+          echo "Skipping Vertex AI deployment (set _DEPLOY_VERTEX=true to enable)"
+        fi
+    id: 'deploy-vertex-optional'
+
+  # Run tests in the cloud
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        # Install Python dependencies
+        python3 -m pip install --upgrade pip
+        python3 -m pip install -r requirements.txt
+        
+        # Run scaffold phases
+        python3 scripts/scaffold_phases.py
+        
+        # Run tests
+        python3 -m pytest tests/test_phase_* -v
+    id: 'run-tests'
+
+# Define substitutions with defaults
+substitutions:
+  _REGION: 'us-central1'
+  _DEPLOY_VERTEX: 'false'
+
+# Build options
+options:
+  substitution_option: 'ALLOW_LOOSE'
+  logging: CLOUD_LOGGING_ONLY
+  machineType: 'E2_HIGHCPU_8'
+
+# Build timeout
+timeout: '1200s'
+
+# Images to push to registry
+images:
+  - 'gcr.io/$PROJECT_ID/sterling-ha-addon:$SHORT_SHA'
+  - 'gcr.io/$PROJECT_ID/sterling-ha-addon:latest'
