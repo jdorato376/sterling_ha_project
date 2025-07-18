@@ -1,0 +1,76 @@
+steps:
+  # Build and push Sterling HA Add-on image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'build'
+      - '-f'
+      - 'addons/sterling_os/Dockerfile'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/sterling-ha-addon:$SHORT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/sterling-ha-addon:latest'
+      - '.'
+    id: 'build-addon'
+  
+  # Push the image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/sterling-ha-addon:$SHORT_SHA'
+    id: 'push-addon'
+    
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/sterling-ha-addon:latest'
+    id: 'push-addon-latest'
+
+  # Optional: Upload model to Vertex AI
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:latest'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        # Enable required APIs
+        gcloud services enable aiplatform.googleapis.com --project=$PROJECT_ID
+        gcloud services enable artifactregistry.googleapis.com --project=$PROJECT_ID
+        gcloud services enable cloudbuild.googleapis.com --project=$PROJECT_ID
+        
+        # Check if Vertex AI endpoint exists
+        ENDPOINT_NAME="Sterling HA Endpoint"
+        REGION="${_REGION:-us-central1}"
+        
+        ENDPOINT_ID=$(gcloud ai endpoints list --region=$REGION --filter="displayName=\"$ENDPOINT_NAME\"" --format="value(name)" --project=$PROJECT_ID 2>/dev/null || echo "")
+        
+        if [ -z "$ENDPOINT_ID" ]; then
+          echo "Creating Vertex AI endpoint..."
+          ENDPOINT_ID=$(gcloud ai endpoints create --region=$REGION --display-name="$ENDPOINT_NAME" --format="value(name)" --project=$PROJECT_ID)
+          echo "Created endpoint: $ENDPOINT_ID"
+        else
+          echo "Using existing endpoint: $ENDPOINT_ID"
+        fi
+        
+        # Deploy model to endpoint (optional, depends on model availability)
+        echo "Model deployment to Vertex AI endpoint would happen here"
+        echo "IMAGE_URI: gcr.io/$PROJECT_ID/sterling-ha-addon:$SHORT_SHA"
+        echo "ENDPOINT_ID: $ENDPOINT_ID"
+    id: 'vertex-ai-deploy'
+    
+substitutions:
+  _REGION: us-central1
+  _REPO: sterling_ha_project
+
+# Build timeout (20 minutes)
+timeout: 1200s
+
+# Machine type for build
+options:
+  machineType: 'E2_HIGHCPU_8'
+  
+# Build logs location
+logsBucket: 'gs://${PROJECT_ID}-cloudbuild-logs'
+
+# Images to be pushed to registry
+images:
+  - 'gcr.io/$PROJECT_ID/sterling-ha-addon:$SHORT_SHA'
+  - 'gcr.io/$PROJECT_ID/sterling-ha-addon:latest'

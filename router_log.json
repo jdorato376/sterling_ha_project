@@ -1,0 +1,72 @@
+[
+  {
+    "timestamp": "2025-07-18T15:38:13.582320+00:00",
+    "query": "hello world",
+    "agent": "general",
+    "method": "embedding",
+    "success": true
+  },
+  {
+    "timestamp": "2025-07-18T15:38:13.606281+00:00",
+    "query": "give me a daily briefing",
+    "agent": "daily_briefing",
+    "method": "keyword",
+    "success": true
+  },
+  {
+    "timestamp": "2025-07-18T15:38:13.615542+00:00",
+    "query": "show my budget report",
+    "agent": "finance",
+    "method": "keyword",
+    "success": true
+  },
+  {
+    "timestamp": "2025-07-18T15:38:13.626518+00:00",
+    "query": "tell me a joke",
+    "agent": "general",
+    "method": "embedding",
+    "success": true
+  },
+  {
+    "timestamp": "2025-07-18T15:38:13.638074+00:00",
+    "query": "toggle kitchen light",
+    "agent": "home_automation",
+    "method": "keyword",
+    "success": false
+  },
+  {
+    "timestamp": "2025-07-18T15:38:13.646519+00:00",
+    "query": "arm the security system",
+    "agent": "security",
+    "method": "keyword",
+    "success": true
+  },
+  {
+    "timestamp": "2025-07-18T15:38:13.655155+00:00",
+    "query": "show my budget",
+    "agent": "finance",
+    "method": "keyword",
+    "success": true
+  },
+  {
+    "timestamp": "2025-07-18T15:38:14.185933+00:00",
+    "query": "show my budget",
+    "agent": "finance",
+    "method": "keyword",
+    "success": true
+  },
+  {
+    "timestamp": "2025-07-18T15:38:14.197360+00:00",
+    "query": "toggle kitchen light",
+    "agent": "home_automation",
+    "method": "keyword",
+    "success": false
+  },
+  {
+    "timestamp": "2025-07-18T15:38:14.244923+00:00",
+    "query": "hello",
+    "agent": "general",
+    "method": "embedding",
+    "success": true
+  }
+]
