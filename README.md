@@ -4,6 +4,10 @@ This repository contains a minimal Home Assistant add-on named **Sterling OS**. 
 
 ## Getting Started
 
+1. Copy `.env.example` to `.env` and populate values.
+2. Run `source .env` before executing any scripts.
+3. Deploy Vertex: `bash scripts/deploy_vertex.sh`
+
 ```bash
 bash infrastructure/provision_vm.sh
 bash scripts/setup_environment.sh
