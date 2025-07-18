@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Stage 2: provision Home Assistant
 set -euo pipefail
 
 HA_IMAGE="homeassistant/home-assistant:stable"

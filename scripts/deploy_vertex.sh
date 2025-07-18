@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Stage 1: deploy Vertex resources
 set -euo pipefail
 
 # Vars
