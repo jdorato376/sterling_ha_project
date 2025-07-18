@@ -7,19 +7,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: shellcheck scripts/*.sh
-  python-tests:
+      - name: ShellCheck
+        run: shellcheck scripts/*.sh
+  pytest:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        module: [adaptive_router, concord_engine, repair_agent]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
-      - run: pip install -r src/requirements.txt
-      - run: pytest tests/test_${{ matrix.module }}.py
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: Run pytest modules tests
+        run: |
+          export PYTHONPATH=${{ github.workspace }}/sterling_ha_project
+          pytest -q
   build-addon:
     runs-on: ubuntu-latest
     steps:
@@ -28,7 +29,7 @@ jobs:
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Build multi-platform Sterling OS add-on
+      - name: Build Sterling OS add-on
         uses: docker/build-push-action@v5
         with:
           context: addons/sterling_os
