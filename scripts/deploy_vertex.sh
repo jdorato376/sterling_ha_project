@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 # Stage 1: deploy Vertex resources
+
+# Enable required Google Cloud APIs
+gcloud services enable \
+  artifactregistry.googleapis.com \
+  cloudbuild.googleapis.com \
+  aiplatform.googleapis.com \
+  --project="$PROJECT"
+
 set -euo pipefail
 
 # Vars
