@@ -61,5 +61,26 @@
     "agent": "general",
     "method": "embedding",
     "success": true
+  },
+  {
+    "timestamp": "2025-07-19T02:35:20.593103+00:00",
+    "query": "show my budget",
+    "agent": "finance",
+    "method": "keyword",
+    "success": true
+  },
+  {
+    "timestamp": "2025-07-19T02:35:20.605201+00:00",
+    "query": "toggle kitchen light",
+    "agent": "home_automation",
+    "method": "keyword",
+    "success": false
+  },
+  {
+    "timestamp": "2025-07-19T02:35:20.652790+00:00",
+    "query": "hello",
+    "agent": "general",
+    "method": "embedding",
+    "success": true
   }
 ]
