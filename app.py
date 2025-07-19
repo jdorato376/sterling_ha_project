@@ -65,7 +65,9 @@ def version():
     try:
         commit_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()
     except Exception as e:
-        commit_hash = f"Error: {str(e)}"
+        import logging
+        logging.error("Failed to retrieve commit hash", exc_info=e)
+        commit_hash = "unknown"
     return jsonify({
         "commit_hash": commit_hash,
         "branch": os.getenv("GIT_BRANCH", "unknown"),
