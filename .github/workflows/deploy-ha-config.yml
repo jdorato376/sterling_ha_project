@@ -1,0 +1,63 @@
+name: Deploy Home Assistant Configuration
+"on":
+  push:
+    branches:
+      - main
+jobs:
+  deploy-ha-config:
+    runs-on: ubuntu-latest
+    env:
+      HA_HOST: ${{ secrets.HA_HOST }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: eminent-parsec-464203-v9
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Retrieve Home Assistant token from Secret Manager
+        run: |
+          HA_TOKEN=$(gcloud secrets versions access latest --secret="ha-token")
+          echo "HA_TOKEN=$HA_TOKEN" >> $GITHUB_ENV
+
+      - name: Validate Home Assistant configuration
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer $HA_TOKEN" \
+            -H "Content-Type: application/json" \
+            "$HA_HOST/api/core/check_config" \
+            --fail-with-body
+
+      - name: Package Home Assistant configuration
+        run: |
+          zip -r ha_config.zip . -x ".git/*" ".github/*" "*.zip"
+
+      - name: Upload configuration to Home Assistant
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer $HA_TOKEN" \
+            -F "file=@ha_config.zip" \
+            "$HA_HOST/api/hassio/snapshots/new/upload" \
+            --fail-with-body
+
+      - name: Reload Home Assistant Core configuration
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer $HA_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"service": "homeassistant.reload_core_config"}' \
+            "$HA_HOST/api/services/homeassistant/reload_core_config" \
+            --fail-with-body
+
+      - name: Restart Home Assistant Core
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer $HA_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"service": "homeassistant.restart"}' \
+            "$HA_HOST/api/services/homeassistant/restart" \
+            --fail-with-body
