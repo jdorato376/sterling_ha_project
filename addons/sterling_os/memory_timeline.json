@@ -218,5 +218,37 @@
   {
     "timestamp": "2025-07-14T00:18:14.996201+00:00",
     "event": "unknown:hello"
+  },
+  {
+    "timestamp": "2025-07-19T02:29:01.469594+00:00",
+    "event": "phrase:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-19T02:29:01.471923+00:00",
+    "event": "unknown:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-19T02:29:01.489372+00:00",
+    "event": "phrase:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-19T02:29:01.490385+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-19T02:29:01.492617+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-19T02:29:01.532388+00:00",
+    "event": "phrase:hello"
+  },
+  {
+    "timestamp": "2025-07-19T02:29:01.533210+00:00",
+    "event": "unknown:hello"
+  },
+  {
+    "timestamp": "2025-07-19T02:29:01.542502+00:00",
+    "event": "unknown:hello"
   }
 ]

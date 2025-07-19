@@ -40,6 +40,18 @@
       "agent": "general",
       "query": "hello",
       "success": true
+    },
+    {
+      "timestamp": "2025-07-19T02:29:01.535651+00:00",
+      "agent": "general",
+      "query": "hello",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-19T02:29:01.545053+00:00",
+      "agent": "general",
+      "query": "hello",
+      "success": true
     }
   ],
   "escalation_path": [],
@@ -81,6 +93,20 @@
     },
     {
       "timestamp": "2025-07-14T00:18:15.008295+00:00",
+      "query": "hello",
+      "agent": "general",
+      "success": true,
+      "fallback": false
+    },
+    {
+      "timestamp": "2025-07-19T02:29:01.539513+00:00",
+      "query": "hello",
+      "agent": "general",
+      "success": true,
+      "fallback": false
+    },
+    {
+      "timestamp": "2025-07-19T02:29:01.549109+00:00",
       "query": "hello",
       "agent": "general",
       "success": true,
