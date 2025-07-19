@@ -134,7 +134,8 @@ def webhook_rebuild():
         subprocess.call(["pip", "install", "--no-cache-dir", "-r", "requirements.txt"])
         return jsonify(status="updated")
     except Exception as e:
-        return jsonify(status="error", detail=str(e)), 500
+        app.logger.error(f"Error during rebuild webhook: {str(e)}")
+        return jsonify(status="error", detail="An internal error occurred."), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
