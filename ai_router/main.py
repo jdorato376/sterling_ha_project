@@ -23,7 +23,7 @@ def handle_routing():
         return jsonify(result), 200
     except Exception as e:  # pragma: no cover - runtime safeguard
         logging.exception("Routing error")
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "An internal error has occurred."}), 500
 
 
 @app.route("/health", methods=["GET"])
