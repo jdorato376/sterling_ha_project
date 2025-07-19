@@ -3,6 +3,7 @@ import os
 import platform
 import subprocess
 import datetime
+import logging
 
 import uptime_tracker
 from cognitive_router import route_with_self_critique
@@ -65,7 +66,8 @@ def version():
     try:
         commit_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()
     except Exception as e:
-        commit_hash = f"Error: {str(e)}"
+        logging.exception("Failed to get git commit hash")
+        commit_hash = "unknown"
     return jsonify({
         "commit_hash": commit_hash,
         "branch": os.getenv("GIT_BRANCH", "unknown"),
@@ -134,7 +136,8 @@ def webhook_rebuild():
         subprocess.call(["pip", "install", "--no-cache-dir", "-r", "requirements.txt"])
         return jsonify(status="updated")
     except Exception as e:
-        return jsonify(status="error", detail=str(e)), 500
+        logging.exception("Webhook rebuild failed")
+        return jsonify(status="error", detail="Rebuild operation failed"), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

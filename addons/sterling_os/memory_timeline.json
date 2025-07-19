@@ -250,5 +250,69 @@
   {
     "timestamp": "2025-07-19T02:29:01.542502+00:00",
     "event": "unknown:hello"
+  },
+  {
+    "timestamp": "2025-07-19T02:31:46.538941+00:00",
+    "event": "phrase:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-19T02:31:46.540462+00:00",
+    "event": "unknown:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-19T02:31:46.554888+00:00",
+    "event": "phrase:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-19T02:31:46.555926+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-19T02:31:46.558041+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-19T02:31:46.597979+00:00",
+    "event": "phrase:hello"
+  },
+  {
+    "timestamp": "2025-07-19T02:31:46.598860+00:00",
+    "event": "unknown:hello"
+  },
+  {
+    "timestamp": "2025-07-19T02:31:46.608770+00:00",
+    "event": "unknown:hello"
+  },
+  {
+    "timestamp": "2025-07-19T02:34:16.646447+00:00",
+    "event": "phrase:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-19T02:34:16.647582+00:00",
+    "event": "unknown:What is my schedule?"
+  },
+  {
+    "timestamp": "2025-07-19T02:34:16.662359+00:00",
+    "event": "phrase:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-19T02:34:16.663479+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-19T02:34:16.665597+00:00",
+    "event": "unknown:toggle kitchen light"
+  },
+  {
+    "timestamp": "2025-07-19T02:34:16.705023+00:00",
+    "event": "phrase:hello"
+  },
+  {
+    "timestamp": "2025-07-19T02:34:16.706023+00:00",
+    "event": "unknown:hello"
+  },
+  {
+    "timestamp": "2025-07-19T02:34:16.716494+00:00",
+    "event": "unknown:hello"
   }
 ]

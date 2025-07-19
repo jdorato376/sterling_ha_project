@@ -22,8 +22,8 @@ def handle_routing():
         result = route_query(query, project_id=GCP_PROJECT_ID)
         return jsonify(result), 200
     except Exception as e:  # pragma: no cover - runtime safeguard
-        logging.exception("Routing error")
-        return jsonify({"error": str(e)}), 500
+        logging.exception("Routing error occurred")
+        return jsonify({"error": "Internal server error"}), 500
 
 
 @app.route("/health", methods=["GET"])

@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import logging
 from modules.vertex_integration.vertex_client import predict
 
 app = FastAPI()
@@ -13,4 +14,5 @@ async def assistant(q: Query):
         response = predict(q.query)
         return {"response": response}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logging.exception("Assistant prediction error occurred")
+        raise HTTPException(status_code=500, detail="Internal server error")

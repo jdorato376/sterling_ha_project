@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import difflib
 import json
+import logging
 from pathlib import Path
 from typing import Any, List, Dict
 
@@ -15,4 +16,5 @@ def adaptive_memory_match(query: str, persona_context: str) -> List[Dict[str, An
         matches = difflib.get_close_matches(query, [e.get("topic", "") for e in entries], n=3, cutoff=0.5)
         return [e for e in entries if e.get("topic") in matches]
     except Exception as e:
-        return [{"error": f"Memory access failed: {e}"}]
+        logging.exception(f"Memory access failed for context {persona_context}")
+        return [{"error": "Memory access temporarily unavailable"}]

@@ -19,5 +19,47 @@
     "agent": "general",
     "method": "embedding",
     "success": true
+  },
+  {
+    "timestamp": "2025-07-19T02:31:46.552027+00:00",
+    "query": "show my budget",
+    "agent": "finance",
+    "method": "keyword",
+    "success": true
+  },
+  {
+    "timestamp": "2025-07-19T02:31:46.563967+00:00",
+    "query": "toggle kitchen light",
+    "agent": "home_automation",
+    "method": "keyword",
+    "success": false
+  },
+  {
+    "timestamp": "2025-07-19T02:31:46.608097+00:00",
+    "query": "hello",
+    "agent": "general",
+    "method": "embedding",
+    "success": true
+  },
+  {
+    "timestamp": "2025-07-19T02:34:16.659406+00:00",
+    "query": "show my budget",
+    "agent": "finance",
+    "method": "keyword",
+    "success": true
+  },
+  {
+    "timestamp": "2025-07-19T02:34:16.671475+00:00",
+    "query": "toggle kitchen light",
+    "agent": "home_automation",
+    "method": "keyword",
+    "success": false
+  },
+  {
+    "timestamp": "2025-07-19T02:34:16.715855+00:00",
+    "query": "hello",
+    "agent": "general",
+    "method": "embedding",
+    "success": true
   }
 ]
