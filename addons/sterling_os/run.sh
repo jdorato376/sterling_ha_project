@@ -25,6 +25,11 @@ fi
 # Change to the sterling_os directory
 cd /app/sterling_os || { echo "Failed to access /app/sterling_os. Exiting."; exit 1; }
 
+# Verify that main.py exists
+if [ ! -f "main.py" ]; then
+    echo "Error: main.py not found in /app/sterling_os. Exiting."
+    exit 1
+fi
 # Start the Sterling OS application
 echo "Launching Sterling OS main application..."
 python3 main.py
