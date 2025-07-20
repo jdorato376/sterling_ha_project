@@ -13,4 +13,13 @@ logs/
 *.swp
 *.save
 
+# Add-on specific
 addons/sterling_os/trust_registry_store.json
+
+# Build artifacts
+*.tar.gz
+dist/
+build/
+
+# Local Docker images
+.docker_image_id

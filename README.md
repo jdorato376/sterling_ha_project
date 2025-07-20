@@ -32,20 +32,25 @@ This repository contains **Sterling OS**, an advanced Home Assistant add-on that
 4. Find **Sterling OS** in the add-on store and click **Install**
 5. Configure the add-on settings and click **Start**
 
-### Option 2: Local Build
+### Option 2: Local Build (Recommended)
 
-If the pre-built Docker image is not accessible, you can build locally:
+The pre-built Docker image may require authentication. We recommend building locally:
 
 ```bash
 # Clone the repository
 git clone https://github.com/jdorato376/sterling_ha_project.git
 cd sterling_ha_project
 
-# Build the Docker image
-docker build -t local/sterling_os:latest -f addons/sterling_os/Dockerfile .
+# Build the Docker image using the provided script
+./build_addon.sh
+
+# OR build manually:
+# docker build -t local/sterling_os:latest -f addons/sterling_os/Dockerfile .
 ```
 
 Then update the `image` field in `addons/sterling_os/config.json` to `local/sterling_os:latest`.
+
+**TODO**: The Docker image `ghcr.io/jdorato376/sterling_os:1.0.0` needs to be published or made public for direct installation.
 
 ## Configuration
 
