@@ -22,13 +22,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy necessary files from the repository root
 # These files need to be copied from the repository context
-COPY ../../sterling_core.py ./
-COPY ../../cognitive_router.py ./
-COPY ../../src/ ./src/
-COPY ../../modules/ ./modules/
+COPY sterling_core.py ./
+COPY cognitive_router.py ./
+COPY src/ ./src/
+COPY modules/ ./modules/
 
 # Copy the scaffold script if it exists
-RUN [ -f "../../scripts/scaffold_phases.py" ] && cp ../../scripts/scaffold_phases.py ./ || echo "No scaffold script found"
+COPY scripts/scaffold_phases.py ./ || echo "No scaffold script found"
 
 # Copy all add-on files to the working directory
 COPY . ./sterling_os/
