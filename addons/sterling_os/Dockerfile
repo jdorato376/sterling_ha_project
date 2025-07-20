@@ -1,3 +1,7 @@
+# Home Assistant Add-on: Sterling OS
+# Sterling: Executive AI Assistant Add-on with Gemini & Ollama Routing
+# This Dockerfile builds the Sterling OS add-on for Home Assistant
+
 # syntax=docker/dockerfile:1
 FROM python:3.12-slim
 
@@ -11,26 +15,30 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the add-on specific requirements and install Python dependencies
-COPY addons/sterling_os/requirements.txt ./
+# Copy requirements and install Python dependencies
+# Note: In Home Assistant add-on context, we're already in the add-on directory
+COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy necessary files from the repository
-COPY sterling_core.py ./
-COPY cognitive_router.py ./
-COPY src/ ./src/
-COPY modules/ ./modules/
-COPY scripts/scaffold_phases.py ./
+# Copy necessary files from the repository root
+# These files need to be copied from the repository context
+COPY ../../sterling_core.py ./
+COPY ../../cognitive_router.py ./
+COPY ../../src/ ./src/
+COPY ../../modules/ ./modules/
 
-# Copy the add-on files
-COPY addons/sterling_os/ ./sterling_os/
+# Copy the scaffold script if it exists
+COPY ../../scripts/scaffold_phases.py ./ 2>/dev/null || echo "No scaffold script found"
 
-# Set up Python path and generate phase modules
+# Copy all add-on files to the working directory
+COPY . ./sterling_os/
+
+# Set up Python path and generate phase modules if scaffold script exists
 ENV PYTHONPATH="/app:/app/sterling_os"
-RUN python scaffold_phases.py || echo "Phase scaffolding completed"
+RUN python scaffold_phases.py 2>/dev/null || echo "Phase scaffolding skipped"
 
-# Make entrypoint executable
-RUN chmod +x ./sterling_os/entrypoint.sh
+# Make run script executable (Home Assistant add-ons expect run.sh)
+RUN chmod +x ./sterling_os/run.sh
 
 # Create data directory for persistent storage
 RUN mkdir -p /data
@@ -42,5 +50,5 @@ EXPOSE 5000
 ENV HOME_ASSISTANT_URL="http://supervisor/core"
 ENV PYTHONPATH="/app:/app/sterling_os"
 
-# Use the add-on's entrypoint
-ENTRYPOINT ["./sterling_os/entrypoint.sh"]
+# Home Assistant add-ons use run.sh as the default entrypoint
+CMD ["./sterling_os/run.sh"]

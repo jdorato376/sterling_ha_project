@@ -1,8 +1,28 @@
+# Home Assistant Add-on: Sterling OS
+# Python dependencies required for the Sterling OS add-on
+
+# Core web framework
 flask>=2.3.0
+gunicorn>=21.0.0
+
+# HTTP clients and API communication
 twilio>=8.0.0
 openai>=1.0.0
 requests>=2.31.0
-ollama>=0.1.0
 aiohttp>=3.9.0
+
+# Local AI model support
+ollama>=0.1.0
+
+# Data validation and serialization
 jsonschema>=4.17.0
 pyyaml>=6.0
+
+# Google Cloud AI (for Gemini support)
+google-cloud-aiplatform>=1.38.0
+
+# Testing (optional, for development)
+pytest>=8.0.0
+
+# Additional utilities
+feedparser>=6.0.0
