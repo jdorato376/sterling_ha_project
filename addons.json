@@ -1,0 +1,12 @@
+{
+  "name": "Sterling HA Project Add-ons",
+  "url": "https://github.com/jdorato376/sterling_ha_project",
+  "maintainer": "Sterling Project Team",
+  "addons": {
+    "sterling_os": {
+      "name": "Sterling OS",
+      "description": "Sterling: Executive AI Assistant Add-on with Gemini & Ollama Routing",
+      "version": "1.0.0"
+    }
+  }
+}

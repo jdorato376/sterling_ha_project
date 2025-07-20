@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-python -m sterling_core
+cd /app
+python3 main.py
