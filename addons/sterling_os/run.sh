@@ -23,7 +23,7 @@ if [ ! -d "/app/sterling_os" ]; then
 fi
 
 # Change to the sterling_os directory
-cd /app/sterling_os || { echo "Failed to access /app/sterling_os. Exiting."; exit 3; }
+cd /app/sterling_os || { echo "Failed to change to directory /app/sterling_os. Exiting."; exit 3; }
 
 # Verify that main.py exists
 if [ ! -f "main.py" ]; then
