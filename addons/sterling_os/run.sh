@@ -19,16 +19,16 @@ mkdir -p /data
 # Ensure the sterling_os directory exists
 if [ ! -d "/app/sterling_os" ]; then
     echo "Error: Directory /app/sterling_os does not exist. Creating it..."
-    mkdir -p /app/sterling_os || { echo "Failed to create /app/sterling_os. Exiting."; exit 1; }
+    mkdir -p /app/sterling_os || { echo "Failed to create /app/sterling_os. Exiting."; exit 2; }
 fi
 
 # Change to the sterling_os directory
-cd /app/sterling_os || { echo "Failed to access /app/sterling_os. Exiting."; exit 1; }
+cd /app/sterling_os || { echo "Failed to access /app/sterling_os. Exiting."; exit 3; }
 
 # Verify that main.py exists
 if [ ! -f "main.py" ]; then
     echo "Error: main.py not found in /app/sterling_os. Exiting."
-    exit 1
+    exit 4
 fi
 # Start the Sterling OS application
 echo "Launching Sterling OS main application..."
