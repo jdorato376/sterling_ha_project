@@ -28,7 +28,7 @@ COPY src/ ./src/
 COPY modules/ ./modules/
 
 # Copy the scaffold script if it exists
-COPY scripts/scaffold_phases.py ./ || echo "No scaffold script found"
+RUN [ -f scripts/scaffold_phases.py ] && cp scripts/scaffold_phases.py ./ || echo "No scaffold script found"
 
 # Copy all add-on files to the working directory
 COPY . ./sterling_os/
