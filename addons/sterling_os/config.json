@@ -39,6 +39,5 @@
     "log_level": "list(trace|debug|info|warning|error|fatal)?",
     "memory_enabled": "bool",
     "enable_devgpt": "bool"
-  },
-  "image": "ghcr.io/jdorato376/sterling_os:{version}"
+  }
 }

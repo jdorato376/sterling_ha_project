@@ -1,7 +1,11 @@
 #!/bin/bash
 
-# Sterling OS Home Assistant Add-on Entrypoint
-echo "Starting Sterling OS Add-on..."
+# Home Assistant Add-on: Sterling OS
+# Alternative entrypoint script for the Sterling OS add-on
+# Note: Home Assistant add-ons typically use run.sh as the primary entrypoint
+# This script provides an alternative way to start the application
+
+echo "Starting Sterling OS Add-on (via entrypoint.sh)..."
 
 # Set up environment
 export PYTHONPATH="/app:/app/sterling_os:$PYTHONPATH"

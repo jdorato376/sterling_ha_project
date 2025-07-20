@@ -26,6 +26,10 @@ dist/
 # Docker build cache
 .docker/
 
+# Extraneous Dockerfiles (not used by Home Assistant add-on)
+/Dockerfile
+/dockerfile
+
 # Node.js (if applicable)
 node_modules/
 npm-debug.log*
