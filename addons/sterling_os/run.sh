@@ -16,10 +16,10 @@ export HA_TOKEN="${HA_TOKEN:-}"
 # Create data directory if it doesn't exist
 mkdir -p /data
 
-# Ensure the sterling_os directory exists
+# Ensure the sterling_os directory is present (handled during Docker build)
 if [ ! -d "/app/sterling_os" ]; then
-    echo "Error: Directory /app/sterling_os does not exist. Creating it..."
-    mkdir -p /app/sterling_os || { echo "Failed to create /app/sterling_os. Exiting."; exit 2; }
+    echo "Error: Directory /app/sterling_os does not exist. This should have been created during the Docker build process. Exiting."
+    exit 2
 fi
 
 # Change to the sterling_os directory
