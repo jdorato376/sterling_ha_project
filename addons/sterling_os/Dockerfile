@@ -35,7 +35,7 @@ COPY . ./sterling_os/
 
 # Set up Python path and generate phase modules if scaffold script exists
 ENV PYTHONPATH="/app:/app/sterling_os"
-RUN python scaffold_phases.py 2>/dev/null || echo "Phase scaffolding skipped"
+RUN python scaffold_phases.py || echo "Phase scaffolding failed, continuing..."
 
 # Make run script executable (Home Assistant add-ons expect run.sh)
 RUN chmod +x ./sterling_os/run.sh
