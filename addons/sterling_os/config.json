@@ -1,19 +1,44 @@
 {
-        "name": "Sterling OS",
-        "version": "1.0.0",
-        "slug": "sterling_os",
-        "description": "Sterling: Executive AI Assistant Add-on with Gemini & Ollama Routing",
-        "startup": "application",
-        "boot": "auto",
-        "hassio_api": true,
-        "homeassistant_api": true,
-        "host_network": true,
-        "privileged": [],
-        "arch": ["aarch64", "amd64", "armv7"],
-        "options": {},
-        "schema": {},
-        "dev_mode": false,
-        "memory_enabled": true,
-        "enable_devgpt": false,
-        "image": "ghcr.io/jdorato376/sterling_os:1.0.0"
-    }
+  "name": "Sterling OS",
+  "version": "1.0.0",
+  "slug": "sterling_os",
+  "description": "Sterling: Executive AI Assistant Add-on with Gemini & Ollama Routing for comprehensive Home Assistant automation",
+  "url": "https://github.com/jdorato376/sterling_ha_project",
+  "startup": "application",
+  "boot": "auto",
+  "init": false,
+  "hassio_api": true,
+  "homeassistant_api": true,
+  "host_network": true,
+  "privileged": [],
+  "full_access": false,
+  "arch": ["aarch64", "amd64", "armv7"],
+  "maintainer": "jdorato376",
+  "stage": "stable",
+  "webui": "http://[HOST]:[PORT:5000]",
+  "ports": {
+    "5000/tcp": 5000
+  },
+  "ports_description": {
+    "5000/tcp": "Sterling OS API endpoint"
+  },
+  "environment": {
+    "OLLAMA_MODEL": "llama3",
+    "SCENE_MAP_PATH": "/data/scene_mapper.json",
+    "HOME_ASSISTANT_URL": "http://supervisor/core",
+    "LOG_LEVEL": "info"
+  },
+  "options": {
+    "ollama_model": "llama3",
+    "log_level": "info",
+    "memory_enabled": true,
+    "enable_devgpt": false
+  },
+  "schema": {
+    "ollama_model": "str",
+    "log_level": "list(trace|debug|info|warning|error|fatal)?",
+    "memory_enabled": "bool",
+    "enable_devgpt": "bool"
+  },
+  "image": "ghcr.io/jdorato376/sterling_os:{version}"
+}

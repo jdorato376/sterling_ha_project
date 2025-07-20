@@ -13,4 +13,56 @@ logs/
 *.swp
 *.save
 
+# Add-on specific files
 addons/sterling_os/trust_registry_store.json
+
+# Home Assistant add-on build artifacts
+*.tar.gz
+*.tgz
+build/
+dist/
+*.egg-info/
+
+# Docker build cache
+.docker/
+
+# Node.js (if applicable)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Backup files
+*.backup
+*.bak
+*.orig
+
+# Test files
+coverage/
+.coverage
+htmlcov/
+
+# Documentation build
+_build/
+_static/
+_templates/
