@@ -1,9 +1,74 @@
 # Sterling API: Executive AI Control Layer
 
-This repository contains a minimal Home Assistant add-on named **Sterling OS**. The add-on runs a simple Flask application and is packaged as a Docker image.
+[![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Compatible-blue)](https://www.home-assistant.io/)
+[![Add-on Version](https://img.shields.io/badge/version-1.0.0-green)](https://github.com/jdorato376/sterling_ha_project/releases)
+[![Architecture](https://img.shields.io/badge/arch-amd64%20%7C%20aarch64%20%7C%20armv7-lightgrey)](https://github.com/jdorato376/sterling_ha_project)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/jdorato376/sterling_ha_project/workflows/CI/badge.svg)](https://github.com/jdorato376/sterling_ha_project/actions)
+[![Docker](https://img.shields.io/docker/pulls/jdorato376/sterling_os)](https://github.com/jdorato376/sterling_ha_project/pkgs/container/sterling_os)
 
-## Getting Started
+This repository contains **Sterling OS**, a comprehensive Home Assistant add-on that provides an executive AI assistant with intelligent automation, contextual responses, and seamless integration with various AI models including Gemini and Ollama.
 
+## 🏠 Home Assistant Add-on Quick Start
+
+### Installation
+
+1. **Add Repository to Home Assistant:**
+   - In Home Assistant, go to **Settings** → **Add-ons** → **Add-on Store**
+   - Click the **⋮** menu (three dots) in the top right corner
+   - Select **Repositories**
+   - Add this URL: `https://github.com/jdorato376/sterling_ha_project`
+   - Click **Add**
+
+2. **Install Sterling OS:**
+   - Find **Sterling OS** in the add-on store
+   - Click **Install**
+   - Configure the add-on options as needed
+   - Start the add-on
+
+3. **Configure Home Assistant Integration:**
+   - Add REST commands and automations (see [add-on documentation](addons/sterling_os/README.md))
+   - Set up dashboard cards for interaction
+   - Configure API tokens for secure communication
+
+### Quick Configuration Example
+
+```yaml
+# Add to configuration.yaml
+rest_command:
+  sterling_chat:
+    url: "http://IP_ADDRESS:5000/ha-chat"
+    method: POST
+    headers:
+      Authorization: "Bearer YOUR_LONG_LIVED_TOKEN"
+      Content-Type: "application/json"
+    payload: '{"message": "{{ message }}"}'
+
+input_text:
+  sterling_input:
+    name: "Ask Sterling"
+    max: 255
+    icon: mdi:robot
+```
+
+For complete installation and configuration instructions, see the [Sterling OS Add-on README](addons/sterling_os/README.md).
+
+## ✨ Features
+
+- 🤖 **AI-Powered Assistant**: Intelligent responses using Gemini and local Ollama models
+- 🏠 **Native HA Integration**: Direct Home Assistant API integration
+- 🧠 **Memory & Context**: Maintains conversation history and learns from interactions
+- 🔄 **Automatic Fallback**: Seamlessly switches between AI models
+- 📱 **Multi-Interface**: REST API, voice commands, and dashboard integration
+- 🛡️ **Self-Healing**: Automatic recovery and error handling
+- 📊 **Timeline Logging**: Tracks and learns from user patterns
+
+## 🛠 Development & Advanced Setup
+
+### For Home Assistant Users
+If you want to use Sterling OS as a Home Assistant add-on, follow the [Home Assistant Add-on Quick Start](#-home-assistant-add-on-quick-start) section above.
+
+### For Developers & Advanced Users
 ```bash
 bash infrastructure/provision_vm.sh
 bash scripts/setup_environment.sh
@@ -16,6 +81,23 @@ To regenerate the placeholder phase modules and tests, run:
 ```bash
 ./scripts/scaffold_phases.py
 ```
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [contribution guidelines](.github/pull_request_template.md) and [issue templates](.github/ISSUE_TEMPLATE/) for more information.
+
+### Development Setup
+1. Fork this repository
+2. Clone your fork locally
+3. Install dependencies: `pip install -r requirements.txt`
+4. Make your changes
+5. Test your changes with the add-on
+6. Submit a pull request
+
+### Reporting Issues
+- 🐛 [Bug Report](.github/ISSUE_TEMPLATE/bug_report.md)
+- ✨ [Feature Request](.github/ISSUE_TEMPLATE/feature_request.md)
+- 📚 [Documentation Issue](.github/ISSUE_TEMPLATE/documentation.md)
 
 ## 🔐 Image Authentication
 

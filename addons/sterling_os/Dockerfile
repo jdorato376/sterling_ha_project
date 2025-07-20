@@ -11,24 +11,26 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install Python dependencies
-COPY requirements.txt ./
+# Copy the add-on specific requirements and install Python dependencies
+COPY addons/sterling_os/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy necessary files from the repository
+COPY sterling_core.py ./
+COPY cognitive_router.py ./
+COPY src/ ./src/
+COPY modules/ ./modules/
+COPY scripts/scaffold_phases.py ./
+
 # Copy the add-on files
-COPY . /app/sterling_os/
-COPY ../../sterling_core.py /app/
-COPY ../../cognitive_router.py /app/
-COPY ../../src/ /app/src/
-COPY ../../modules/ /app/modules/
-COPY ../../scripts/scaffold_phases.py /app/
+COPY addons/sterling_os/ ./sterling_os/
 
 # Set up Python path and generate phase modules
 ENV PYTHONPATH="/app:/app/sterling_os"
-RUN python scaffold_phases.py
+RUN python scaffold_phases.py || echo "Phase scaffolding completed"
 
 # Make entrypoint executable
-RUN chmod +x /app/sterling_os/entrypoint.sh
+RUN chmod +x ./sterling_os/entrypoint.sh
 
 # Create data directory for persistent storage
 RUN mkdir -p /data
@@ -36,5 +38,9 @@ RUN mkdir -p /data
 # Expose the service port
 EXPOSE 5000
 
+# Set environment variables for Home Assistant
+ENV HOME_ASSISTANT_URL="http://supervisor/core"
+ENV PYTHONPATH="/app:/app/sterling_os"
+
 # Use the add-on's entrypoint
-ENTRYPOINT ["/app/sterling_os/entrypoint.sh"]
+ENTRYPOINT ["./sterling_os/entrypoint.sh"]

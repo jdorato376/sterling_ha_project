@@ -1,0 +1,171 @@
+name: Home Assistant Add-on Validation
+
+on:
+  push:
+    branches: [ main ]
+    paths: 
+      - 'addons/**'
+      - '.github/workflows/addon-validation.yml'
+  pull_request:
+    branches: [ main ]
+    paths: 
+      - 'addons/**'
+      - '.github/workflows/addon-validation.yml'
+
+jobs:
+  lint-config:
+    name: Lint Add-on Configuration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install jsonschema pyyaml
+
+      - name: Validate config.json
+        run: |
+          python -c "
+          import json
+          import jsonschema
+          
+          # Basic Home Assistant add-on schema
+          schema = {
+            'type': 'object',
+            'required': ['name', 'version', 'slug', 'description', 'startup', 'boot', 'arch'],
+            'properties': {
+              'name': {'type': 'string'},
+              'version': {'type': 'string'},
+              'slug': {'type': 'string', 'pattern': '^[a-z0-9_]+$'},
+              'description': {'type': 'string'},
+              'startup': {'enum': ['application', 'system', 'services', 'initialize']},
+              'boot': {'enum': ['auto', 'manual']},
+              'arch': {'type': 'array', 'items': {'type': 'string'}},
+              'url': {'type': 'string'},
+              'maintainer': {'type': 'string'}
+            }
+          }
+          
+          # Validate each add-on config
+          import os
+          for addon_dir in os.listdir('addons'):
+            if os.path.isdir(f'addons/{addon_dir}'):
+              config_path = f'addons/{addon_dir}/config.json'
+              if os.path.exists(config_path):
+                with open(config_path) as f:
+                  config = json.load(f)
+                try:
+                  jsonschema.validate(config, schema)
+                  print(f'✅ {addon_dir}/config.json is valid')
+                except jsonschema.ValidationError as e:
+                  print(f'❌ {addon_dir}/config.json validation failed: {e}')
+                  exit(1)
+          "
+
+      - name: Check required files
+        run: |
+          for addon_dir in addons/*/; do
+            addon_name=$(basename "$addon_dir")
+            echo "Checking $addon_name..."
+            
+            # Check required files
+            required_files=("config.json" "Dockerfile" "README.md")
+            for file in "${required_files[@]}"; do
+              if [ ! -f "$addon_dir/$file" ]; then
+                echo "❌ Missing required file: $addon_dir/$file"
+                exit 1
+              else
+                echo "✅ Found $file"
+              fi
+            done
+            
+            # Check for icon
+            if [ ! -f "$addon_dir/icon.png" ] && [ ! -f "$addon_dir/icon.svg" ] && [ ! -f "$addon_dir/icon.jpg" ]; then
+              echo "⚠️ No icon found for $addon_name (recommended: icon.png)"
+            else
+              echo "✅ Found icon"
+            fi
+          done
+
+  build-addon:
+    name: Build Add-on
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        addon: [sterling_os]
+        arch: [amd64, aarch64, armv7]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build add-on (${{ matrix.arch }})
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: addons/${{ matrix.addon }}/Dockerfile
+          platforms: linux/${{ matrix.arch }}
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  test-addon:
+    name: Test Add-on Functionality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build test image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: addons/sterling_os/Dockerfile
+          platforms: linux/amd64
+          push: false
+          load: true
+          tags: sterling_os:test
+
+      - name: Test container startup
+        run: |
+          # Test that container can start (with timeout)
+          timeout 30s docker run --rm sterling_os:test echo "Container startup test passed" || {
+            echo "❌ Container failed to start within 30 seconds"
+            exit 1
+          }
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: 'addons/'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'

@@ -1,5 +1,7 @@
 {
   "name": "Sterling OS Add-on Repository",
-  "url": "https://github.com/jdorato376/sterling_ha_project"
+  "url": "https://github.com/jdorato376/sterling_ha_project",
+  "maintainer": "jdorato376 <jdorato376@users.noreply.github.com>",
+  "description": "Sterling OS: Executive AI Assistant Add-on for Home Assistant with Gemini & Ollama support, intelligent automation, and contextual responses."
 }
 
