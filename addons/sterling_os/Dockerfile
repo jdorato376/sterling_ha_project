@@ -1,18 +1,40 @@
 # syntax=docker/dockerfile:1
-FROM python:3.12-slim AS base
+FROM python:3.12-slim
+
+# Set working directory
 WORKDIR /app
 
-FROM base AS builder
-COPY requirements.txt ./
-RUN pip wheel -r requirements.txt -w /wheels
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    bash \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-FROM base
-COPY --from=builder /wheels /wheels
-COPY src /app/src
-COPY modules /app/modules
-COPY addons/sterling_os/run.sh /app/run.sh
-COPY addons/sterling_os/config.json /app/config.json
-COPY scripts/scaffold_phases.py /app/scaffold_phases.py
-RUN pip install /wheels/*.whl
-RUN python /app/scaffold_phases.py
-ENTRYPOINT ["./run.sh"]
+# Copy requirements and install Python dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the add-on files
+COPY . /app/sterling_os/
+COPY ../../sterling_core.py /app/
+COPY ../../cognitive_router.py /app/
+COPY ../../src/ /app/src/
+COPY ../../modules/ /app/modules/
+COPY ../../scripts/scaffold_phases.py /app/
+
+# Set up Python path and generate phase modules
+ENV PYTHONPATH="/app:/app/sterling_os"
+RUN python scaffold_phases.py
+
+# Make entrypoint executable
+RUN chmod +x /app/sterling_os/entrypoint.sh
+
+# Create data directory for persistent storage
+RUN mkdir -p /data
+
+# Expose the service port
+EXPOSE 5000
+
+# Use the add-on's entrypoint
+ENTRYPOINT ["/app/sterling_os/entrypoint.sh"]
